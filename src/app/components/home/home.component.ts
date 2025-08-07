@@ -12,6 +12,6 @@ export class HomeComponent {
   constructor(private router: Router) {}
 
   startGame() {
-    this.router.navigate(['/quiz']);
+    this.router.navigate(['/cadastro']);
   }
 } 

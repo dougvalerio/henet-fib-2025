@@ -1,0 +1,62 @@
+<div class="cadastro-container">
+  <div class="header">
+    <h1>Participe do Quiz de Filmes e Séries!</h1>
+    <p>Preencha seus dados e teste seus conhecimentos cinematográficos!</p>
+  </div>
+  
+  <form class="cadastro-form">
+    <div class="form-group">
+      <label for="nomeCompleto">Nome Completo</label>
+      <input 
+        type="text" 
+        id="nomeCompleto" 
+        [(ngModel)]="cadastro.nomeCompleto" 
+        name="nomeCompleto" 
+        placeholder="Nome Completo" 
+        required 
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="cpf">CPF</label>
+      <input 
+        type="text" 
+        id="cpf" 
+        [(ngModel)]="cadastro.cpf" 
+        name="cpf" 
+        mask="000.000.000-00" 
+        placeholder="000.000.000-00" 
+        required 
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="email">E-mail</label>
+      <input 
+        type="email" 
+        id="email" 
+        [(ngModel)]="cadastro.email" 
+        name="email" 
+        placeholder="E-mail" 
+        required 
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="telefone">Telefone</label>
+      <input 
+        type="text" 
+        id="telefone" 
+        [(ngModel)]="cadastro.telefone" 
+        name="telefone" 
+        mask="(00) 00000-0000" 
+        placeholder="(00) 00000-0000" 
+        required 
+      />
+    </div>
+
+    <button class="submit-button" (click)="cadastrar()">
+      <i class="fas fa-play"></i> Começar o Quiz!
+    </button>
+  </form>
+</div>
