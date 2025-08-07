@@ -5,7 +5,6 @@
   justify-content: center;
   padding: 20px;
   background: transparent;
-
   margin-top: 5rem;
 }
 
@@ -79,13 +78,15 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.submit-button:hover {
+.submit-button:hover:not(:disabled) {
   background-color: #0d905d;
   transform: translateY(-2px);
 }
 
-.submit-button i {
-  font-size: 1.2rem;
+.submit-button:disabled {
+  background-color: var(--text-secondary);
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 /* Responsividade para tablets e smartphones */

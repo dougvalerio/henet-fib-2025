@@ -1,0 +1,16 @@
+<div class="gallery-container">
+  <h1>Selecione 3 opções de Filmes ou Séries</h1>
+  <div class="gallery-grid">
+    <div *ngFor="let item of titulos; let i = index" 
+         class="gallery-item" 
+         [class.selected]="item.selected"
+         (click)="toggleSelection(i)"
+         [class.disabled]="selectedCount >= 3 && !item.selected">
+      <img [src]="item.imagePath" [alt]="item.title">
+      <p>{{ item.title }}</p>
+    </div>
+  </div>
+  <button class="quiz-button" [disabled]="selectedCount < 3" (click)="startQuiz()">
+    <i class="fas fa-play"></i> COMEÇAR O QUIZ
+  </button>
+</div>

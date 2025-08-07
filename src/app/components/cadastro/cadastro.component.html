@@ -55,8 +55,8 @@
       />
     </div>
 
-    <button class="submit-button" (click)="cadastrar()">
-      <i class="fas fa-play"></i> Começar o Quiz!
+    <button class="submit-button" [disabled]="!isFormValid" (click)="cadastrar()">
+      <i class="fas fa-play"></i> Selecionar Filmes/Séries
     </button>
   </form>
 </div>
