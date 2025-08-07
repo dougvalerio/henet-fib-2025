@@ -1,1 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
+/* Importando a fonte Inter, amplamente usada em sistemas modernos */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Importando FONT-AWESOME */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
+
+/* Definindo variáveis globais para cores e fontes */
+:root {
+  --primary-color: #1E3A8A; /* Azul escuro moderno */
+  --secondary-color: #10B981; /* Verde esmeralda para destaques */
+  --background-color: #fbf9f9; /* Fundo claro e limpo */
+  --text-color: #111827; /* Texto escuro para contraste */
+  --text-secondary: #6B7280; /* Texto secundário mais suave */
+  --font-family: 'Inter', sans-serif;
+  --font-size-base: 16px;
+  --font-size-large: 24px;
+  --font-size-small: 14px;
+}
+
+/* Estilização global do componente */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-size: var(--font-size-base);
+}/* You can add global styles to this file, and also import other style files */
