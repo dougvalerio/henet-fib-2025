@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { PopupResultadoRespostaComponent } from '../popup-resultado-resposta/popup-resultado-resposta.component';
 
 interface Title {
   title: string;
@@ -19,7 +20,7 @@ interface Question {
 @Component({
   selector: 'app-perguntas',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PopupResultadoRespostaComponent],
   templateUrl: './perguntas.component.html',
   styleUrl: './perguntas.component.css',
 })
@@ -28,22 +29,23 @@ export class PerguntasComponent implements OnInit {
   selectedOption: number | null = null;
   questions: Question[] = [];
   selectedTitles: Title[] = [];
+  showPopup = false;
+  isCorrectAnswer = false;
+  isQuizFinished = false;
 
   constructor(private router: Router) {
-    // Recuperar os títulos selecionados do estado da navegação
     const navigation = this.router.getCurrentNavigation();
     this.selectedTitles = navigation?.extras.state?.['selectedTitles'] || [];
   }
 
   ngOnInit() {
-    // Gerar perguntas com base nos títulos selecionados
     this.generateQuestions();
   }
 
   generateQuestions() {
     const questionsPerTitle = 3;
     const allQuestions: Question[] = [
-      // Perguntas para "The Last of Us"
+      // Perguntas existentes (mantidas como no código original)
       {
         title: 'The Last of Us',
         imagePath: '../../../assets/TLOUS.jpg',
@@ -65,7 +67,6 @@ export class PerguntasComponent implements OnInit {
         options: ['Joel', 'Tommy', 'Bill', 'David', 'Riley'],
         correctAnswer: 0,
       },
-      // Perguntas para "House of the Dragon"
       {
         title: 'House of the Dragon',
         imagePath: '../../../assets/HOD.jpg',
@@ -87,7 +88,6 @@ export class PerguntasComponent implements OnInit {
         options: ['Drogon', 'Caraxes', 'Balerion', 'Vhagar', 'Syrax'],
         correctAnswer: 1,
       },
-      // Perguntas para "F.r.i.e.n.d.s"
       {
         title: 'F.r.i.e.n.d.s',
         imagePath: '../../../assets/friends.jpg',
@@ -109,18 +109,12 @@ export class PerguntasComponent implements OnInit {
         options: ['Chef', 'Ator', 'Paleontólogo', 'Publicitário', 'Médico'],
         correctAnswer: 2,
       },
-      // Adicione mais perguntas para os outros títulos conforme necessário
     ];
 
-    // Filtrar perguntas apenas para os títulos selecionados
-    this.questions = allQuestions.filter((q) =>
-      this.selectedTitles.some((t) => t.title === q.title)
-    );
-
-    // Garantir que haja exatamente 9 perguntas (3 por título)
-    this.questions = this.questions
+    this.questions = allQuestions
+      .filter((q) => this.selectedTitles.some((t) => t.title === q.title))
       .slice(0, questionsPerTitle * this.selectedTitles.length)
-      .sort(() => Math.random() - 0.5); // Embaralhar perguntas
+      .sort(() => Math.random() - 0.5);
   }
 
   selectOption(index: number) {
@@ -129,13 +123,26 @@ export class PerguntasComponent implements OnInit {
 
   nextQuestion() {
     if (this.selectedOption !== null) {
+      const currentQuestion = this.currentQuestion;
+      if (currentQuestion) {
+        this.isCorrectAnswer = this.selectedOption === currentQuestion.correctAnswer;
+        this.showPopup = true;
+
+        if (this.isCorrectAnswer && this.currentQuestionIndex === this.questions.length - 1) {
+          this.isQuizFinished = true;
+        }
+      }
+    }
+  }
+
+  closePopup() {
+    this.showPopup = false;
+    if (this.isCorrectAnswer && !this.isQuizFinished) {
       this.currentQuestionIndex++;
       this.selectedOption = null;
-      if (this.currentQuestionIndex >= this.questions.length) {
-        // Redirecionar para uma tela de resultados ou reiniciar
-        console.log('Quiz finalizado!');
-        this.router.navigate(['/resultado']); // Ajuste conforme necessário
-      }
+    }
+    if (!this.isCorrectAnswer || this.isQuizFinished) {
+      this.router.navigate(['/inicio']); // Redireciona para a página inicial
     }
   }
 

@@ -1,0 +1,135 @@
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: var(--background-color);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.popup-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.popup-gif {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.popup-message {
+  font-size: var(--font-size-base);
+  color: var(--text-color);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.popup-button {
+  padding: 0.75rem 1.5rem;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--secondary-color);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.popup-button:hover {
+  background-color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+.popup-button.next {
+  background-color: var(--secondary-color);
+}
+
+.popup-button.next:hover {
+  background-color: var(--primary-color);
+}
+
+/* Responsividade para tablets */
+@media (max-width: 600px) {
+  .popup-content {
+    padding: 1.5rem;
+    max-width: 400px;
+  }
+
+  .popup-gif {
+    width: 120px;
+    height: 120px;
+  }
+
+  .popup-message {
+    font-size: 0.9rem;
+  }
+
+  .popup-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* Responsividade para smartphones */
+@media (max-width: 450px) {
+  .popup-content {
+    padding: 1rem;
+    max-width: 300px;
+  }
+
+  .popup-gif {
+    width: 100px;
+    height: 100px;
+  }
+
+  .popup-message {
+    font-size: 0.85rem;
+  }
+
+  .popup-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Ajuste para telas muito pequenas */
+@media (max-width: 350px) {
+  .popup-content {
+    padding: 0.75rem;
+    max-width: 250px;
+  }
+
+  .popup-gif {
+    width: 80px;
+    height: 80px;
+  }
+
+  .popup-message {
+    font-size: 0.8rem;
+  }
+}

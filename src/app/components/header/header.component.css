@@ -13,6 +13,7 @@ header {
 /* Logo */
 .logo-container {
   flex: 0 0 auto;
+  cursor: pointer; /* Adiciona cursor de clique */
 }
 
 .logo {
