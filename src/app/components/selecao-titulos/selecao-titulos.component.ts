@@ -1,16 +1,17 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-selecao-titulos',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './selecao-titulos.component.html',
-  styleUrl: './selecao-titulos.component.css'
+  styleUrl: './selecao-titulos.component.css',
 })
 export class SelecaoTitulosComponent {
   titulos = [
-    { title: 'The Last of US', imagePath: '../../../assets/TLOUS.jpg', selected: false },
+    { title: 'The Last of Us', imagePath: '../../../assets/TLOUS.jpg', selected: false },
     { title: 'House of the Dragon', imagePath: '../../../assets/HOD.jpg', selected: false },
     { title: 'F.r.i.e.n.d.s', imagePath: '../../../assets/friends.jpg', selected: false },
     { title: 'Harry Potter', imagePath: '../../../assets/hp.jpg', selected: false },
@@ -21,6 +22,8 @@ export class SelecaoTitulosComponent {
   ];
 
   selectedCount = 0;
+
+  constructor(private router: Router) {}
 
   toggleSelection(index: number) {
     if (this.titulos[index].selected) {
@@ -34,8 +37,10 @@ export class SelecaoTitulosComponent {
 
   startQuiz() {
     if (this.selectedCount === 3) {
-      console.log('Iniciando quiz com:', this.titulos.filter(t => t.selected));
-      // Adicione aqui a lógica para iniciar o quiz
+      const selectedTitles = this.titulos.filter((t) => t.selected);
+      this.router.navigate(['/perguntas'], {
+        state: { selectedTitles },
+      });
     }
   }
 }

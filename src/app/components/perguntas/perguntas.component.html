@@ -1,0 +1,44 @@
+<div class="quiz-container">
+  <h1>Quiz de Filmes e Séries</h1>
+  
+  <!-- Barra de progresso -->
+  <div class="progress-bar">
+    <span class="progress-text">{{ currentQuestionIndex + 1 }}/9</span>
+    <div class="progress-fill" [style.width.%]="((currentQuestionIndex + 1) / 9) * 100"></div>
+  </div>
+
+  <!-- Conteúdo da pergunta -->
+  <div class="question-container" *ngIf="currentQuestion">
+    <!-- Capa do filme/série -->
+    <div class="question-image">
+      <img [src]="currentQuestion.imagePath" [alt]="currentQuestion.title" />
+    </div>
+
+    <!-- Texto da pergunta -->
+    <div class="question-text">
+      <p>{{ currentQuestion.text }}</p>
+    </div>
+
+    <!-- Opções de resposta -->
+    <div class="options-container">
+      <div
+        *ngFor="let option of currentQuestion.options; let i = index"
+        class="option"
+        [class.selected]="selectedOption === i"
+        (click)="selectOption(i)"
+      >
+        <span class="option-letter">{{ 'ABCDE'[i] }}</span>
+        <span>{{ option }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botão Próximo -->
+  <button
+    class="next-button"
+    [disabled]="selectedOption === null"
+    (click)="nextQuestion()"
+  >
+    <i class="fas fa-arrow-right"></i> PRÓXIMO
+  </button>
+</div>
