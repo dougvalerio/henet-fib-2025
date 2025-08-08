@@ -1,0 +1,161 @@
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Alinhar conteúdo à esquerda */
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: var(--font-size-large);
+  color: var(--text-color);
+  margin-bottom: 20px;
+  text-align: center;
+  width: 100%; /* Garantir que o título ocupe toda a largura */
+}
+
+.btn-new-title {
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease;
+  align-self: flex-start; /* Alinhar botão à esquerda */
+}
+
+.btn-new-title:hover {
+  background-color: #059669;
+}
+
+.titles-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.titles-table th,
+.titles-table td {
+  padding: 12px;
+  text-align: center; /* Centralizar conteúdo */
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.titles-table th {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: 600;
+}
+
+.titles-table th:first-child,
+.titles-table td:first-child {
+  width: 80px; /* Largura reduzida para a coluna Posição */
+}
+
+.titles-table td {
+  color: var(--text-color);
+}
+
+.cover-image {
+  width: 60px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+  margin: 0 auto; /* Centralizar imagem */
+}
+
+.btn-action {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  margin: 0 5px; /* Ajuste de margem para centralização */
+  transition: color 0.3s ease;
+}
+
+.btn-action i.fa-edit {
+  color: var(--primary-color); /* Azul para editar */
+}
+
+.btn-action i.fa-edit:hover {
+  color: #1e40af; /* Tom mais escuro de azul no hover */
+}
+
+.btn-action i.fa-trash {
+  color: #dc2626; /* Vermelho para lixeira */
+}
+
+.btn-action i.fa-trash:hover {
+  color: #b91c1c; /* Tom mais escuro de vermelho no hover */
+}
+
+/* Responsividade para tablets e smartphones */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 10px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  .btn-new-title {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .titles-table th,
+  .titles-table td {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .titles-table th:first-child,
+  .titles-table td:first-child {
+    width: 60px; /* Largura ainda menor para tablets */
+  }
+
+  .cover-image {
+    width: 40px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .titles-table {
+    font-size: var(--font-size-small);
+  }
+
+  .titles-table th,
+  .titles-table td {
+    padding: 6px;
+  }
+
+  .titles-table th:first-child,
+  .titles-table td:first-child {
+    width: 50px; /* Largura reduzida para smartphones */
+  }
+
+  .btn-action {
+    font-size: 14px;
+    margin: 0 3px;
+  }
+
+  .cover-image {
+    width: 30px;
+    height: 45px;
+  }
+}

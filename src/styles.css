@@ -27,3 +27,12 @@ html, body {
   color: var(--text-color);
   font-size: var(--font-size-base);
 }/* You can add global styles to this file, and also import other style files */
+
+.background-container {
+  height: 100%; /* Ocupa toda a altura da página */
+  background: url("../src/assets/bg-henet.jpg") no-repeat center center;
+  background-size: cover; /* Ajusta a imagem para cobrir toda a área */
+  overflow: auto; /* Permite scroll se necessário */
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

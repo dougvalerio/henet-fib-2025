@@ -20,7 +20,7 @@ interface Question {
 @Component({
   selector: 'app-perguntas',
   standalone: true,
-  imports: [CommonModule, PopupResultadoRespostaComponent],
+  imports: [CommonModule, PopupResultadoRespostaComponent], // Adicione o componente aqui
   templateUrl: './perguntas.component.html',
   styleUrl: './perguntas.component.css',
 })
@@ -45,7 +45,6 @@ export class PerguntasComponent implements OnInit {
   generateQuestions() {
     const questionsPerTitle = 3;
     const allQuestions: Question[] = [
-      // Perguntas existentes (mantidas como no código original)
       {
         title: 'The Last of Us',
         imagePath: '../../../assets/TLOUS.jpg',
@@ -142,7 +141,7 @@ export class PerguntasComponent implements OnInit {
       this.selectedOption = null;
     }
     if (!this.isCorrectAnswer || this.isQuizFinished) {
-      this.router.navigate(['/inicio']); // Redireciona para a página inicial
+      this.router.navigate(['/inicio']);
     }
   }
 
