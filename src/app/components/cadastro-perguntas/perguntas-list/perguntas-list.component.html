@@ -1,1 +1,54 @@
-<p>perguntas-list works!</p>
+<div class="container">
+  <h1>Lista de Perguntas</h1>
+  <button class="btn-new-title">
+    <i class="fas fa-plus"></i> Nova Pergunta
+  </button>
+  <table class="titles-table">
+    <thead>
+      <tr>
+        <th>Posição</th>
+        <th>Filme/Série</th>
+        <th>Pergunta</th>
+        <th>Nível</th>
+        <th>Resposta</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Dados mockados para visualização, substituir por *ngFor no futuro -->
+      <tr>
+        <td>1</td>
+        <td>The Last of Us</td>
+        <td>Quem é o protagonista principal?</td>
+        <td><span class="level-easy">Fácil</span></td>
+        <td>A</td>
+        <td>
+          <button class="btn-action"><i class="fas fa-edit"></i></button>
+          <button class="btn-action"><i class="fas fa-trash"></i></button>
+        </td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>House of The Dragon</td>
+        <td>Qual é a casa principal da série?</td>
+        <td><span class="level-medium">Médio</span></td>
+        <td>B</td>
+        <td>
+          <button class="btn-action"><i class="fas fa-edit"></i></button>
+          <button class="btn-action"><i class="fas fa-trash"></i></button>
+        </td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>The Last of Us</td>
+        <td>Qual é o nome da filha de Joel?</td>
+        <td><span class="level-hard">Difícil</span></td>
+        <td>C</td>
+        <td>
+          <button class="btn-action"><i class="fas fa-edit"></i></button>
+          <button class="btn-action"><i class="fas fa-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
