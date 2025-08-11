@@ -1,1 +1,85 @@
-<p>perguntas-create-update works!</p>
+<div class="modal-overlay" *ngIf="isOpen">
+  <div class="modal-content">
+    <button class="close-btn" (click)="closeModal()">
+      <i class="fas fa-times"></i>
+    </button>
+    <h2>{{ isEditMode ? 'Editar Pergunta' : 'Nova Pergunta' }}</h2>
+    <form class="question-form">
+      <div class="form-group">
+        <label for="titleSelect">Título do Filme/Série</label>
+        <div class="select-container">
+          <select
+            id="titleSelect"
+            [(ngModel)]="selectedTitle"
+            name="titleSelect"
+            class="select-input"
+          >
+            <option value="" disabled selected>Selecione um título</option>
+            <option *ngFor="let title of titles" [value]="title.name">
+              {{ title.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="difficultySelect">Nível de Dificuldade</label>
+        <div class="select-container">
+          <select
+            id="difficultySelect"
+            [(ngModel)]="difficulty"
+            name="difficultySelect"
+            class="select-input"
+            [ngClass]="{
+              'difficulty-easy': difficulty === 0,
+              'difficulty-medium': difficulty === 1,
+              'difficulty-hard': difficulty === 2
+            }"
+          >
+            <option value="" disabled selected>Selecione a dificuldade</option>
+            <option value="0" [ngStyle]="{'color': '#22c55e'}">Fácil</option>
+            <option value="1" [ngStyle]="{'color': '#facc15'}">Médio</option>
+            <option value="2" [ngStyle]="{'color': '#dc2626'}">Difícil</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="questionText">Pergunta</label>
+        <input
+          type="text"
+          id="questionText"
+          [(ngModel)]="question"
+          name="questionText"
+          placeholder="Digite a pergunta"
+          class="question-input"
+        />
+      </div>
+      <div class="form-group answers-group">
+        <label>Respostas</label>
+        <div class="answer-row" *ngFor="let answer of answers; let i = index">
+          <span class="answer-label">{{ answerLabels[i] }}</span>
+          <input
+            type="text"
+            [(ngModel)]="answers[i]"
+            [name]="'answer' + i"
+            placeholder="Digite a resposta"
+            class="answer-input"
+          />
+          <input
+            type="checkbox"
+            [checked]="correctAnswer === i"
+            (change)="setCorrectAnswer(i)"
+            class="answer-checkbox"
+          />
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="closeModal()">
+          Cancelar
+        </button>
+        <button type="submit" class="btn-save" (click)="saveQuestion()">
+          {{ isEditMode ? 'Salvar Edição' : 'Salvar' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,1 +1,54 @@
-<p>titulos-create-update works!</p>
+<div class="modal-overlay" *ngIf="isOpen">
+  <div class="modal-content">
+    <button class="close-btn" (click)="closeModal()">
+      <i class="fas fa-times"></i>
+    </button>
+    <h2>{{ isEditMode ? 'Editar Título' : 'Novo Título' }}</h2>
+    <form class="title-form">
+      <div class="form-group">
+        <label for="coverImage">Capa do Título</label>
+        <div class="image-upload-container">
+          <img
+            *ngIf="previewImage"
+            [src]="previewImage"
+            alt="Pré-visualização da capa"
+            class="preview-image"
+          />
+          <div class="upload-placeholder" *ngIf="!previewImage">
+            <i class="fas fa-image"></i>
+            <span>Selecione uma imagem</span>
+          </div>
+          <input
+            type="file"
+            id="coverImage"
+            accept="image/*"
+            (change)="onImageChange($event)"
+            class="file-input"
+          />
+          <button type="button" class="btn-upload" (click)="triggerFileInput()">
+            Escolher Imagem
+          </button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="titleName">Nome do Título</label>
+        <input
+          type="text"
+          id="titleName"
+          [(ngModel)]="titleName"
+          name="titleName"
+          placeholder="Digite o nome do filme/série"
+          class="title-input"
+        />
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="closeModal()">
+          Cancelar
+        </button>
+        <button type="submit" class="btn-save" (click)="saveTitle()">
+          {{ isEditMode ? 'Salvedit' : 'Salvar' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,308 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+  color: var(--text-color);
+}
+
+h2 {
+  font-size: var(--font-size-large);
+  color: var(--text-color);
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.question-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: var(--font-size-base);
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.select-container {
+  position: relative;
+  width: 100%;
+}
+
+.select-input {
+  padding: 12px;
+  font-size: var(--font-size-base);
+  border: 1px solid var(--text-secondary);
+  border-radius: 8px;
+  color: var(--text-color);
+  outline: none;
+  transition: border-color 0.3s ease;
+  background: white;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 100%;
+}
+
+.select-input:focus {
+  border-color: var(--primary-color);
+}
+
+/* Adiciona a seta personalizada */
+.select-container::after {
+  content: '\f078'; /* Código do ícone de seta para baixo do Font Awesome */
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  pointer-events: none; /* Evita que a seta interfira na interação com o select */
+}
+
+/* Estilização do select quando uma dificuldade é selecionada */
+.select-input.difficulty-easy {
+  color: #22c55e; /* Verde para Fácil */
+}
+
+.select-input.difficulty-medium {
+  color: #facc15; /* Amarelo para Médio */
+}
+
+.select-input.difficulty-hard {
+  color: #dc2626; /* Vermelho para Difícil */
+}
+
+/* Estilização das opções do select */
+.select-input option[value="0"] {
+  color: #22c55e; /* Verde para Fácil */
+}
+
+.select-input option[value="1"] {
+  color: #facc15; /* Amarelo para Médio */
+}
+
+.select-input option[value="2"] {
+  color: #dc2626; /* Vermelho para Difícil */
+}
+
+.question-input {
+  padding: 12px;
+  font-size: var(--font-size-base);
+  border: 1px solid var(--text-secondary);
+  border-radius: 8px;
+  color: var(--text-color);
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.question-input:focus {
+  border-color: var(--primary-color);
+}
+
+.answers-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.answer-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.answer-label {
+  width: 24px;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--text-color);
+  text-align: center;
+}
+
+.answer-input {
+  flex: 1;
+  padding: 10px;
+  font-size: var(--font-size-base);
+  border: 1px solid var(--text-secondary);
+  border-radius: 8px;
+  color: var(--text-color);
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.answer-input:focus {
+  border-color: var(--primary-color);
+}
+
+.answer-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn-cancel {
+  background: #e5e7eb;
+  color: var(--text-color);
+  border: none;
+  padding: 10px 20px;
+  font-size: var(--font-size-base);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cancel:hover {
+  background: #d1d5db;
+}
+
+.btn-save {
+  background: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: var(--font-size-base);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-save:hover {
+  background: #059669;
+}
+
+/* Responsividade para tablets */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%;
+    padding: 16px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  .select-input,
+  .question-input,
+  .answer-input {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .btn-cancel,
+  .btn-save {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .select-container::after {
+    right: 10px;
+    font-size: 14px;
+  }
+}
+
+/* Responsividade para smartphones */
+@media (max-width: 480px) {
+  .modal-content {
+    width: 98%;
+    padding: 12px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  .form-group label {
+    font-size: 14px;
+  }
+
+  .select-input,
+  .question-input,
+  .answer-input {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .answer-label {
+    width: 20px;
+    font-size: 13px;
+  }
+
+  .answer-checkbox {
+    width: 18px;
+    height: 18px;
+  }
+
+  .btn-cancel,
+  .btn-save {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .select-container::after {
+    right: 8px;
+    font-size: 12px;
+  }
+}
