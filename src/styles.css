@@ -1,23 +1,21 @@
-/* Importando a fonte Inter, amplamente usada em sistemas modernos */
+/* Importações */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-/* Importando FONT-AWESOME */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
 
-/* Definindo variáveis globais para cores e fontes */
+/* Variáveis globais */
 :root {
-  --primary-color: #1E3A8A; /* Azul escuro moderno */
-  --secondary-color: #10B981; /* Verde esmeralda para destaques */
-  --background-color: #fbf9f9; /* Fundo claro e limpo */
-  --text-color: #111827; /* Texto escuro para contraste */
-  --text-secondary: #6B7280; /* Texto secundário mais suave */
+  --primary-color: #1E3A8A;
+  --secondary-color: #10B981;
+  --background-color: #fbf9f9;
+  --text-color: #111827;
+  --text-secondary: #6B7280;
   --font-family: 'Inter', sans-serif;
   --font-size-base: 16px;
   --font-size-large: 24px;
-  --font-size-small: 14px;
+  --font-size-small: 14px;  
 }
 
-/* Estilização global do componente */
+/* Reset e configuração básica */
 html, body {
   height: 100%;
   margin: 0;
@@ -26,13 +24,46 @@ html, body {
   background-color: var(--background-color);
   color: var(--text-color);
   font-size: var(--font-size-base);
-}/* You can add global styles to this file, and also import other style files */
-
-.background-container {
-  height: 100%; /* Ocupa toda a altura da página */
-  background: url("../src/assets/bg-henet.jpg") no-repeat center center;
-  background-size: cover; /* Ajusta a imagem para cobrir toda a área */
-  overflow: auto; /* Permite scroll se necessário */
+  overflow: hidden; /* Evita scroll global indesejado */
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Layout principal: app-root como container flexível */
+app-root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100dvh; /* Usa 100dvh para melhor compatibilidade em mobile/totem */
+  overflow: hidden;
+}
+
+/* Header fixo com altura definida */
+app-header {
+  height: 80px;
+  flex-shrink: 0; /* Impede que o header seja comprimido */
+  width: 100%;
+}
+
+/* Container do router-outlet: ocupa todo o espaço restante */
+.router-container {
+  flex: 1;
+  overflow-y: auto; /* Permite scroll interno apenas no conteúdo */
+  padding: 16px;
+  box-sizing: border-box;
+  background-image: url('assets/bg-henet.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Opcional: fundo fixo */
+}
+
+/* Responsividade: ajusta padding conforme tela */
+@media (max-width: 768px) {
+  .router-container {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .router-container {
+    padding: 8px;
+  }
+}

@@ -2,19 +2,54 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: calc(100vh - var(--header-height)); /* Ajusta a altura considerando o header */
-  background-color: transparent; /* Evita sobreposição com o fundo do router-container */
+  justify-content: center; /* Centraliza o conteúdo no meio */
+  min-height: 100%;
+  width: 100%;
   padding: 20px;
   box-sizing: border-box;
+  text-align: center;
+  position: relative; /* Permite posicionar o footer absolutamente */
+}
 
-  margin-top: 15rem;
+/* Conteúdo principal - já está centralizado pelo flex do container */
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .logo {
   max-width: 300px;
   width: 80%;
   margin-bottom: 75px;
+}
+
+/* Rodapé fixo na parte inferior */
+.footer {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: auto;
+  max-width: 80%;
+}
+
+.footer p {
+  margin: 0 0 8px 0;
+  font-size: var(--font-size-small);
+  color: #FFF;
+  font-weight: 500;
+}
+
+.footer-logo {
+  max-width: 120px;
+  width: 100%;
+  height: auto;
+  opacity: 0.9;
 }
 
 .play-button {
@@ -45,12 +80,24 @@
 @media (max-width: 768px) {
   .logo {
     max-width: 250px;
-    margin-bottom: 80px;
+    margin-bottom: 130px;
   }
 
   .play-button {
     font-size: var(--font-size-base);
     padding: 12px 25px;
+  }
+
+  .footer {
+    bottom: 16px;
+  }
+
+  .footer p {
+    font-size: 14px;
+  }
+
+  .footer-logo {
+    max-width: 100px;
   }
 }
 
@@ -64,5 +111,17 @@
   .play-button {
     font-size: var(--font-size-small);
     padding: 10px 20px;
+  }
+
+  .footer {
+    bottom: 12px;
+  }
+
+  .footer p {
+    font-size: 12px;
+  }
+
+  .footer-logo {
+    max-width: 80px;
   }
 }
