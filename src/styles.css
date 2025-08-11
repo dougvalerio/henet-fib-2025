@@ -5,7 +5,7 @@
 /* Variáveis globais */
 :root {
   --primary-color: #1E3A8A;
-  --secondary-color: #10B981;
+  --secondary-color: #ff9c16;
   --background-color: #fbf9f9;
   --text-color: #111827;
   --text-secondary: #6B7280;
@@ -50,7 +50,7 @@ app-header {
   overflow-y: auto; /* Permite scroll interno apenas se necessário */
   padding: 16px;
   box-sizing: border-box;
-  background-image: url('assets/bg-henet.jpg');
+  background-image: url('assets/background-henet2.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
