@@ -1,0 +1,248 @@
+.config-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 32px;
+  background: transparent;
+  max-width: 600px;
+  margin: 0 auto;
+  min-height: calc(100dvh - 80px); /* Ensures minimum height for totem but allows growth */
+}
+
+.config-title {
+  font-size: var(--font-size-large);
+  font-weight: 700;
+  color: var(--text-color);
+  text-align: center;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.config-item {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centraliza os elementos horizontalmente */
+  width: 100%;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid rgba(var(--text-secondary), 0.3); /* Borda sutil */
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05); /* Fundo leve para destaque */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  position: relative;
+}
+
+.config-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 60%;
+  background: var(--text-secondary); /* Barra vertical como separador */
+}
+
+/* Ajuste para o último item não ter barra */
+.config-item:last-child::after {
+  display: none;
+}
+
+.image-preview {
+  width: 200px;
+  height: 100px;
+  border: 2px dashed var(--text-secondary);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.image-preview:hover {
+  border-color: var(--secondary-color); /* Destaque ao passar o mouse */
+}
+
+.image-preview.vertical {
+  width: 100px;
+  height: 200px;
+}
+
+.preview-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.placeholder {
+  color: var(--text-secondary);
+  font-size: var(--font-size-small);
+  text-align: center;
+  padding: 16px;
+}
+
+.upload-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.upload-button:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-2px); /* Efeito de elevação ao passar o mouse */
+}
+
+.color-label {
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  color: var(--text-color);
+  margin-right: 16px; /* Espaço para alinhar com o seletor de cores */
+}
+
+.color-picker {
+  width: 60px;
+  height: 40px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background: transparent;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra para destaque */
+}
+
+.save-button {
+  padding: 12px 24px;
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 100%;
+  max-width: 200px;
+  margin-top: 16px;
+}
+
+.save-button:hover {
+  background-color: var(--primary-color);
+  transform: translateY(-2px); /* Efeito de elevação ao passar o mouse */
+}
+
+/* Responsividade para monitores horizontais */
+@media (orientation: landscape) {
+  .config-container {
+    max-height: 100vh; /* Evita altura fixa para permitir scroll no app-router */
+    padding: 24px;
+  }
+}
+
+/* Responsividade para tablets */
+@media (max-width: 768px) {
+  .config-container {
+    padding: 24px;
+    gap: 20px;
+  }
+
+  .config-title {
+    font-size: 20px;
+  }
+
+  .config-item {
+    padding: 12px;
+  }
+
+  .image-preview {
+    width: 160px;
+    height: 80px;
+  }
+
+  .image-preview.vertical {
+    width: 80px;
+    height: 160px;
+  }
+
+  .upload-button {
+    padding: 8px 12px;
+    font-size: var(--font-size-small);
+  }
+
+  .color-label {
+    font-size: var(--font-size-small);
+  }
+
+  .color-picker {
+    width: 50px;
+    height: 35px;
+  }
+
+  .save-button {
+    padding: 10px 20px;
+    font-size: var(--font-size-small);
+  }
+}
+
+/* Responsividade para smartphones */
+@media (max-width: 480px) {
+  .config-container {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .config-title {
+    font-size: 18px;
+  }
+
+  .config-item {
+    padding: 10px;
+    flex-direction: column; /* Volta para coluna em telas pequenas */
+    align-items: center;
+    gap: 12px;
+  }
+
+  .config-item:not(:last-child)::after {
+    display: none; /* Remove a barra vertical em telas pequenas */
+  }
+
+  .image-preview {
+    width: 120px;
+    height: 60px;
+  }
+
+  .image-preview.vertical {
+    width: 60px;
+    height: 120px;
+  }
+
+  .upload-button {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .color-label {
+    font-size: 12px;
+  }
+
+  .color-picker {
+    width: 40px;
+    height: 30px;
+  }
+
+  .save-button {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+}

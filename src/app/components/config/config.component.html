@@ -1,0 +1,62 @@
+<div class="config-container">
+  <h1 class="config-title">CONFIGURAÇÕES</h1>
+
+  <!-- Logo do Sistema -->
+  <div class="config-item">
+    <div class="image-preview">
+      <img *ngIf="systemLogo" [src]="systemLogo" alt="Logo do Sistema" class="preview-img" />
+      <div *ngIf="!systemLogo" class="placeholder">Nenhuma logo selecionada</div>
+    </div>
+    <label for="system-logo-upload" class="upload-button">
+      <i class="fas fa-upload"></i> Carregar Logo da Empresa
+    </label>
+    <input id="system-logo-upload" type="file" accept="image/*" (change)="onSystemLogoChange($event)" hidden />
+  </div>
+
+  <!-- Logo do Quiz -->
+  <div class="config-item">
+    <div class="image-preview">
+      <img *ngIf="quizLogo" [src]="quizLogo" alt="Logo do Quiz" class="preview-img" />
+      <div *ngIf="!quizLogo" class="placeholder">Nenhuma logo selecionada</div>
+    </div>
+    <label for="quiz-logo-upload" class="upload-button">
+      <i class="fas fa-upload"></i> Carregar Logo do Quiz
+    </label>
+    <input id="quiz-logo-upload" type="file" accept="image/*" (change)="onQuizLogoChange($event)" hidden />
+  </div>
+
+  <!-- Background do Sistema -->
+  <div class="config-item">
+    <div class="image-preview vertical">
+      <img *ngIf="backgroundImage" [src]="backgroundImage" alt="Background do Sistema" class="preview-img" />
+      <div *ngIf="!backgroundImage" class="placeholder">Nenhum background selecionado</div>
+    </div>
+    <label for="background-upload" class="upload-button">
+      <i class="fas fa-upload"></i> Carregar Background
+    </label>
+    <input id="background-upload" type="file" accept="image/*" (change)="onBackgroundChange($event)" hidden />
+  </div>
+
+  <!-- Seletor de Cor Primária -->
+  <div class="config-item">
+    <label class="color-label">Cor Primária</label>
+    <input type="color" [(ngModel)]="primaryColor" (change)="onPrimaryColorChange()" class="color-picker" />
+  </div>
+
+  <!-- Seletor de Cor Secundária -->
+  <div class="config-item">
+    <label class="color-label">Cor Secundária</label>
+    <input type="color" [(ngModel)]="secondaryColor" (change)="onSecondaryColorChange()" class="color-picker" />
+  </div>
+
+  <!-- Seletor de Cor de Texto -->
+  <div class="config-item">
+    <label class="color-label">Cor do Texto</label>
+    <input type="color" [(ngModel)]="textColor" (change)="onTextColorChange()" class="color-picker" />
+  </div>
+
+  <!-- Botão Salvar com Ícone -->
+  <button class="save-button" (click)="saveConfig()">
+    <i class="fas fa-save"></i> SALVAR
+  </button>
+</div>

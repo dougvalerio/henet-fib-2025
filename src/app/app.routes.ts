@@ -8,6 +8,7 @@ import { TitulosListComponent } from './components/cadastro-titulos/titulos-list
 import { PopupResultadoRespostaComponent } from './components/popup-resultado-resposta/popup-resultado-resposta.component';
 import { PerguntasListComponent } from './components/cadastro-perguntas/perguntas-list/perguntas-list.component';
 import { RegulamentoComponent } from './components/regulamento/regulamento.component';
+import { ConfigComponent } from './components/config/config.component';
 
 export const routes: Routes = [
   
@@ -18,6 +19,7 @@ export const routes: Routes = [
   { path: 'perguntas', component: PerguntasComponent },
   { path: 'perguntas-list', component: PerguntasListComponent },
   { path: 'popup-resultado-resposta', component: PopupResultadoRespostaComponent },
+  { path: 'config', component: ConfigComponent },
   { path: 'regulamento', component: RegulamentoComponent },
   
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redireciona o caminho vazio para /home

@@ -46,16 +46,23 @@ app-header {
 /* Container do router-outlet: ocupa todo o espaço restante */
 .router-container {
   flex: 1;
-  overflow-y: auto; /* Permite scroll interno apenas no conteúdo */
+  max-height: calc(100dvh - 80px); /* Garante que não ultrapasse a altura disponível */
+  overflow-y: auto; /* Permite scroll interno apenas se necessário */
   padding: 16px;
   box-sizing: border-box;
   background-image: url('assets/bg-henet.jpg');
   background-size: cover;
   background-position: center;
-  background-attachment: fixed; /* Opcional: fundo fixo */
+  background-attachment: fixed;
 }
 
-/* Responsividade: ajusta padding conforme tela */
+/* Evita que componentes internos gerem overflow desnecessário */
+.router-container > * {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Responsividade: ajustes para diferentes tamanhos de tela */
 @media (max-width: 768px) {
   .router-container {
     padding: 12px;
@@ -63,6 +70,13 @@ app-header {
 }
 
 @media (max-width: 480px) {
+  .router-container {
+    padding: 8px;
+  }
+}
+
+/* Ajustes para telas horizontais (ex.: 1150x600) */
+@media (max-height: 600px) {
   .router-container {
     padding: 8px;
   }

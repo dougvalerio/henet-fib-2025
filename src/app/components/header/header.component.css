@@ -14,11 +14,11 @@ header {
 /* Logo */
 .logo-container {
   flex: 0 0 auto;
-  cursor: pointer; /* Adiciona cursor de clique */
+  cursor: pointer;
 }
 
 .logo {
-  height: 48px; /* Ajuste conforme o tamanho da sua logo */
+  height: 48px;
   width: auto;
 }
 
@@ -78,7 +78,7 @@ header {
 .sidebar {
   position: fixed;
   top: 0;
-  right: -300px; /* Escondido inicialmente */
+  right: -300px;
   width: 300px;
   height: 100%;
   background-color: var(--background-color);
@@ -89,24 +89,7 @@ header {
 
 .sidebar.open {
   right: 0;
-  background-color: var(--primary-color); /* Cor quando o menu está aberto */
-}
-
-/* Botão de fechar (X) */
-.close-btn {
-  background: none;
-  border: none;
-  font-size: var(--font-size-large);
-  color: var(--background-color); /* Cor ajustada para contraste com o fundo */
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-.close-btn:hover {
-  transform: rotate(90deg);
+  background-color: var(--primary-color);
 }
 
 /* Lista do menu */
@@ -117,27 +100,36 @@ ul {
 }
 
 li {
-  margin: 16px 0;
+  margin: 24px 0; /* Aumentado para maior espaçamento */
 }
 
 /* Estilização do divisor */
 hr {
   border: 0;
   border-top: 1px solid var(--background-color);
-  margin: 8px 0;
-  opacity: 0.5;
+  margin: 12px 0; /* Aumentado para acompanhar o espaçamento */
+  opacity: 0.3; /* Mais suave para harmonizar */
 }
 
 a {
   text-decoration: none;
-  color: var(--background-color); /* Cor ajustada para contraste com o fundo */
+  color: var(--background-color);
   font-size: var(--font-size-base);
   font-weight: 500;
-  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Espaço entre ícone e texto */
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 a:hover {
   color: var(--secondary-color);
+  transform: translateX(8px); /* Efeito de deslocamento ao passar o mouse */
+}
+
+/* Ícones do menu */
+a i {
+  font-size: 20px; /* Tamanho do ícone */
 }
 
 /* Responsividade para tablets */
@@ -153,6 +145,18 @@ a:hover {
 
   .sidebar.open {
     right: 0;
+  }
+
+  li {
+    margin: 20px 0; /* Ajuste no espaçamento */
+  }
+
+  hr {
+    margin: 10px 0;
+  }
+
+  a i {
+    font-size: 18px;
   }
 }
 
@@ -173,5 +177,21 @@ a:hover {
 
   header {
     padding: 12px 16px;
+  }
+
+  li {
+    margin: 16px 0; /* Ajuste no espaçamento */
+  }
+
+  hr {
+    margin: 8px 0;
+  }
+
+  a {
+    font-size: 14px;
+  }
+
+  a i {
+    font-size: 16px;
   }
 }
