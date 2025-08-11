@@ -55,7 +55,7 @@
       </div>
       <div class="form-group answers-group">
         <label>Respostas</label>
-        <div class="answer-row" *ngFor="let answer of answers; let i = index">
+        <div class="answer-row" *ngFor="let answer of answers; let i = index; trackBy: trackByIndex">
           <span class="answer-label">{{ answerLabels[i] }}</span>
           <input
             type="text"
@@ -76,7 +76,12 @@
         <button type="button" class="btn-cancel" (click)="closeModal()">
           Cancelar
         </button>
-        <button type="submit" class="btn-save" (click)="saveQuestion()">
+        <button
+          type="submit"
+          class="btn-save"
+          [disabled]="!isFormValid"
+          (click)="saveQuestion()"
+        >
           {{ isEditMode ? 'Salvar Edição' : 'Salvar' }}
         </button>
       </div>

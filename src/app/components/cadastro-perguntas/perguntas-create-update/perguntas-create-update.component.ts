@@ -16,7 +16,7 @@ export class PerguntasCreateUpdateComponent {
   @Input() selectedTitle: string | null = '';
   @Input() difficulty: number | null = null;
   @Input() question: string | null = '';
-  @Input() answers: string[] = ['', '', '', '', ''];
+  @Input() answers: string[] = ['', '', '', ''];
   @Input() correctAnswer: number | null = null;
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<{
@@ -27,12 +27,32 @@ export class PerguntasCreateUpdateComponent {
     correctAnswer: number
   }>();
 
-  answerLabels = ['A', 'B', 'C', 'D', 'E'];
+  answerLabels = ['A', 'B', 'C', 'D'];
+
+  // Função trackBy para otimizar o *ngFor
+  trackByIndex(index: number, item: any): number {
+    return index;
+  }
 
   ngOnChanges() {
     if (!this.isEditMode) {
       this.resetForm();
+    } else {
+      // Garante que o array answers tenha exatamente 4 elementos no modo de edição
+      if (this.answers.length !== 4) {
+        this.answers = ['', '', '', ''];
+      }
     }
+  }
+
+  get isFormValid(): boolean {
+    return !!(
+      this.selectedTitle &&
+      this.difficulty !== null &&
+      this.question &&
+      this.answers.every(answer => answer.trim() !== '') &&
+      this.correctAnswer !== null
+    );
   }
 
   setCorrectAnswer(index: number) {
@@ -45,13 +65,13 @@ export class PerguntasCreateUpdateComponent {
   }
 
   saveQuestion() {
-    if (this.selectedTitle && this.difficulty !== null && this.question && this.correctAnswer !== null) {
+    if (this.isFormValid) {
       this.save.emit({
-        title: this.selectedTitle,
-        difficulty: this.difficulty,
-        question: this.question,
-        answers: this.answers,
-        correctAnswer: this.correctAnswer
+        title: this.selectedTitle!,
+        difficulty: this.difficulty!,
+        question: this.question!,
+        answers: [...this.answers], // Cria uma cópia para evitar mutações inesperadas
+        correctAnswer: this.correctAnswer!
       });
       this.resetForm();
     }
@@ -61,7 +81,7 @@ export class PerguntasCreateUpdateComponent {
     this.selectedTitle = '';
     this.difficulty = null;
     this.question = '';
-    this.answers = ['', '', '', '', ''];
+    this.answers = ['', '', '', '']; // Sempre reinicia com 4 elementos vazios
     this.correctAnswer = null;
   }
 }

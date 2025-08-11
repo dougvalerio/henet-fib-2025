@@ -119,6 +119,14 @@ li {
   margin: 16px 0;
 }
 
+/* Estilização do divisor */
+hr {
+  border: 0;
+  border-top: 1px solid var(--background-color);
+  margin: 8px 0;
+  opacity: 0.5;
+}
+
 a {
   text-decoration: none;
   color: var(--background-color); /* Cor ajustada para contraste com o fundo */
