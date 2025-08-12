@@ -98,9 +98,8 @@ h2 {
   border-color: var(--primary-color);
 }
 
-/* Adiciona a seta personalizada */
 .select-container::after {
-  content: '\f078'; /* Código do ícone de seta para baixo do Font Awesome */
+  content: '\f078';
   font-family: 'Font Awesome 6 Free';
   font-weight: 900;
   position: absolute;
@@ -108,33 +107,7 @@ h2 {
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-secondary);
-  pointer-events: none; /* Evita que a seta interfira na interação com o select */
-}
-
-/* Estilização do select quando uma dificuldade é selecionada */
-.select-input.difficulty-easy {
-  color: #22c55e; /* Verde para Fácil */
-}
-
-.select-input.difficulty-medium {
-  color: #facc15; /* Amarelo para Médio */
-}
-
-.select-input.difficulty-hard {
-  color: #dc2626; /* Vermelho para Difícil */
-}
-
-/* Estilização das opções do select */
-.select-input option[value="0"] {
-  color: #22c55e; /* Verde para Fácil */
-}
-
-.select-input option[value="1"] {
-  color: #facc15; /* Amarelo para Médio */
-}
-
-.select-input option[value="2"] {
-  color: #dc2626; /* Vermelho para Difícil */
+  pointer-events: none;
 }
 
 .question-input {
@@ -228,7 +201,6 @@ h2 {
   background: #059669;
 }
 
-/* Responsividade para tablets */
 @media (max-width: 768px) {
   .modal-content {
     width: 95%;
@@ -258,7 +230,6 @@ h2 {
   }
 }
 
-/* Responsividade para smartphones */
 @media (max-width: 480px) {
   .modal-content {
     width: 98%;
@@ -288,12 +259,6 @@ h2 {
   .answer-checkbox {
     width: 18px;
     height: 18px;
-  }
-
-  .btn-cancel,
-  .btn-save {
-    padding: 8px 12px;
-    font-size: 13px;
   }
 
   .form-actions {

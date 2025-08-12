@@ -9,7 +9,6 @@
         <th>Posição</th>
         <th>Filme/Série</th>
         <th>Pergunta</th>
-        <th>Nível</th>
         <th>Resposta</th>
         <th>Ações</th>
       </tr>
@@ -19,17 +18,6 @@
         <td>{{ i + 1 }}</td>
         <td>{{ question.title }}</td>
         <td>{{ question.question }}</td>
-        <td>
-          <span
-            [ngClass]="{
-              'level-easy': question.difficulty === 0,
-              'level-medium': question.difficulty === 1,
-              'level-hard': question.difficulty === 2
-            }"
-          >
-            {{ question.difficulty === 0 ? 'Fácil' : question.difficulty === 1 ? 'Médio' : 'Difícil' }}
-          </span>
-        </td>
         <td>{{ answerLabels[question.correctAnswer] }}</td>
         <td>
           <button class="btn-action" (click)="openEditModal(question, i)">
@@ -47,7 +35,6 @@
     [isEditMode]="isEditMode"
     [titles]="titles"
     [selectedTitle]="selectedQuestion?.title || ''"
-    [difficulty]="selectedQuestion?.difficulty ?? null"
     [question]="selectedQuestion?.question || ''"
     [answers]="selectedQuestion?.answers || ['', '', '', '', '']"
     [correctAnswer]="selectedQuestion?.correctAnswer ?? null"

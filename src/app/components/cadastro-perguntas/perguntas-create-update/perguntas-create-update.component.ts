@@ -14,14 +14,12 @@ export class PerguntasCreateUpdateComponent {
   @Input() isEditMode: boolean = false;
   @Input() titles: { name: string, cover: string }[] = [];
   @Input() selectedTitle: string | null = '';
-  @Input() difficulty: number | null = null;
   @Input() question: string | null = '';
   @Input() answers: string[] = ['', '', '', ''];
   @Input() correctAnswer: number | null = null;
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<{
     title: string,
-    difficulty: number,
     question: string,
     answers: string[],
     correctAnswer: number
@@ -29,7 +27,6 @@ export class PerguntasCreateUpdateComponent {
 
   answerLabels = ['A', 'B', 'C', 'D'];
 
-  // Função trackBy para otimizar o *ngFor
   trackByIndex(index: number, item: any): number {
     return index;
   }
@@ -38,7 +35,6 @@ export class PerguntasCreateUpdateComponent {
     if (!this.isEditMode) {
       this.resetForm();
     } else {
-      // Garante que o array answers tenha exatamente 4 elementos no modo de edição
       if (this.answers.length !== 4) {
         this.answers = ['', '', '', ''];
       }
@@ -48,7 +44,6 @@ export class PerguntasCreateUpdateComponent {
   get isFormValid(): boolean {
     return !!(
       this.selectedTitle &&
-      this.difficulty !== null &&
       this.question &&
       this.answers.every(answer => answer.trim() !== '') &&
       this.correctAnswer !== null
@@ -68,9 +63,8 @@ export class PerguntasCreateUpdateComponent {
     if (this.isFormValid) {
       this.save.emit({
         title: this.selectedTitle!,
-        difficulty: this.difficulty!,
         question: this.question!,
-        answers: [...this.answers], // Cria uma cópia para evitar mutações inesperadas
+        answers: [...this.answers],
         correctAnswer: this.correctAnswer!
       });
       this.resetForm();
@@ -79,9 +73,8 @@ export class PerguntasCreateUpdateComponent {
 
   private resetForm() {
     this.selectedTitle = '';
-    this.difficulty = null;
     this.question = '';
-    this.answers = ['', '', '', '']; // Sempre reinicia com 4 elementos vazios
+    this.answers = ['', '', '', ''];
     this.correctAnswer = null;
   }
 }

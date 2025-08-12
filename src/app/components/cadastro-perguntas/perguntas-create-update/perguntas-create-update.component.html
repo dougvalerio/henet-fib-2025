@@ -22,27 +22,6 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="difficultySelect">Nível de Dificuldade</label>
-        <div class="select-container">
-          <select
-            id="difficultySelect"
-            [(ngModel)]="difficulty"
-            name="difficultySelect"
-            class="select-input"
-            [ngClass]="{
-              'difficulty-easy': difficulty === 0,
-              'difficulty-medium': difficulty === 1,
-              'difficulty-hard': difficulty === 2
-            }"
-          >
-            <option value="" disabled selected>Selecione a dificuldade</option>
-            <option value="0" [ngStyle]="{'color': '#22c55e'}">Fácil</option>
-            <option value="1" [ngStyle]="{'color': '#facc15'}">Médio</option>
-            <option value="2" [ngStyle]="{'color': '#dc2626'}">Difícil</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group">
         <label for="questionText">Pergunta</label>
         <input
           type="text"

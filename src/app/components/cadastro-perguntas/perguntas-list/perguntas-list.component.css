@@ -4,7 +4,7 @@
   padding: 0 20px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Alinhar conteúdo à esquerda */
+  align-items: flex-start;
   min-height: 100vh;
 }
 
@@ -13,7 +13,7 @@ h1 {
   color: var(--text-color);
   margin-bottom: 20px;
   text-align: center;
-  width: 100%; /* Garantir que o título ocupe toda a largura */
+  width: 100%;
 }
 
 .btn-new-title {
@@ -30,7 +30,7 @@ h1 {
   gap: 8px;
   margin-bottom: 20px;
   transition: background-color 0.3s ease;
-  align-self: flex-start; /* Alinhar botão à esquerda */
+  align-self: flex-start;
 }
 
 .btn-new-title:hover {
@@ -49,7 +49,7 @@ h1 {
 .titles-table th,
 .titles-table td {
   padding: 12px;
-  text-align: center; /* Centralizar conteúdo */
+  text-align: center;
   border-bottom: 1px solid #e5e7eb;
 }
 
@@ -61,23 +61,11 @@ h1 {
 
 .titles-table th:first-child,
 .titles-table td:first-child {
-  width: 80px; /* Largura reduzida para a coluna Posição */
+  width: 80px;
 }
 
 .titles-table td {
   color: var(--text-color);
-}
-
-.level-easy {
-  color: #22c55e; /* Verde para nível Fácil */
-}
-
-.level-medium {
-  color: #facc15; /* Amarelo para nível Médio */
-}
-
-.level-hard {
-  color: #dc2626; /* Vermelho para nível Difícil */
 }
 
 .btn-action {
@@ -85,27 +73,26 @@ h1 {
   border: none;
   cursor: pointer;
   font-size: var(--font-size-base);
-  margin: 0 5px; /* Ajuste de margem para centralização */
+  margin: 0 5px;
   transition: color 0.3s ease;
 }
 
 .btn-action i.fa-edit {
-  color: var(--primary-color); /* Azul para editar */
+  color: var(--primary-color);
 }
 
 .btn-action i.fa-edit:hover {
-  color: #1e40af; /* Tom mais escuro de azul no hover */
+  color: #1e40af;
 }
 
 .btn-action i.fa-trash {
-  color: #dc2626; /* Vermelho para lixeira */
+  color: #dc2626;
 }
 
 .btn-action i.fa-trash:hover {
-  color: #b91c1c; /* Tom mais escuro de vermelho no hover */
+  color: #b91c1c;
 }
 
-/* Responsividade para tablets e smartphones */
 @media (max-width: 768px) {
   .container {
     padding: 0 10px;
@@ -128,7 +115,7 @@ h1 {
 
   .titles-table th:first-child,
   .titles-table td:first-child {
-    width: 60px; /* Largura ainda menor para tablets */
+    width: 60px;
   }
 }
 
@@ -144,7 +131,7 @@ h1 {
 
   .titles-table th:first-child,
   .titles-table td:first-child {
-    width: 50px; /* Largura reduzida para smartphones */
+    width: 50px;
   }
 
   .btn-action {

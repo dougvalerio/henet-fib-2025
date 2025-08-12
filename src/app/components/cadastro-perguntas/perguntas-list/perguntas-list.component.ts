@@ -19,21 +19,18 @@ export class PerguntasListComponent {
     {
       title: 'The Last of Us',
       question: 'Quem é o protagonista principal?',
-      difficulty: 0,
       answers: ['Joel', 'Ellie', 'Tess', 'Bill', 'Tommy'],
       correctAnswer: 0
     },
     {
       title: 'House of The Dragon',
       question: 'Qual é a casa principal da série?',
-      difficulty: 1,
       answers: ['Targaryen', 'Stark', 'Lannister', 'Baratheon', 'Greyjoy'],
       correctAnswer: 0
     },
     {
       title: 'The Last of Us',
       question: 'Qual é o nome da filha de Joel?',
-      difficulty: 2,
       answers: ['Ellie', 'Sarah', 'Tess', 'Marlene', 'Anna'],
       correctAnswer: 1
     }
@@ -45,7 +42,6 @@ export class PerguntasListComponent {
   selectedQuestion: {
     title: string,
     question: string,
-    difficulty: number | null,
     answers: string[],
     correctAnswer: number | null
   } | null = null;
@@ -57,22 +53,20 @@ export class PerguntasListComponent {
     this.selectedQuestion = {
       title: '',
       question: '',
-      difficulty: null,
       answers: ['', '', '', '', ''],
       correctAnswer: null
-    }; // Inicializa com valores padrão
+    };
   }
 
   openEditModal(question: {
     title: string,
     question: string,
-    difficulty: number,
     answers: string[],
     correctAnswer: number
   }, index: number) {
     this.isModalOpen = true;
     this.isEditMode = true;
-    this.selectedQuestion = { ...question, difficulty: question.difficulty, correctAnswer: question.correctAnswer };
+    this.selectedQuestion = { ...question, correctAnswer: question.correctAnswer };
     this.selectedIndex = index;
   }
 
@@ -84,7 +78,6 @@ export class PerguntasListComponent {
 
   saveQuestion(data: {
     title: string,
-    difficulty: number,
     question: string,
     answers: string[],
     correctAnswer: number
