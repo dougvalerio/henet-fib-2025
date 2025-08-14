@@ -68,7 +68,9 @@
 }
 
 .play-button:hover {
-  background-color: #059669;
+  background-color: #ffffff;
+  color: #ff9c16;
+  border: 2px solid #ff9c16;
   transform: scale(1.05);
 }
 

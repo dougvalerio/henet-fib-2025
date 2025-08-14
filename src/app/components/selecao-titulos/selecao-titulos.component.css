@@ -40,9 +40,9 @@ h1 {
 }
 
 .gallery-item p {
+  font-size: 1.25rem;
   text-align: center;
   margin-top: 0.5rem;
-  font-size: var(--font-size-small);
   color: var(--text-color);
   font-weight: 500;
 }
@@ -88,11 +88,69 @@ h1 {
   cursor: not-allowed;
 }
 
+/* Estilização da barra de rolagem */
+.gallery-grid {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) #f1f1f1;
+}
+
+.gallery-grid::-webkit-scrollbar {
+  width: 12px;
+}
+
+.gallery-grid::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.gallery-grid::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 10px;
+}
+
+.gallery-grid::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-color);
+}
+
+/* Responsividade para totens (telas verticais até 750px) */
+@media (max-width: 750px) {
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-height: 70vh; /* Altura máxima para ativar o scroll */
+    overflow-y: auto; /* Habilita o scroll vertical */
+    scroll-behavior: smooth; /* Scroll suave */
+    padding: 1rem;
+    gap: 1.5rem;
+  }
+
+  .gallery-item img {
+    max-height: 300px; /* Ajusta a altura da imagem para consistência */
+  }
+
+  .gallery-item p {
+    font-size: 1.2rem;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+}
+
 /* Responsividade para tablets e telas menores */
 @media (max-width: 600px) {
   .gallery-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-height: 69vh; /* Ajusta a altura para telas menores */
     gap: 1rem;
+  }
+
+  .gallery-item img {
+    max-height: 250px; /* Ajusta a altura para telas menores */
+  }
+
+  .gallery-item p {
+    font-size: 1.1rem;
   }
 
   h1 {
@@ -103,31 +161,19 @@ h1 {
 @media (max-width: 450px) {
   .gallery-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.5rem;
+    max-height: 56vh; /* Ajusta a altura para telas muito pequenas */
+    gap: 1rem;
+  }
+
+  .gallery-item img {
+    max-height: 200px; /* Ajusta a altura para telas muito pequenas */
+  }
+
+  .gallery-item p {
+    font-size: 1rem;
   }
 
   h1 {
     font-size: 1.25rem;
-  }
-
-  .quiz-button {
-    padding: 0.75rem 1.5rem;
-    font-size: 0.875rem;
-  }
-}
-
-/* Ajuste para telas muito pequenas */
-@media (max-width: 350px) {
-  .gallery-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .gallery-item img {
-    max-width: 200px;
-    margin: 0 auto;
-  }
-
-  h1 {
-    font-size: 1.1rem;
   }
 }
