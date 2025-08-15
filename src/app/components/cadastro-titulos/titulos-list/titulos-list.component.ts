@@ -1,54 +1,91 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TitulosCreateUpdateComponent } from '../titulos-create-update/titulos-create-update.component';
+import { TituloService } from '../../../services/titulo.service';
+import { Titulo } from '../../../models/titulo';
 
 @Component({
   selector: 'app-titulos-list',
   standalone: true,
-  imports: [CommonModule, TitulosCreateUpdateComponent],
+  imports: [CommonModule, TitulosCreateUpdateComponent], // Remova HttpClientModule
   templateUrl: './titulos-list.component.html',
   styleUrl: './titulos-list.component.css'
 })
-export class TitulosListComponent {
-  titles = [
-    { name: 'The Last of Us', cover: '../../../../assets/TLOUS.jpg' },
-    { name: 'House of The Dragon', cover: '../../../../assets/HOD.jpg' }
-  ];
+export class TitulosListComponent implements OnInit {
+  titles: Titulo[] = [];
   isModalOpen = false;
   isEditMode = false;
-  selectedTitle: { name: string, cover: string } | null = null;
-  selectedIndex: number | null = null;
+  selectedTitle: Titulo | null = null;
+  imageUrls: { [key: string]: string } = {};
+
+  constructor(private tituloService: TituloService) {}
+
+  ngOnInit() {
+    this.loadTitles();
+  }
+
+  loadTitles() {
+    this.tituloService.findAll().subscribe({
+      next: (titles) => {
+        this.titles = titles;
+        this.titles.forEach((title) => {
+          if (title.id && title.imagemUrl) {
+            this.loadImage(title.id);
+          }
+        });
+      },
+      error: (err) => console.error('Erro ao carregar títulos:', err)
+    });
+  }
+
+  loadImage(id: any) {
+    this.tituloService.downloadImage(id).subscribe({
+      next: (blob) => {
+        const url = URL.createObjectURL(blob);
+        this.imageUrls[id] = url;
+      },
+      error: (err) => {
+        console.error('Erro ao carregar imagem:', err);
+        this.imageUrls[id] = 'assets/placeholder.jpg';
+      }
+    });
+  }
 
   openCreateModal() {
     this.isModalOpen = true;
     this.isEditMode = false;
-    this.selectedTitle = { name: '', cover: '' }; // Inicializa com valores padrão
+    this.selectedTitle = null;
   }
 
-  openEditModal(title: { name: string, cover: string }, index: number) {
+  openEditModal(title: Titulo) {
     this.isModalOpen = true;
     this.isEditMode = true;
-    this.selectedTitle = { ...title };
-    this.selectedIndex = index;
+    this.tituloService.findById(title.id).subscribe({
+      next: (titulo) => {
+        this.selectedTitle = titulo;
+      },
+      error: (err) => console.error('Erro ao carregar título:', err)
+    });
   }
 
   closeModal() {
     this.isModalOpen = false;
     this.selectedTitle = null;
-    this.selectedIndex = null;
   }
 
-  saveTitle(data: { title: string, image: File | null }) {
-    const coverUrl = data.image ? URL.createObjectURL(data.image) : (this.selectedTitle?.cover || '');
-    if (this.isEditMode && this.selectedIndex !== null) {
-      this.titles[this.selectedIndex] = { name: data.title, cover: coverUrl };
-    } else {
-      this.titles.push({ name: data.title, cover: coverUrl });
-    }
+  saveTitle(titulo: Titulo) {
+    this.loadTitles();
     this.closeModal();
   }
 
-  deleteTitle(index: number) {
-    this.titles.splice(index, 1);
+  deleteTitle(id: any) {
+    if (confirm('Tem certeza que deseja excluir este título?')) {
+      this.tituloService.delete(id).subscribe({
+        next: () => {
+          this.loadTitles();
+        },
+        error: (err) => console.error('Erro ao excluir título:', err)
+      });
+    }
   }
 }

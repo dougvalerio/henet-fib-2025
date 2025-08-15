@@ -1,29 +1,39 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TituloService } from '../../../services/titulo.service';
+import { Titulo } from '../../../models/titulo';
 
 @Component({
   selector: 'app-titulos-create-update',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule], // Remova HttpClientModule
   templateUrl: './titulos-create-update.component.html',
   styleUrl: './titulos-create-update.component.css'
 })
 export class TitulosCreateUpdateComponent {
   @Input() isOpen: boolean = false;
+  @Input() titulo: Titulo | null = null;
   @Input() isEditMode: boolean = false;
-  @Input() titleName: string | null | undefined = ''; // Aceita null ou undefined
-  @Input() coverImage: string | null | undefined = null; // Aceita null ou undefined
   @Output() close = new EventEmitter<void>();
-  @Output() save = new EventEmitter<{ title: string, image: File | null }>();
+  @Output() save = new EventEmitter<Titulo>();
 
   previewImage: string | null = null;
   selectedFile: File | null = null;
+  titleName: string = '';
+
+  constructor(private tituloService: TituloService) {}
 
   ngOnChanges() {
-    this.previewImage = this.coverImage || null; // Garante que previewImage seja null se coverImage for undefined
-    if (!this.isEditMode) {
-      this.titleName = ''; // Reseta o título no modo de criação
+    if (this.titulo) {
+      this.titleName = this.titulo.nome;
+      this.previewImage = this.titulo.imagemUrl || null;
+      this.isEditMode = !!this.titulo.id;
+    } else {
+      this.titleName = '';
+      this.previewImage = null;
+      this.selectedFile = null;
+      this.isEditMode = false;
     }
   }
 
@@ -44,21 +54,48 @@ export class TitulosCreateUpdateComponent {
     }
   }
 
+  saveTitle() {
+    if (this.titleName) {
+      const titulo: Titulo = {
+        id: this.titulo?.id,
+        nome: this.titleName,
+        imagemUrl: this.previewImage,
+        perguntaList: this.titulo?.perguntaList || []
+      };
+
+      if (this.selectedFile) {
+        this.tituloService.uploadImage(this.selectedFile).subscribe({
+          next: (createdTitulo) => {
+            this.save.emit(createdTitulo);
+            this.closeModal();
+          },
+          error: (err) => console.error('Erro ao fazer upload da imagem:', err)
+        });
+      } else {
+        const saveObservable = this.isEditMode
+          ? this.tituloService.update(this.titulo!.id, titulo)
+          : this.tituloService.create(titulo);
+
+        saveObservable.subscribe({
+          next: (savedTitulo) => {
+            this.save.emit(savedTitulo);
+            this.closeModal();
+          },
+          error: (err) => console.error('Erro ao salvar título:', err)
+        });
+      }
+    }
+  }
+
   closeModal() {
     this.close.emit();
     this.resetForm();
-  }
-
-  saveTitle() {
-    if (this.titleName) { // Garante que titleName não seja null/undefined
-      this.save.emit({ title: this.titleName, image: this.selectedFile });
-      this.resetForm();
-    }
   }
 
   private resetForm() {
     this.titleName = '';
     this.previewImage = null;
     this.selectedFile = null;
+    this.isEditMode = false;
   }
 }

@@ -15,13 +15,19 @@
     <tbody>
       <tr *ngFor="let title of titles; let i = index">
         <td>{{ i + 1 }}</td>
-        <td><img [src]="title.cover" alt="Capa do título" class="cover-image"></td>
-        <td>{{ title.name }}</td>
         <td>
-          <button class="btn-action" (click)="openEditModal(title, i)">
+          <img 
+            [src]="imageUrls[title.id] || 'assets/placeholder.jpg'" 
+            alt="Capa do título" 
+            class="cover-image"
+          >
+        </td>
+        <td>{{ title.nome }}</td>
+        <td>
+          <button class="btn-action" (click)="openEditModal(title)">
             <i class="fas fa-edit"></i>
           </button>
-          <button class="btn-action" (click)="deleteTitle(i)">
+          <button class="btn-action" (click)="deleteTitle(title.id)">
             <i class="fas fa-trash"></i>
           </button>
         </td>
@@ -31,8 +37,7 @@
   <app-titulos-create-update
     [isOpen]="isModalOpen"
     [isEditMode]="isEditMode"
-    [titleName]="selectedTitle?.name"
-    [coverImage]="selectedTitle?.cover"
+    [titulo]="selectedTitle"
     (close)="closeModal()"
     (save)="saveTitle($event)"
   ></app-titulos-create-update>
