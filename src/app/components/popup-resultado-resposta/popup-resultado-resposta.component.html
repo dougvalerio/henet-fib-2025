@@ -1,36 +1,36 @@
 <div class="popup-overlay" *ngIf="showPopup">
   <div class="popup-content">
+    <!-- Mensagem Inicial -->
+    <div *ngIf="isInitialMessage" class="popup-body">
+      <img src="https://media.giphy.com/media/3o7TKsY2czRJnctN4A/giphy.gif" alt="Início do Quiz" class="popup-gif" />
+      <p class="popup-message">{{ initialMessage }}</p>
+      <button class="popup-button next" (click)="closePopup()">
+        <i class="fas fa-play"></i> Iniciar Quiz
+      </button>
+    </div>
+
     <!-- Resposta Errada -->
-    <div *ngIf="!isCorrectAnswer && !isQuizFinished" class="popup-body">
+    <div *ngIf="!isInitialMessage && !isCorrectAnswer && !isQuizFinished" class="popup-body">
       <img src="https://media.giphy.com/media/26FPJGjAwu8G8rXLa/giphy.gif" alt="Resposta Errada" class="popup-gif" />
-      <p class="popup-message">
-        Que pena, você errou! Mas não se preocupe, assista novamente ao filme ou série e tente em uma nova oportunidade.
-      </p>
+      <p class="popup-message">{{ errorMessage }}</p>
       <button class="popup-button" (click)="closePopup()">
         <i class="fas fa-home"></i> Início
       </button>
     </div>
 
     <!-- Resposta Correta (não final) -->
-    <div *ngIf="isCorrectAnswer && !isQuizFinished" class="popup-body">
+    <div *ngIf="!isInitialMessage && isCorrectAnswer && !isQuizFinished" class="popup-body">
       <img src="https://media.giphy.com/media/l0Iyl55kTeh71nTWw/giphy.gif" alt="Resposta Correta" class="popup-gif" />
-      <p class="popup-message">
-        Muito bem! Continue acertando para ganhar um brinde!
-      </p>
+      <p class="popup-message">{{ correctMessage }}</p>
       <button class="popup-button next" (click)="closePopup()">
         <i class="fas fa-arrow-right"></i> Próximo
       </button>
     </div>
 
-    <!-- Quiz Finalizado (última pergunta correta) -->
-    <div *ngIf="isQuizFinished" class="popup-body">
+    <!-- Quiz Finalizado -->
+    <div *ngIf="!isInitialMessage && isQuizFinished" class="popup-body">
       <img src="https://media.giphy.com/media/3o7aD2xG2Zy6c6Z4q4/giphy.gif" alt="Confete" class="popup-gif" />
-      <p class="popup-message">
-        Parabéns! Você conhece mesmo todos esses filmes e séries!<br>
-        Você sabia que na He-Net você assiste a todos esses conteúdos em um único lugar? Quem tá com tudo, tá com a He-Net!<br>
-        Saiba mais com um dos nossos representantes.<br>
-        Aguarde o recebimento do seu brinde de participação.
-      </p>
+      <p class="popup-message">{{ finishedMessage }}</p>
       <button class="popup-button" (click)="closePopup()">
         <i class="fas fa-home"></i> Início
       </button>

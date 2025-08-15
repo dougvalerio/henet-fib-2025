@@ -32,6 +32,7 @@ export class PerguntasComponent implements OnInit {
   showPopup = false;
   isCorrectAnswer = false;
   isQuizFinished = false;
+  isInitialMessage = true;
 
   constructor(private router: Router) {
     const navigation = this.router.getCurrentNavigation();
@@ -40,6 +41,17 @@ export class PerguntasComponent implements OnInit {
 
   ngOnInit() {
     this.generateQuestions();
+    this.showPopup = true; // Exibir o popup inicial
+    this.isInitialMessage = true; // Garantir que a mensagem inicial seja exibida
+    this.isCorrectAnswer = false; // Garantir que não haja estado de erro no início
+    this.isQuizFinished = false; // Garantir que o quiz não esteja finalizado no início
+
+    console.log('ngOnInit:', {
+      showPopup: this.showPopup,
+      isInitialMessage: this.isInitialMessage,
+      isCorrectAnswer: this.isCorrectAnswer,
+      isQuizFinished: this.isQuizFinished,
+    });
   }
 
   generateQuestions() {
@@ -125,7 +137,8 @@ export class PerguntasComponent implements OnInit {
       const currentQuestion = this.currentQuestion;
       if (currentQuestion) {
         this.isCorrectAnswer = this.selectedOption === currentQuestion.correctAnswer;
-        this.showPopup = true;
+        this.isInitialMessage = false; // Desativar mensagem inicial após a primeira resposta
+        this.showPopup = true; // Exibir popup para resultado da resposta
 
         if (this.isCorrectAnswer && this.currentQuestionIndex === this.questions.length - 1) {
           this.isQuizFinished = true;
@@ -136,13 +149,16 @@ export class PerguntasComponent implements OnInit {
 
   closePopup() {
     this.showPopup = false;
-    if (this.isCorrectAnswer && !this.isQuizFinished) {
-      this.currentQuestionIndex++;
-      this.selectedOption = null;
+    if (!this.isInitialMessage) {
+      if (this.isCorrectAnswer && !this.isQuizFinished) {
+        this.currentQuestionIndex++;
+        this.selectedOption = null;
+      }
+      if (!this.isCorrectAnswer || this.isQuizFinished) {
+        this.router.navigate(['/inicio']);
+      }
     }
-    if (!this.isCorrectAnswer || this.isQuizFinished) {
-      this.router.navigate(['/inicio']);
-    }
+    this.isInitialMessage = false; // Desativar mensagem inicial após fechar o popup
   }
 
   get currentQuestion(): Question | null {
