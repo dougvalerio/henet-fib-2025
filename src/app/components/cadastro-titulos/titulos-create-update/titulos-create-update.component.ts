@@ -87,6 +87,7 @@ export class TitulosCreateUpdateComponent {
   }
 
   private saveOrUpdate(titulo: Titulo) {
+    console.log(titulo)
     const saveObservable = this.isEditMode && titulo.id
       ? this.tituloService.update(titulo.id, titulo)
       : this.tituloService.create(titulo);

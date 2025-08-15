@@ -8,15 +8,13 @@ import { Titulo } from '../models/titulo';
   providedIn: 'root'
 })
 export class TituloService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   create(titulo: Titulo): Observable<Titulo> {
-    console.log('Enviando para criação:', titulo);
     return this.http.post<Titulo>(`${API_CONFIG.baseUrl}/api/titulos`, titulo);
   }
 
   update(id: any, titulo: Titulo): Observable<Titulo> {
-    console.log('Enviando para atualização:', { id, titulo });
     return this.http.put<Titulo>(`${API_CONFIG.baseUrl}/api/titulos/${id}`, titulo);
   }
 
@@ -35,7 +33,6 @@ export class TituloService {
   uploadImage(file: File): Observable<Titulo> {
     const formData = new FormData();
     formData.append('file', file);
-    console.log('Enviando imagem para upload');
     return this.http.post<Titulo>(`${API_CONFIG.baseUrl}/api/titulos`, formData);
   }
 
