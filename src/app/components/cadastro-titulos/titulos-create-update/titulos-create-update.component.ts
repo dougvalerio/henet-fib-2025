@@ -27,7 +27,6 @@ export class TitulosCreateUpdateComponent {
   ngOnChanges() {
     if (this.titulo) {
       this.titleName = this.titulo.nome;
-      // Carrega a imagem do título no modo de edição
       this.previewImage = this.titulo.imagemUrl || null;
       this.isEditMode = !!this.titulo.id;
     } else {
@@ -58,48 +57,50 @@ export class TitulosCreateUpdateComponent {
       return;
     }
 
+    // Cria o objeto título sem incluir imagemUrl diretamente
     const titulo: Titulo = {
-      id: this.titulo?.id,
+      id: this.isEditMode ? this.titulo?.id : undefined,
       nome: this.titleName,
-      imagemUrl: this.previewImage,
       perguntaList: this.titulo?.perguntaList || []
     };
 
     if (this.selectedFile) {
-      // Caso uma nova imagem tenha sido selecionada, faz upload
+      // Faz upload da imagem primeiro
       this.tituloService.uploadImage(this.selectedFile).subscribe({
         next: (createdTitulo) => {
-          // Atualiza o título com a nova imagem
+          // Atualiza o título com a URL da imagem retornada pelo backend
           const updatedTitulo = { ...titulo, imagemUrl: createdTitulo.imagemUrl };
-          if (this.isEditMode) {
-            this.tituloService.update(titulo.id, updatedTitulo).subscribe({
-              next: (savedTitulo) => {
-                this.save.emit(savedTitulo);
-                this.closeModal();
-              },
-              error: (err) => console.error('Erro ao atualizar título:', err)
-            });
-          } else {
-            this.save.emit(createdTitulo);
-            this.closeModal();
-          }
+          this.saveOrUpdate(updatedTitulo);
         },
-        error: (err) => console.error('Erro ao fazer upload da imagem:', err)
+        error: (err) => {
+          console.error('Erro ao fazer upload da imagem:', err);
+          alert('Erro ao fazer upload da imagem. Tente novamente.');
+        }
       });
     } else {
-      // Caso não haja nova imagem, apenas cria ou atualiza o título
-      const saveObservable = this.isEditMode
-        ? this.tituloService.update(this.titulo!.id, titulo)
-        : this.tituloService.create(titulo);
-
-      saveObservable.subscribe({
-        next: (savedTitulo) => {
-          this.save.emit(savedTitulo);
-          this.closeModal();
-        },
-        error: (err) => console.error('Erro ao salvar título:', err)
-      });
+      // Mantém a imagemUrl existente no modo de edição, ou undefined no modo de criação
+      if (this.isEditMode && this.titulo?.imagemUrl) {
+        titulo.imagemUrl = this.titulo.imagemUrl;
+      }
+      this.saveOrUpdate(titulo);
     }
+  }
+
+  private saveOrUpdate(titulo: Titulo) {
+    const saveObservable = this.isEditMode && titulo.id
+      ? this.tituloService.update(titulo.id, titulo)
+      : this.tituloService.create(titulo);
+
+    saveObservable.subscribe({
+      next: (savedTitulo) => {
+        this.save.emit(savedTitulo);
+        this.closeModal();
+      },
+      error: (err) => {
+        console.error('Erro ao salvar título:', err);
+        alert('Erro ao salvar título. Verifique os dados e tente novamente.');
+      }
+    });
   }
 
   closeModal() {
