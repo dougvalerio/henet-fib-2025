@@ -30,13 +30,17 @@ export class TituloService {
     return this.http.get<Titulo[]>(`${API_CONFIG.baseUrl}/api/titulos`);
   }
 
-  uploadImage(file: File): Observable<Titulo> {
+  uploadImage(id: any, file: File): Observable<string> {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post<Titulo>(`${API_CONFIG.baseUrl}/api/titulos`, formData);
+    return this.http.post(`${API_CONFIG.baseUrl}/api/titulos/uploadImagem/${id}`, formData, { responseType: 'text' });
   }
 
   downloadImage(id: any): Observable<Blob> {
-    return this.http.get(`${API_CONFIG.baseUrl}/api/titulos/${id}/imagem`, { responseType: 'blob' });
+    return this.http.get(`${API_CONFIG.baseUrl}/api/titulos/downloadImagem/${id}`, { responseType: 'blob' });
+  }
+
+  deleteImage(id: any): Observable<void> {
+    return this.http.delete<void>(`${API_CONFIG.baseUrl}/api/titulos/deleteImagem/${id}`);
   }
 }

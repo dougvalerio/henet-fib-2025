@@ -54,14 +54,13 @@ export class TitulosListComponent implements OnInit {
   openCreateModal() {
     this.isModalOpen = true;
     this.isEditMode = false;
-    this.selectedTitle = null;
+    this.selectedTitle = { nome: '', perguntaList: [], imagemUrl: undefined }; // Objeto vazio para novo título
   }
 
   openEditModal(title: Titulo) {
     this.isModalOpen = true;
     this.isEditMode = true;
     this.selectedTitle = { ...title }; // Cria uma cópia para evitar mutação direta
-    // A imagem já está carregada em imageUrls, então não precisamos buscar novamente
   }
 
   closeModal() {

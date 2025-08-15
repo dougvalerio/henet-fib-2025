@@ -113,6 +113,11 @@ h2 {
   display: none;
 }
 
+.image-actions {
+  display: flex;
+  gap: 10px;
+}
+
 .btn-upload {
   background: var(--primary-color);
   color: white;
@@ -126,6 +131,21 @@ h2 {
 
 .btn-upload:hover {
   background: #1e40af;
+}
+
+.btn-delete {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: var(--font-size-base);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-delete:hover {
+  background: #d93636;
 }
 
 .title-input {
@@ -196,6 +216,7 @@ h2 {
   }
 
   .btn-upload,
+  .btn-delete,
   .btn-cancel,
   .btn-save {
     padding: 8px 16px;
@@ -230,6 +251,7 @@ h2 {
   }
 
   .btn-upload,
+  .btn-delete,
   .btn-cancel,
   .btn-save {
     padding: 8px 12px;
