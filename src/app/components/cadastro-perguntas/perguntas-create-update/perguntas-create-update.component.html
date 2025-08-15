@@ -10,13 +10,13 @@
         <div class="select-container">
           <select
             id="titleSelect"
-            [(ngModel)]="selectedTitle"
+            [(ngModel)]="selectedTitleId"
             name="titleSelect"
             class="select-input"
           >
             <option value="" disabled selected>Selecione um título</option>
-            <option *ngFor="let title of titles" [value]="title.name">
-              {{ title.name }}
+            <option *ngFor="let titulo of titulos" [value]="titulo.id">
+              {{ titulo.nome }}
             </option>
           </select>
         </div>
@@ -26,7 +26,7 @@
         <input
           type="text"
           id="questionText"
-          [(ngModel)]="question"
+          [(ngModel)]="pergunta.pergunta"
           name="questionText"
           placeholder="Digite a pergunta"
           class="question-input"
@@ -34,18 +34,18 @@
       </div>
       <div class="form-group answers-group">
         <label>Respostas</label>
-        <div class="answer-row" *ngFor="let answer of answers; let i = index; trackBy: trackByIndex">
+        <div class="answer-row" *ngFor="let answer of respostas; let i = index; trackBy: trackByIndex">
           <span class="answer-label">{{ answerLabels[i] }}</span>
           <input
             type="text"
-            [(ngModel)]="answers[i]"
+            [(ngModel)]="respostas[i]"
             [name]="'answer' + i"
             placeholder="Digite a resposta"
             class="answer-input"
           />
           <input
             type="checkbox"
-            [checked]="correctAnswer === i"
+            [checked]="pergunta.respostaCorreta === i"
             (change)="setCorrectAnswer(i)"
             class="answer-checkbox"
           />

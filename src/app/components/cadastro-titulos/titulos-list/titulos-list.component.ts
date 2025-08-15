@@ -7,7 +7,7 @@ import { Titulo } from '../../../models/titulo';
 @Component({
   selector: 'app-titulos-list',
   standalone: true,
-  imports: [CommonModule, TitulosCreateUpdateComponent], // Remova HttpClientModule
+  imports: [CommonModule, TitulosCreateUpdateComponent],
   templateUrl: './titulos-list.component.html',
   styleUrl: './titulos-list.component.css'
 })
@@ -60,12 +60,8 @@ export class TitulosListComponent implements OnInit {
   openEditModal(title: Titulo) {
     this.isModalOpen = true;
     this.isEditMode = true;
-    this.tituloService.findById(title.id).subscribe({
-      next: (titulo) => {
-        this.selectedTitle = titulo;
-      },
-      error: (err) => console.error('Erro ao carregar título:', err)
-    });
+    this.selectedTitle = { ...title }; // Cria uma cópia para evitar mutação direta
+    // A imagem já está carregada em imageUrls, então não precisamos buscar novamente
   }
 
   closeModal() {
@@ -74,7 +70,7 @@ export class TitulosListComponent implements OnInit {
   }
 
   saveTitle(titulo: Titulo) {
-    this.loadTitles();
+    this.loadTitles(); // Recarrega a lista após salvar
     this.closeModal();
   }
 
@@ -82,7 +78,12 @@ export class TitulosListComponent implements OnInit {
     if (confirm('Tem certeza que deseja excluir este título?')) {
       this.tituloService.delete(id).subscribe({
         next: () => {
-          this.loadTitles();
+          this.loadTitles(); // Recarrega a lista após exclusão
+          // Remove a URL da imagem do cache, se existir
+          if (this.imageUrls[id]) {
+            URL.revokeObjectURL(this.imageUrls[id]);
+            delete this.imageUrls[id];
+          }
         },
         error: (err) => console.error('Erro ao excluir título:', err)
       });

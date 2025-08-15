@@ -16,14 +16,14 @@
     <tbody>
       <tr *ngFor="let question of questions; let i = index">
         <td>{{ i + 1 }}</td>
-        <td>{{ question.title }}</td>
-        <td>{{ question.question }}</td>
-        <td>{{ answerLabels[question.correctAnswer] }}</td>
+        <td>{{ question.titulo?.nome || 'Sem título' }}</td>
+        <td>{{ question.pergunta }}</td>
+        <td>{{ question.respostaCorreta !== null ? answerLabels[question.respostaCorreta] : '-' }}</td>
         <td>
-          <button class="btn-action" (click)="openEditModal(question, i)">
+          <button class="btn-action" (click)="openEditModal(question)">
             <i class="fas fa-edit"></i>
           </button>
-          <button class="btn-action" (click)="deleteQuestion(i)">
+          <button class="btn-action" (click)="deleteQuestion(question.id)">
             <i class="fas fa-trash"></i>
           </button>
         </td>
@@ -32,13 +32,8 @@
   </table>
   <app-perguntas-create-update
     [isOpen]="isModalOpen"
-    [isEditMode]="isEditMode"
-    [titles]="titles"
-    [selectedTitle]="selectedQuestion?.title || ''"
-    [question]="selectedQuestion?.question || ''"
-    [answers]="selectedQuestion?.answers || ['', '', '', '', '']"
-    [correctAnswer]="selectedQuestion?.correctAnswer ?? null"
+    [perguntaId]="selectedPerguntaId"
     (close)="closeModal()"
-    (save)="saveQuestion($event)"
+    (saved)="onQuestionSaved()"
   ></app-perguntas-create-update>
 </div>

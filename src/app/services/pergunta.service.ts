@@ -1,45 +1,37 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { API_CONFIG } from '../config/api.config';
+import { Observable } from 'rxjs';
+import { Pergunta } from '../models/pergunta';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PerguntaService {
-  private apiUrl = `${API_CONFIG.baseUrl}/api/perguntas`;
-
   constructor(private http: HttpClient) { }
 
-  // Headers para requisições
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-  };
-
-  // Método para buscar todas as perguntas
-  getAllPerguntas(): Observable<any> {
-    return this.http.get(`${this.apiUrl}`);
+  // Cria uma nova pergunta com os dados fornecidos
+  create(pergunta: Pergunta): Observable<Pergunta> {
+    return this.http.post<Pergunta>(`${API_CONFIG.baseUrl}/api/perguntas`, pergunta);
   }
 
-  // Método para buscar pergunta por ID
-  getPerguntaById(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`);
+  // Atualiza uma pergunta existente com base no ID e nos dados fornecidos
+  update(id: any, pergunta: Pergunta): Observable<Pergunta> {
+    return this.http.put<Pergunta>(`${API_CONFIG.baseUrl}/api/perguntas/${id}`, pergunta);
   }
 
-  // Método para buscar o timestamp da última pergunta
-  getLastUpdatedTimestamp(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/last-updated`);
+  // Exclui uma pergunta com base no ID
+  delete(id: any): Observable<void> {
+    return this.http.delete<void>(`${API_CONFIG.baseUrl}/api/perguntas/${id}`);
   }
 
-  // Método para criar uma nova pergunta
-  createPergunta(pergunta: any): Observable<any> {
-    return this.http.post(this.apiUrl, pergunta, this.httpOptions);
+  // Busca uma pergunta específica pelo seu ID
+  findById(id: any): Observable<Pergunta> {
+    return this.http.get<Pergunta>(`${API_CONFIG.baseUrl}/api/perguntas/${id}`);
   }
 
-  // Método para deletar uma pergunta
-  deletePergunta(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  // Retorna todas as perguntas disponíveis
+  findAll(): Observable<Pergunta[]> {
+    return this.http.get<Pergunta[]>(`${API_CONFIG.baseUrl}/api/perguntas`);
   }
 }

@@ -1,96 +1,87 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PerguntasCreateUpdateComponent } from '../perguntas-create-update/perguntas-create-update.component';
+import { PerguntaService } from '../../../services/pergunta.service';
+import { TituloService } from '../../../services/titulo.service';
+import { Pergunta } from '../../../models/pergunta';
+import { Titulo } from '../../../models/titulo';
 
 @Component({
   selector: 'app-perguntas-list',
   standalone: true,
   imports: [CommonModule, PerguntasCreateUpdateComponent],
   templateUrl: './perguntas-list.component.html',
-  styleUrl: './perguntas-list.component.css'
+  styleUrls: ['./perguntas-list.component.css']
 })
-export class PerguntasListComponent {
-  titles = [
-    { name: 'The Last of Us', cover: '../../../../assets/TLOUS.jpg' },
-    { name: 'House of The Dragon', cover: '../../../../assets/HOD.jpg' }
-  ];
-
-  questions = [
-    {
-      title: 'The Last of Us',
-      question: 'Quem é o protagonista principal?',
-      answers: ['Joel', 'Ellie', 'Tess', 'Bill', 'Tommy'],
-      correctAnswer: 0
-    },
-    {
-      title: 'House of The Dragon',
-      question: 'Qual é a casa principal da série?',
-      answers: ['Targaryen', 'Stark', 'Lannister', 'Baratheon', 'Greyjoy'],
-      correctAnswer: 0
-    },
-    {
-      title: 'The Last of Us',
-      question: 'Qual é o nome da filha de Joel?',
-      answers: ['Ellie', 'Sarah', 'Tess', 'Marlene', 'Anna'],
-      correctAnswer: 1
-    }
-  ];
-
-  answerLabels = ['A', 'B', 'C', 'D', 'E'];
+export class PerguntasListComponent implements OnInit {
+  titles: Titulo[] = [];
+  questions: Pergunta[] = [];
+  answerLabels = ['A', 'B', 'C', 'D'];
   isModalOpen = false;
-  isEditMode = false;
-  selectedQuestion: {
-    title: string,
-    question: string,
-    answers: string[],
-    correctAnswer: number | null
-  } | null = null;
-  selectedIndex: number | null = null;
+  selectedPerguntaId: any = null;
+
+  constructor(
+    private perguntaService: PerguntaService,
+    private tituloService: TituloService
+  ) {}
+
+  ngOnInit() {
+    this.loadTitles();
+    this.loadQuestions();
+  }
+
+  loadTitles() {
+    this.tituloService.findAll().subscribe({
+      next: (titles) => {
+        this.titles = titles;
+      },
+      error: (err) => {
+        console.error('Erro ao carregar títulos:', err);
+      }
+    });
+  }
+
+  loadQuestions() {
+    this.perguntaService.findAll().subscribe({
+      next: (questions) => {
+        this.questions = questions;
+      },
+      error: (err) => {
+        console.error('Erro ao carregar perguntas:', err);
+      }
+    });
+  }
 
   openCreateModal() {
     this.isModalOpen = true;
-    this.isEditMode = false;
-    this.selectedQuestion = {
-      title: '',
-      question: '',
-      answers: ['', '', '', '', ''],
-      correctAnswer: null
-    };
+    this.selectedPerguntaId = null;
   }
 
-  openEditModal(question: {
-    title: string,
-    question: string,
-    answers: string[],
-    correctAnswer: number
-  }, index: number) {
+  openEditModal(pergunta: Pergunta) {
     this.isModalOpen = true;
-    this.isEditMode = true;
-    this.selectedQuestion = { ...question, correctAnswer: question.correctAnswer };
-    this.selectedIndex = index;
+    this.selectedPerguntaId = pergunta.id;
   }
 
   closeModal() {
     this.isModalOpen = false;
-    this.selectedQuestion = null;
-    this.selectedIndex = null;
+    this.selectedPerguntaId = null;
   }
 
-  saveQuestion(data: {
-    title: string,
-    question: string,
-    answers: string[],
-    correctAnswer: number
-  }) {
-    if (this.isEditMode && this.selectedIndex !== null) {
-      this.questions[this.selectedIndex] = { ...data };
-    } else {
-      this.questions.push({ ...data });
-    }
+  onQuestionSaved() {
+    this.loadQuestions();
     this.closeModal();
   }
 
-  deleteQuestion(index: number) {
-    this.questions.splice(index, 1);
+  deleteQuestion(id: any) {
+    if (confirm('Tem certeza que deseja excluir esta pergunta?')) {
+      this.perguntaService.delete(id).subscribe({
+        next: () => {
+          this.loadQuestions();
+        },
+        error: (err) => {
+          console.error('Erro ao excluir pergunta:', err);
+        }
+      });
+    }
   }
 }

@@ -5,6 +5,6 @@ export interface Pergunta {
   respostaB: string;
   respostaC: string;
   respostaD: string;
-  respostaCorreta: number;
+  respostaCorreta: number | null;
   titulo: any;
 }

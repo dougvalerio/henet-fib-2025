@@ -17,7 +17,7 @@
         <td>{{ i + 1 }}</td>
         <td>
           <img 
-            [src]="imageUrls[title.id] || 'assets/placeholder.jpg'" 
+            [src]="imageUrls || 'assets/placeholder.jpg'" 
             alt="Capa do título" 
             class="cover-image"
           >
