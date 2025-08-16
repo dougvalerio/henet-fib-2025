@@ -32,7 +32,7 @@ export class TituloService {
 
   uploadImage(id: any, file: File): Observable<string> {
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('image', file);
     return this.http.post(`${API_CONFIG.baseUrl}/api/titulos/uploadImagem/${id}`, formData, { responseType: 'text' });
   }
 

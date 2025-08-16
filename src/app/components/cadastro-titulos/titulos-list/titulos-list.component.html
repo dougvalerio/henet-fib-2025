@@ -1,6 +1,6 @@
 <div class="container">
   <h1>Lista de Títulos</h1>
-  <button class="btn-new-title" (click)="openCreateModal()">
+  <button class="btn-new-title" (click)="abrirModalCriar()">
     <i class="fas fa-plus"></i> Novo Título
   </button>
   <table class="titles-table">
@@ -13,21 +13,21 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let title of titles; let i = index">
+      <tr *ngFor="let titulo of titulos; let i = index">
         <td>{{ i + 1 }}</td>
         <td>
           <img 
-            [src]="imageUrls || 'assets/placeholder.jpg'" 
+            [src]="urlsImagens || 'assets/placeholder.jpg'" 
             alt="Capa do título" 
             class="cover-image"
           >
         </td>
-        <td>{{ title.nome }}</td>
+        <td>{{ titulo.nome }}</td>
         <td>
-          <button class="btn-action" (click)="openEditModal(title)">
+          <button class="btn-action" (click)="abrirModalEditar(titulo)">
             <i class="fas fa-edit"></i>
           </button>
-          <button class="btn-action" (click)="deleteTitle(title.id)">
+          <button class="btn-action" (click)="excluirTitulo(titulo.id)">
             <i class="fas fa-trash"></i>
           </button>
         </td>
@@ -35,10 +35,10 @@
     </tbody>
   </table>
   <app-titulos-create-update
-    [isOpen]="isModalOpen"
-    [isEditMode]="isEditMode"
-    [titulo]="selectedTitle"
-    (close)="closeModal()"
-    (save)="saveTitle($event)"
+    [isOpen]="modalAberto"
+    [isEditMode]="modoEdicao"
+    [titulo]="tituloSelecionado"
+    (close)="fecharModal()"
+    (save)="salvarTitulo($event)"
   ></app-titulos-create-update>
 </div>

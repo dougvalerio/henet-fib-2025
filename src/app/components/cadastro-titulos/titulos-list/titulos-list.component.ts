@@ -12,25 +12,25 @@ import { Titulo } from '../../../models/titulo';
   styleUrl: './titulos-list.component.css'
 })
 export class TitulosListComponent implements OnInit {
-  titles: Titulo[] = [];
-  isModalOpen = false;
-  isEditMode = false;
-  selectedTitle: Titulo | null = null;
-  imageUrls: { [key: string]: string } = {};
+  titulos: Titulo[] = [];
+  modalAberto = false;
+  modoEdicao = false;
+  tituloSelecionado: Titulo | null = null;
+  urlsImagens: { [key: string]: string } = {};
 
-  constructor(private tituloService: TituloService) {}
+  constructor(private servicoTitulo: TituloService) {}
 
   ngOnInit() {
-    this.loadTitles();
+    this.carregarTitulos();
   }
 
-  loadTitles() {
-    this.tituloService.findAll().subscribe({
-      next: (titles) => {
-        this.titles = titles;
-        this.titles.forEach((title) => {
-          if (title.id && title.imagemUrl) {
-            this.loadImage(title.id);
+  carregarTitulos() {
+    this.servicoTitulo.findAll().subscribe({
+      next: (titulos) => {
+        this.titulos = titulos;
+        this.titulos.forEach((titulo) => {
+          if (titulo.id && titulo.imagemUrl) {
+            this.carregarImagem(titulo.id);
           }
         });
       },
@@ -38,50 +38,49 @@ export class TitulosListComponent implements OnInit {
     });
   }
 
-  loadImage(id: any) {
-    this.tituloService.downloadImage(id).subscribe({
+  carregarImagem(id: any) {
+    this.servicoTitulo.downloadImage(id).subscribe({
       next: (blob) => {
         const url = URL.createObjectURL(blob);
-        this.imageUrls[id] = url;
+        this.urlsImagens[id] = url;
       },
       error: (err) => {
         console.error('Erro ao carregar imagem:', err);
-        this.imageUrls[id] = 'assets/placeholder.jpg';
+        this.urlsImagens[id] = 'assets/placeholder.jpg';
       }
     });
   }
 
-  openCreateModal() {
-    this.isModalOpen = true;
-    this.isEditMode = false;
-    this.selectedTitle = { nome: '', perguntaList: [], imagemUrl: undefined }; // Objeto vazio para novo título
+  abrirModalCriar() {
+    this.modalAberto = true;
+    this.modoEdicao = false;
+    this.tituloSelecionado = { nome: '', perguntaList: [], imagemUrl: undefined };
   }
 
-  openEditModal(title: Titulo) {
-    this.isModalOpen = true;
-    this.isEditMode = true;
-    this.selectedTitle = { ...title }; // Cria uma cópia para evitar mutação direta
+  abrirModalEditar(titulo: Titulo) {
+    this.modalAberto = true;
+    this.modoEdicao = true;
+    this.tituloSelecionado = { ...titulo };
   }
 
-  closeModal() {
-    this.isModalOpen = false;
-    this.selectedTitle = null;
+  fecharModal() {
+    this.modalAberto = false;
+    this.tituloSelecionado = null;
   }
 
-  saveTitle(titulo: Titulo) {
-    this.loadTitles(); // Recarrega a lista após salvar
-    this.closeModal();
+  salvarTitulo(titulo: Titulo) {
+    this.carregarTitulos();
+    this.fecharModal();
   }
 
-  deleteTitle(id: any) {
+  excluirTitulo(id: any) {
     if (confirm('Tem certeza que deseja excluir este título?')) {
-      this.tituloService.delete(id).subscribe({
+      this.servicoTitulo.delete(id).subscribe({
         next: () => {
-          this.loadTitles(); // Recarrega a lista após exclusão
-          // Remove a URL da imagem do cache, se existir
-          if (this.imageUrls[id]) {
-            URL.revokeObjectURL(this.imageUrls[id]);
-            delete this.imageUrls[id];
+          this.carregarTitulos();
+          if (this.urlsImagens[id]) {
+            URL.revokeObjectURL(this.urlsImagens[id]);
+            delete this.urlsImagens[id];
           }
         },
         error: (err) => console.error('Erro ao excluir título:', err)
