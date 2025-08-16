@@ -1,20 +1,20 @@
-<div class="modal-overlay" *ngIf="isOpen">
+<div class="modal-overlay" *ngIf="modalAberto">
   <div class="modal-content">
-    <button class="close-btn" (click)="closeModal()">
+    <button class="close-btn" (click)="fecharModal()">
       <i class="fas fa-times"></i>
     </button>
-    <h2>{{ isEditMode ? 'Editar Título' : 'Novo Título' }}</h2>
+    <h2>{{ modoEdicao ? 'Editar Título' : 'Novo Título' }}</h2>
     <form class="title-form">
       <div class="form-group">
         <label for="coverImage">Capa do Título</label>
         <div class="image-upload-container">
           <img
-            *ngIf="previewImage"
-            [src]="previewImage"
+            *ngIf="imagemPrevia"
+            [src]="imagemPrevia"
             alt="Pré-visualização da capa"
             class="preview-image"
           />
-          <div class="upload-placeholder" *ngIf="!previewImage">
+          <div class="upload-placeholder" *ngIf="!imagemPrevia">
             <i class="fas fa-image"></i>
             <span>Selecione uma imagem</span>
           </div>
@@ -22,18 +22,18 @@
             type="file"
             id="coverImage"
             accept="image/*"
-            (change)="onImageChange($event)"
+            (change)="aoMudarImagem($event)"
             class="file-input"
           />
           <div class="image-actions">
-            <button type="button" class="btn-upload" (click)="triggerFileInput()">
+            <button type="button" class="btn-upload" (click)="acionarInputArquivo()">
               Escolher Imagem
             </button>
             <button
               type="button"
               class="btn-delete"
               (click)="excluirImagem()"
-              *ngIf="previewImage"
+              *ngIf="imagemPrevia"
               title="Excluir Imagem"
             >
               <i class="fas fa-trash"></i>
@@ -46,17 +46,17 @@
         <input
           type="text"
           id="titleName"
-          [(ngModel)]="titleName"
+          [(ngModel)]="nomeTitulo"
           name="titleName"
           placeholder="Digite o nome do filme/série"
           class="title-input"
         />
       </div>
       <div class="form-actions">
-        <button type="button" class="btn-cancel" (click)="closeModal()">
+        <button type="button" class="btn-cancel" (click)="fecharModal()">
           Cancelar
         </button>
-        <button type="button" class="btn-save" (click)="saveTitle()">Salvar</button>
+        <button type="button" class="btn-save" (click)="salvarTitulo()">Salvar</button>
       </div>
     </form>
   </div>

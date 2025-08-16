@@ -27,10 +27,10 @@ export class TitulosListComponent implements OnInit {
   carregarTitulos() {
     this.servicoTitulo.findAll().subscribe({
       next: (titulos) => {
-        this.titulos = titulos;
+        this.titulos = titulos.filter(titulo => !!titulo.id); // Filtra títulos sem ID
         this.titulos.forEach((titulo) => {
-          if (titulo.id && titulo.imagemUrl) {
-            this.carregarImagem(titulo.id);
+          if (titulo.imagemUrl) {
+            this.carregarImagem(titulo.id!); // Usa ! pois sabemos que id existe após o filtro
           }
         });
       },

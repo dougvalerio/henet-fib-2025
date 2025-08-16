@@ -12,49 +12,49 @@ import { Titulo } from '../../../models/titulo';
   styleUrl: './titulos-create-update.component.css'
 })
 export class TitulosCreateUpdateComponent {
-  @Input() isOpen: boolean = false;
+  @Input() modalAberto: boolean = false;
   @Input() titulo: Titulo | null = null;
-  @Input() isEditMode: boolean = false;
-  @Output() close = new EventEmitter<void>();
-  @Output() save = new EventEmitter<Titulo>();
+  @Input() modoEdicao: boolean = false;
+  @Output() fechar = new EventEmitter<void>();
+  @Output() salvar = new EventEmitter<Titulo>();
 
-  previewImage: string | null = null;
-  selectedFile: File | null = null;
-  titleName: string = '';
+  imagemPrevia: string | null = null;
+  arquivoSelecionado: File | null = null;
+  nomeTitulo: string = '';
   imagemExcluida: boolean = false;
 
-  constructor(private tituloService: TituloService) {}
+  constructor(private servicoTitulo: TituloService) {}
 
   ngOnChanges() {
-    if (this.isOpen) {
-      if (this.titulo && this.isEditMode) {
+    if (this.modalAberto) {
+      if (this.titulo && this.modoEdicao) {
         // Modo de edição: carrega os dados do título
-        this.titleName = this.titulo.nome;
-        this.buscarImagemServidor();
+        this.nomeTitulo = this.titulo.nome;
+        this.carregarImagemServidor();
       } else {
         // Modo de criação: reinicia o formulário
-        this.resetForm();
+        this.reiniciarFormulario();
       }
     }
   }
 
-  triggerFileInput() {
-    const fileInput = document.getElementById('coverImage') as HTMLInputElement;
-    fileInput.click();
+  acionarInputArquivo() {
+    const inputArquivo = document.getElementById('coverImage') as HTMLInputElement;
+    inputArquivo.click();
   }
 
-  onImageChange(event: Event) {
+  aoMudarImagem(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
-      this.selectedFile = input.files[0];
-      if (this.selectedFile.type === 'image/jpeg' || this.selectedFile.type === 'image/png') {
-        if (this.selectedFile.size > 3145728) { // 3 MB
+      this.arquivoSelecionado = input.files[0];
+      if (this.arquivoSelecionado.type === 'image/jpeg' || this.arquivoSelecionado.type === 'image/png') {
+        if (this.arquivoSelecionado.size > 3145728) { // 3 MB
           alert('A imagem é muito grande. Por favor, selecione uma imagem de até 3 MB');
           return;
         }
 
         const reader = new FileReader();
-        reader.readAsDataURL(this.selectedFile);
+        reader.readAsDataURL(this.arquivoSelecionado);
         reader.onload = () => {
           const img = new Image();
           img.src = reader.result as string;
@@ -80,7 +80,7 @@ export class TitulosCreateUpdateComponent {
             canvas.height = height;
             const ctx = canvas.getContext('2d');
             ctx?.drawImage(img, 0, 0, width, height);
-            this.previewImage = canvas.toDataURL(this.selectedFile!.type);
+            this.imagemPrevia = canvas.toDataURL(this.arquivoSelecionado!.type);
             this.imagemExcluida = false;
           };
         };
@@ -92,10 +92,10 @@ export class TitulosCreateUpdateComponent {
 
   excluirImagem() {
     this.imagemExcluida = true;
-    this.previewImage = null;
-    this.selectedFile = null;
-    if (this.isEditMode && this.titulo?.id) {
-      this.tituloService.deleteImage(this.titulo.id).subscribe({
+    this.imagemPrevia = null;
+    this.arquivoSelecionado = null;
+    if (this.modoEdicao && this.titulo?.id) {
+      this.servicoTitulo.deleteImage(this.titulo.id).subscribe({
         next: () => {
           alert('Imagem excluída com sucesso.');
           this.titulo!.imagemUrl = undefined;
@@ -108,14 +108,14 @@ export class TitulosCreateUpdateComponent {
     }
   }
 
-  private buscarImagemServidor() {
+  private carregarImagemServidor() {
     if (this.titulo?.id) {
-      this.tituloService.downloadImage(this.titulo.id).subscribe({
+      this.servicoTitulo.downloadImage(this.titulo.id).subscribe({
         next: (blob: Blob) => {
           const reader = new FileReader();
           reader.readAsDataURL(blob);
           reader.onload = () => {
-            this.previewImage = reader.result as string;
+            this.imagemPrevia = reader.result as string;
           };
         },
         error: (error) => {
@@ -128,48 +128,48 @@ export class TitulosCreateUpdateComponent {
     }
   }
 
-  saveTitle() {
-    if (!this.titleName) {
+  salvarTitulo() {
+    if (!this.nomeTitulo) {
       alert('O nome do título é obrigatório.');
       return;
     }
 
     const titulo: Titulo = {
-      id: this.isEditMode ? this.titulo?.id : undefined,
-      nome: this.titleName,
-      perguntaList: this.titulo?.perguntaList || [],
-      imagemUrl: this.isEditMode ? this.titulo?.imagemUrl : undefined
+      nome: this.nomeTitulo,
+      perguntaList: this.titulo?.perguntaList || []
+      // Removido imagemUrl para evitar problemas; será gerenciado pelo uploadImage
     };
 
-    const saveObservable = this.isEditMode && titulo.id
-      ? this.tituloService.update(titulo.id, titulo)
-      : this.tituloService.create(titulo);
+    const operacaoSalvar = this.modoEdicao && this.titulo?.id
+      ? this.servicoTitulo.update(this.titulo.id, titulo)
+      : this.servicoTitulo.create(titulo);
 
-    saveObservable.subscribe({
-      next: (savedTitulo) => {
-        this.titulo = savedTitulo;
-        if (this.selectedFile && !this.imagemExcluida) {
+    operacaoSalvar.subscribe({
+      next: (tituloSalvo) => {
+        this.titulo = tituloSalvo;
+        if (this.arquivoSelecionado && !this.imagemExcluida) {
           this.enviarImagemServidor();
         } else {
-          this.save.emit(savedTitulo);
-          this.closeModal();
+          this.salvar.emit(tituloSalvo);
+          this.fecharModal();
         }
       },
       error: (err) => {
         console.error('Erro ao salvar título:', err);
-        alert('Erro ao salvar título. Verifique os dados e tente novamente.');
+        const mensagemErro = err.error?.message || err.message || 'Erro interno no servidor. Tente novamente.';
+        alert(`Erro ao salvar título: ${mensagemErro}`);
       }
     });
   }
 
   private enviarImagemServidor() {
-    if (this.selectedFile && this.titulo?.id) {
-      this.tituloService.uploadImage(this.titulo.id, this.selectedFile).subscribe({
+    if (this.arquivoSelecionado && this.titulo?.id) {
+      this.servicoTitulo.uploadImage(this.titulo.id, this.arquivoSelecionado).subscribe({
         next: (imagemUrl) => {
           this.titulo!.imagemUrl = imagemUrl;
-          this.save.emit(this.titulo!);
+          this.salvar.emit(this.titulo!);
           alert('Imagem carregada com sucesso.');
-          this.closeModal();
+          this.fecharModal();
         },
         error: (error) => {
           alert('Erro ao carregar a imagem: ' + (error.message || 'Tente novamente.'));
@@ -179,17 +179,17 @@ export class TitulosCreateUpdateComponent {
     }
   }
 
-  closeModal() {
-    this.close.emit();
-    this.resetForm();
+  fecharModal() {
+    this.fechar.emit();
+    this.reiniciarFormulario();
   }
 
-  private resetForm() {
-    this.titleName = '';
-    this.previewImage = null;
-    this.selectedFile = null;
+  private reiniciarFormulario() {
+    this.nomeTitulo = '';
+    this.imagemPrevia = null;
+    this.arquivoSelecionado = null;
     this.imagemExcluida = false;
-    this.isEditMode = false;
-    this.titulo = null; // Garante que o título interno seja nulo
+    this.modoEdicao = false;
+    this.titulo = null;
   }
 }

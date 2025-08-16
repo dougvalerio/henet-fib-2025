@@ -17,7 +17,7 @@
         <td>{{ i + 1 }}</td>
         <td>
           <img 
-            [src]="urlsImagens || 'assets/placeholder.jpg'" 
+            [src]="titulo.id ? urlsImagens[titulo.id] : 'assets/placeholder.jpg'" 
             alt="Capa do título" 
             class="cover-image"
           >
@@ -35,10 +35,10 @@
     </tbody>
   </table>
   <app-titulos-create-update
-    [isOpen]="modalAberto"
-    [isEditMode]="modoEdicao"
+    [modalAberto]="modalAberto"
+    [modoEdicao]="modoEdicao"
     [titulo]="tituloSelecionado"
-    (close)="fecharModal()"
-    (save)="salvarTitulo($event)"
+    (fechar)="fecharModal()"
+    (salvar)="salvarTitulo($event)"
   ></app-titulos-create-update>
 </div>
