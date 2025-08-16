@@ -1,6 +1,6 @@
 <div class="container">
   <h1>Lista de Perguntas</h1>
-  <button class="btn-new-title" (click)="openCreateModal()">
+  <button class="btn-new-title" (click)="abrirModalCriar()">
     <i class="fas fa-plus"></i> Nova Pergunta
   </button>
   <table class="titles-table">
@@ -14,16 +14,16 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let question of questions; let i = index">
+      <tr *ngFor="let pergunta of perguntas; let i = index">
         <td>{{ i + 1 }}</td>
-        <td>{{ question.titulo?.nome || 'Sem título' }}</td>
-        <td>{{ question.pergunta }}</td>
-        <td>{{ question.respostaCorreta !== null ? answerLabels[question.respostaCorreta] : '-' }}</td>
+        <td>{{ pergunta.titulo?.nome || 'Sem título' }}</td>
+        <td>{{ pergunta.pergunta }}</td>
+        <td>{{ pergunta.respostaCorreta !== null ? rotulosRespostas[pergunta.respostaCorreta] : '-' }}</td>
         <td>
-          <button class="btn-action" (click)="openEditModal(question)">
+          <button class="btn-action" (click)="abrirModalEditar(pergunta)">
             <i class="fas fa-edit"></i>
           </button>
-          <button class="btn-action" (click)="deleteQuestion(question.id)">
+          <button class="btn-action" (click)="excluirPergunta(pergunta.id)">
             <i class="fas fa-trash"></i>
           </button>
         </td>
@@ -31,9 +31,11 @@
     </tbody>
   </table>
   <app-perguntas-create-update
-    [isOpen]="isModalOpen"
-    [perguntaId]="selectedPerguntaId"
-    (close)="closeModal()"
-    (saved)="onQuestionSaved()"
+    [modalAberto]="modalAberto"
+    [modoEdicao]="modoEdicao"
+    [pergunta]="perguntaSelecionada"
+    [titulos]="titulos"
+    (fechar)="fecharModal()"
+    (salvar)="salvarPergunta()"
   ></app-perguntas-create-update>
 </div>

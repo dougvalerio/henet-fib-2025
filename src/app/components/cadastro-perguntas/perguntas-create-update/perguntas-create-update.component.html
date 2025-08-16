@@ -1,20 +1,20 @@
-<div class="modal-overlay" *ngIf="isOpen">
+<div class="modal-overlay" *ngIf="modalAberto">
   <div class="modal-content">
-    <button class="close-btn" (click)="closeModal()">
+    <button class="close-btn" (click)="fecharModal()">
       <i class="fas fa-times"></i>
     </button>
-    <h2>{{ isEditMode ? 'Editar Pergunta' : 'Nova Pergunta' }}</h2>
+    <h2>{{ modoEdicao ? 'Editar Pergunta' : 'Nova Pergunta' }}</h2>
     <form class="question-form">
       <div class="form-group">
-        <label for="titleSelect">Título do Filme/Série</label>
+        <label for="tituloSelect">Título do Filme/Série</label>
         <div class="select-container">
           <select
-            id="titleSelect"
-            [(ngModel)]="selectedTitleId"
-            name="titleSelect"
+            id="tituloSelect"
+            [(ngModel)]="idTituloSelecionado"
+            name="tituloSelect"
             class="select-input"
           >
-            <option value="" disabled selected>Selecione um título</option>
+            <option value="" disabled>Selecione um título</option>
             <option *ngFor="let titulo of titulos" [value]="titulo.id">
               {{ titulo.nome }}
             </option>
@@ -22,46 +22,46 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="questionText">Pergunta</label>
+        <label for="textoPergunta">Pergunta</label>
         <input
           type="text"
-          id="questionText"
-          [(ngModel)]="pergunta.pergunta"
-          name="questionText"
+          id="textoPergunta"
+          [(ngModel)]="perguntaFormulario.pergunta"
+          name="textoPergunta"
           placeholder="Digite a pergunta"
           class="question-input"
         />
       </div>
       <div class="form-group answers-group">
         <label>Respostas</label>
-        <div class="answer-row" *ngFor="let answer of respostas; let i = index; trackBy: trackByIndex">
-          <span class="answer-label">{{ answerLabels[i] }}</span>
+        <div class="answer-row" *ngFor="let resposta of respostas; let i = index; trackBy: trackByIndex">
+          <span class="answer-label">{{ rotulosRespostas[i] }}</span>
           <input
             type="text"
             [(ngModel)]="respostas[i]"
-            [name]="'answer' + i"
+            [name]="'resposta' + i"
             placeholder="Digite a resposta"
             class="answer-input"
           />
           <input
             type="checkbox"
-            [checked]="pergunta.respostaCorreta === i"
-            (change)="setCorrectAnswer(i)"
+            [checked]="perguntaFormulario.respostaCorreta === i"
+            (change)="definirRespostaCorreta(i)"
             class="answer-checkbox"
           />
         </div>
       </div>
       <div class="form-actions">
-        <button type="button" class="btn-cancel" (click)="closeModal()">
+        <button type="button" class="btn-cancel" (click)="fecharModal()">
           Cancelar
         </button>
         <button
-          type="submit"
+          type="button"
           class="btn-save"
-          [disabled]="!isFormValid"
-          (click)="saveQuestion()"
+          [disabled]="!formularioValido"
+          (click)="salvarPergunta()"
         >
-          {{ isEditMode ? 'Salvar Edição' : 'Salvar' }}
+          {{ modoEdicao ? 'Salvar Edição' : 'Salvar' }}
         </button>
       </div>
     </form>
