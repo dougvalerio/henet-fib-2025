@@ -1,4 +1,4 @@
-import { Resposta } from "./resposta";
+import { JogoCabecalho } from "./jogo-cabecalho";
 
 export interface Cadastro {
   id?: any;
@@ -7,8 +7,5 @@ export interface Cadastro {
   email: string;
   telefone: string;
   dataRegistro: any;
-  
-  respostaList: Resposta[];
+  jogoList: JogoCabecalho[];
 }
-
-

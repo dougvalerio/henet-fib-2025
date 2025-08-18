@@ -1,45 +1,32 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_CONFIG } from '../config/api.config';
+import { Cadastro } from '../models/cadastro';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CadastroService {
-  private apiUrl = `${API_CONFIG.baseUrl}/api/cadastros`;
-
   constructor(private http: HttpClient) { }
 
-  // Headers para requisições
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-  };
-
-  // Método para buscar todos os cadastros
-  getAllCadastros(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/all`);
+  // Cria um novo cadastro com os dados fornecidos
+  create(cadastro: Cadastro): Observable<Cadastro> {
+    return this.http.post<Cadastro>(`${API_CONFIG.baseUrl}/api/cadastros`, cadastro);
   }
 
-  // Método para buscar cadastro por ID
-  getCadastroById(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`);
+  // Busca um cadastro específico pelo seu ID
+  findById(id: any): Observable<Cadastro> {
+    return this.http.get<Cadastro>(`${API_CONFIG.baseUrl}/api/cadastros/${id}`);
   }
 
-  // Método para buscar o timestamp do último cadastro
-  getLastUpdatedTimestamp(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/last-updated`);
+  // Retorna todos os cadastros disponíveis
+  findAll(): Observable<Cadastro[]> {
+    return this.http.get<Cadastro[]>(`${API_CONFIG.baseUrl}/api/cadastros/all`);
   }
 
-  // Método para criar um novo cadastro
-  createCadastro(cadastro: any): Observable<any> {
-    return this.http.post(this.apiUrl, cadastro, this.httpOptions);
-  }
-
-  // Método para deletar um cadastro
-  deleteCadastro(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  // Exclui um cadastro com base no ID
+  delete(id: any): Observable<void> {
+    return this.http.delete<void>(`${API_CONFIG.baseUrl}/api/cadastros/${id}`);
   }
 }
