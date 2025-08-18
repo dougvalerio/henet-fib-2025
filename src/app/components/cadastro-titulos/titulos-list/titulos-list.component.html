@@ -16,11 +16,16 @@
       <tr *ngFor="let titulo of titulos; let i = index">
         <td>{{ i + 1 }}</td>
         <td>
-          <img 
-            [src]="titulo.id ? urlsImagens[titulo.id] : 'assets/placeholder.jpg'" 
-            alt="Capa do título" 
-            class="cover-image"
-          >
+          <ng-container *ngIf="titulo.id && urlsImagens[titulo.id]; else noImage">
+            <img
+              [src]="urlsImagens[titulo.id]"
+              alt="Capa do título"
+              class="cover-image"
+            >
+          </ng-container>
+          <ng-template #noImage>
+            <i class="fas fa-image cover-icon"></i>
+          </ng-template>
         </td>
         <td>{{ titulo.nome }}</td>
         <td>
@@ -41,4 +46,4 @@
     (fechar)="fecharModal()"
     (salvar)="salvarTitulo($event)"
   ></app-titulos-create-update>
-</div>
+</div>  

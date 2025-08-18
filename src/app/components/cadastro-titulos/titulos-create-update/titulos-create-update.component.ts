@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TituloService } from '../../../services/titulo.service';
@@ -9,9 +9,9 @@ import { Titulo } from '../../../models/titulo';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './titulos-create-update.component.html',
-  styleUrl: './titulos-create-update.component.css'
+  styleUrls: ['./titulos-create-update.component.css']
 })
-export class TitulosCreateUpdateComponent {
+export class TitulosCreateUpdateComponent implements OnChanges {
   @Input() modalAberto: boolean = false;
   @Input() titulo: Titulo | null = null;
   @Input() modoEdicao: boolean = false;
@@ -22,19 +22,28 @@ export class TitulosCreateUpdateComponent {
   arquivoSelecionado: File | null = null;
   nomeTitulo: string = '';
   imagemExcluida: boolean = false;
+  mensagemErro: string | null = null;
 
   constructor(private servicoTitulo: TituloService) {}
 
-  ngOnChanges() {
-    if (this.modalAberto) {
-      if (this.titulo && this.modoEdicao) {
-        // Modo de edição: carrega os dados do título
-        this.nomeTitulo = this.titulo.nome;
+  ngOnChanges(changes: SimpleChanges) {
+    // Reiniciar o formulário apenas se o modal for fechado ou estivermos no modo de criação
+    if (changes['modalAberto'] && !this.modalAberto) {
+      this.reiniciarFormulario();
+      return;
+    }
+
+    // Carregar dados do título apenas se o modal está aberto e no modo de edição
+    if (this.modalAberto && this.modoEdicao && this.titulo && (changes['titulo'] || changes['modoEdicao'] || changes['modalAberto'])) {
+      this.nomeTitulo = this.titulo.nome || '';
+      this.imagemExcluida = !this.titulo.imagemUrl;
+      this.imagemPrevia = null; // Resetar imagemPrevia antes de carregar
+      if (this.titulo.imagemUrl) {
         this.carregarImagemServidor();
-      } else {
-        // Modo de criação: reinicia o formulário
-        this.reiniciarFormulario();
       }
+    } else if (this.modalAberto && !this.modoEdicao) {
+      // Modo de criação: garantir que o formulário esteja limpo
+      this.reiniciarFormulario();
     }
   }
 
@@ -44,12 +53,13 @@ export class TitulosCreateUpdateComponent {
   }
 
   aoMudarImagem(event: Event) {
+    this.mensagemErro = null;
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       this.arquivoSelecionado = input.files[0];
       if (this.arquivoSelecionado.type === 'image/jpeg' || this.arquivoSelecionado.type === 'image/png') {
         if (this.arquivoSelecionado.size > 3145728) { // 3 MB
-          alert('A imagem é muito grande. Por favor, selecione uma imagem de até 3 MB');
+          this.mensagemErro = 'A imagem é muito grande. Por favor, selecione uma imagem de até 3 MB.';
           return;
         }
 
@@ -85,23 +95,23 @@ export class TitulosCreateUpdateComponent {
           };
         };
       } else {
-        alert('Por favor, selecione uma imagem JPG ou PNG.');
+        this.mensagemErro = 'Por favor, selecione uma imagem JPG ou PNG.';
       }
     }
   }
 
   excluirImagem() {
+    this.mensagemErro = null;
     this.imagemExcluida = true;
     this.imagemPrevia = null;
     this.arquivoSelecionado = null;
     if (this.modoEdicao && this.titulo?.id) {
       this.servicoTitulo.deleteImage(this.titulo.id).subscribe({
         next: () => {
-          alert('Imagem excluída com sucesso.');
           this.titulo!.imagemUrl = undefined;
         },
         error: (error) => {
-          alert('Erro ao excluir a imagem.');
+          this.mensagemErro = 'Erro ao excluir a imagem: ' + (error.message || 'Tente novamente.');
           console.error('Erro ao excluir imagem:', error);
         }
       });
@@ -109,7 +119,7 @@ export class TitulosCreateUpdateComponent {
   }
 
   private carregarImagemServidor() {
-    if (this.titulo?.id) {
+    if (this.titulo?.id && this.titulo.imagemUrl && !this.imagemExcluida) {
       this.servicoTitulo.downloadImage(this.titulo.id).subscribe({
         next: (blob: Blob) => {
           const reader = new FileReader();
@@ -120,24 +130,30 @@ export class TitulosCreateUpdateComponent {
         },
         error: (error) => {
           if (error.status !== 404) {
-            alert('Erro ao carregar a imagem do título.');
+            this.mensagemErro = 'Erro ao carregar a imagem do título.';
             console.error('Erro ao carregar imagem:', error);
           }
+          this.imagemPrevia = null;
         }
       });
+    } else {
+      this.imagemPrevia = null;
     }
   }
 
   salvarTitulo() {
-    if (!this.nomeTitulo) {
-      alert('O nome do título é obrigatório.');
+    this.mensagemErro = null;
+
+    if (!this.nomeTitulo.trim()) {
+      this.mensagemErro = 'O nome do título é obrigatório.';
       return;
     }
 
     const titulo: Titulo = {
       nome: this.nomeTitulo,
-      perguntaList: this.titulo?.perguntaList || []
-      // Removido imagemUrl para evitar problemas; será gerenciado pelo uploadImage
+      perguntaList: this.titulo?.perguntaList || [],
+      id: this.modoEdicao ? this.titulo?.id : undefined,
+      imagemUrl: this.titulo?.imagemUrl
     };
 
     const operacaoSalvar = this.modoEdicao && this.titulo?.id
@@ -155,9 +171,9 @@ export class TitulosCreateUpdateComponent {
         }
       },
       error: (err) => {
-        console.error('Erro ao salvar título:', err);
         const mensagemErro = err.error?.message || err.message || 'Erro interno no servidor. Tente novamente.';
-        alert(`Erro ao salvar título: ${mensagemErro}`);
+        this.mensagemErro = `Erro ao salvar título: ${mensagemErro}`;
+        console.error('Erro ao salvar título:', err);
       }
     });
   }
@@ -168,11 +184,10 @@ export class TitulosCreateUpdateComponent {
         next: (imagemUrl) => {
           this.titulo!.imagemUrl = imagemUrl;
           this.salvar.emit(this.titulo!);
-          alert('Imagem carregada com sucesso.');
           this.fecharModal();
         },
         error: (error) => {
-          alert('Erro ao carregar a imagem: ' + (error.message || 'Tente novamente.'));
+          this.mensagemErro = 'Erro ao carregar a imagem: ' + (error.message || 'Tente novamente.');
           console.error('Erro ao carregar imagem:', error);
         }
       });
@@ -189,7 +204,6 @@ export class TitulosCreateUpdateComponent {
     this.imagemPrevia = null;
     this.arquivoSelecionado = null;
     this.imagemExcluida = false;
-    this.modoEdicao = false;
-    this.titulo = null;
+    this.mensagemErro = null;
   }
 }

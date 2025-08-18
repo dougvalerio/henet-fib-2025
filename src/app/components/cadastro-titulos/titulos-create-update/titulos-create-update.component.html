@@ -6,57 +6,58 @@
     <h2>{{ modoEdicao ? 'Editar Título' : 'Novo Título' }}</h2>
     <form class="title-form">
       <div class="form-group">
-        <label for="coverImage">Capa do Título</label>
+        <label for="nomeTitulo">Nome do Título</label>
+        <input
+          type="text"
+          id="nomeTitulo"
+          [(ngModel)]="nomeTitulo"
+          name="nomeTitulo"
+          placeholder="Digite o nome do título"
+          class="title-input"
+        />
+      </div>
+      <div class="form-group">
+        <label>Imagem de Capa</label>
         <div class="image-upload-container">
-          <img
-            *ngIf="imagemPrevia"
-            [src]="imagemPrevia"
-            alt="Pré-visualização da capa"
-            class="preview-image"
-          />
-          <div class="upload-placeholder" *ngIf="!imagemPrevia">
-            <i class="fas fa-image"></i>
-            <span>Selecione uma imagem</span>
+          <div *ngIf="imagemPrevia && !imagemExcluida; else placeholder">
+            <img [src]="imagemPrevia" alt="Prévia da imagem" class="preview-image" />
           </div>
+          <ng-template #placeholder>
+            <div class="upload-placeholder">
+              <i class="fas fa-image"></i>
+              <span>Carregar Imagem (JPG/PNG, máx. 3MB)</span>
+            </div>
+          </ng-template>
           <input
             type="file"
             id="coverImage"
-            accept="image/*"
-            (change)="aoMudarImagem($event)"
+            accept="image/jpeg,image/png"
             class="file-input"
+            (change)="aoMudarImagem($event)"
           />
           <div class="image-actions">
             <button type="button" class="btn-upload" (click)="acionarInputArquivo()">
-              Escolher Imagem
+              {{ imagemPrevia && !imagemExcluida ? 'Alterar Imagem' : 'Carregar Imagem' }}
             </button>
             <button
               type="button"
               class="btn-delete"
+              *ngIf="imagemPrevia && !imagemExcluida"
               (click)="excluirImagem()"
-              *ngIf="imagemPrevia"
-              title="Excluir Imagem"
             >
-              <i class="fas fa-trash"></i>
+              Excluir Imagem
             </button>
           </div>
         </div>
       </div>
-      <div class="form-group">
-        <label for="titleName">Nome do Título</label>
-        <input
-          type="text"
-          id="titleName"
-          [(ngModel)]="nomeTitulo"
-          name="titleName"
-          placeholder="Digite o nome do filme/série"
-          class="title-input"
-        />
-      </div>
+      <p class="error-message" *ngIf="mensagemErro">{{ mensagemErro }}</p>
       <div class="form-actions">
         <button type="button" class="btn-cancel" (click)="fecharModal()">
           Cancelar
         </button>
-        <button type="button" class="btn-save" (click)="salvarTitulo()">Salvar</button>
+        <button type="button" class="btn-save" (click)="salvarTitulo()">
+          {{ modoEdicao ? 'Salvar Edição' : 'Salvar' }}
+        </button>
       </div>
     </form>
   </div>

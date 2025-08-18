@@ -9,7 +9,7 @@ import { Titulo } from '../../../models/titulo';
   standalone: true,
   imports: [CommonModule, TitulosCreateUpdateComponent],
   templateUrl: './titulos-list.component.html',
-  styleUrl: './titulos-list.component.css'
+  styleUrls: ['./titulos-list.component.css']
 })
 export class TitulosListComponent implements OnInit {
   titulos: Titulo[] = [];
@@ -27,10 +27,10 @@ export class TitulosListComponent implements OnInit {
   carregarTitulos() {
     this.servicoTitulo.findAll().subscribe({
       next: (titulos) => {
-        this.titulos = titulos.filter(titulo => !!titulo.id); // Filtra títulos sem ID
+        this.titulos = titulos.filter(titulo => !!titulo.id);
         this.titulos.forEach((titulo) => {
           if (titulo.imagemUrl) {
-            this.carregarImagem(titulo.id!); // Usa ! pois sabemos que id existe após o filtro
+            this.carregarImagem(titulo.id!);
           }
         });
       },
@@ -44,28 +44,30 @@ export class TitulosListComponent implements OnInit {
         const url = URL.createObjectURL(blob);
         this.urlsImagens[id] = url;
       },
-      error: (err) => {
-        console.error('Erro ao carregar imagem:', err);
-        this.urlsImagens[id] = 'assets/placeholder.jpg';
+      error: () => {
+        // Não exibir erro no console, apenas não definir a URL
+        // O HTML cuidará de exibir o ícone padrão
       }
     });
   }
 
   abrirModalCriar() {
+    this.tituloSelecionado = null;
     this.modalAberto = true;
     this.modoEdicao = false;
-    this.tituloSelecionado = { nome: '', perguntaList: [], imagemUrl: undefined };
   }
 
   abrirModalEditar(titulo: Titulo) {
-    this.modalAberto = true;
-    this.modoEdicao = true;
     this.tituloSelecionado = { ...titulo };
+    console.log('Objeto completo a ser editado:', JSON.stringify(this.tituloSelecionado, null, 2));
+    this.modoEdicao = true;
+    this.modalAberto = true;
   }
 
   fecharModal() {
     this.modalAberto = false;
     this.tituloSelecionado = null;
+    this.modoEdicao = false;
   }
 
   salvarTitulo(titulo: Titulo) {
