@@ -10,7 +10,7 @@
       <input 
         type="text" 
         id="nomeCompleto" 
-        [(ngModel)]="cadastro.nomeCompleto" 
+        [(ngModel)]="cadastro.nome" 
         name="nomeCompleto" 
         placeholder="Nome Completo" 
         required 
@@ -58,7 +58,7 @@
     </div>
 
     <button class="submit-button" [disabled]="!isFormValid" (click)="cadastrar()">
-      <i class="fas fa-play"></i> Selecionar Filmes/Séries
+      <i class="fas fa-play"></i> CADASTRAR
     </button>
   </form>
 </div>

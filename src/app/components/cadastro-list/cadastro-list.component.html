@@ -1,0 +1,23 @@
+<div class="container">
+  <h1>Lista de Cadastros</h1>
+  <table class="titles-table">
+    <thead>
+      <tr>
+        <th>Posição</th>
+        <th>Nome</th>
+        <th>CPF</th>
+        <th>E-mail</th>
+        <th>Telefone</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cadastro of cadastros; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ cadastro.nome }}</td>
+        <td>{{ cadastro.cpf }}</td>
+        <td>{{ cadastro.email }}</td>
+        <td>{{ cadastro.telefone }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

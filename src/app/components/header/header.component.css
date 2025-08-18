@@ -100,17 +100,35 @@ ul {
 }
 
 li {
-  margin: 24px 0; /* Aumentado para maior espaçamento */
+  margin: 24px 0;
 }
 
 /* Estilização do divisor */
 hr {
   border: 0;
   border-top: 1px solid var(--background-color);
-  margin: 12px 0; /* Aumentado para acompanhar o espaçamento */
-  opacity: 0.3; /* Mais suave para harmonizar */
+  margin: 12px 0;
+  opacity: 0.3;
 }
 
+/* Estilização da seção administrativa */
+.admin-section {
+  margin-top: 48px; /* Aumentado para maior espaçamento */
+  margin-bottom: 24px; /* Aumentado para maior espaçamento */
+}
+
+.admin-section span {
+  color: #FFD700; /* Cor dourada para destacar o texto ADMINISTRAÇÃO */
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  display: block;
+  padding: 8px 12px;
+  background-color: rgba(255, 255, 255, 0.1); /* Fundo sutil para destaque */
+  border-radius: 4px; /* Bordas arredondadas para o destaque */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra leve para efeito 3D */
+}
+
+/* Links do menu */
 a {
   text-decoration: none;
   color: var(--background-color);
@@ -118,18 +136,18 @@ a {
   font-weight: 500;
   display: flex;
   align-items: center;
-  gap: 12px; /* Espaço entre ícone e texto */
+  gap: 12px;
   transition: color 0.2s ease, transform 0.2s ease;
 }
 
 a:hover {
   color: var(--secondary-color);
-  transform: translateX(8px); /* Efeito de deslocamento ao passar o mouse */
+  transform: translateX(8px);
 }
 
 /* Ícones do menu */
 a i {
-  font-size: 20px; /* Tamanho do ícone */
+  font-size: 20px;
 }
 
 /* Responsividade para tablets */
@@ -148,7 +166,7 @@ a i {
   }
 
   li {
-    margin: 20px 0; /* Ajuste no espaçamento */
+    margin: 20px 0;
   }
 
   hr {
@@ -157,6 +175,16 @@ a i {
 
   a i {
     font-size: 18px;
+  }
+
+  .admin-section {
+    margin-top: 36px; /* Ajuste no espaçamento para tablet */
+    margin-bottom: 18px;
+  }
+
+  .admin-section span {
+    font-size: 14px;
+    padding: 6px 10px;
   }
 }
 
@@ -180,7 +208,7 @@ a i {
   }
 
   li {
-    margin: 16px 0; /* Ajuste no espaçamento */
+    margin: 16px 0;
   }
 
   hr {
@@ -193,5 +221,15 @@ a i {
 
   a i {
     font-size: 16px;
+  }
+
+  .admin-section {
+    margin-top: 28px; /* Ajuste no espaçamento para mobile */
+    margin-bottom: 14px;
+  }
+
+  .admin-section span {
+    font-size: 13px;
+    padding: 5px 8px;
   }
 }

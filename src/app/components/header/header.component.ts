@@ -15,7 +15,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   navigationSubscription;
 
   constructor(private router: Router) {
-    // Fecha o menu ao mudar de rota
     this.navigationSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {

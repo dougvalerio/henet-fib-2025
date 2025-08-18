@@ -9,11 +9,12 @@ import { PopupResultadoRespostaComponent } from './components/popup-resultado-re
 import { PerguntasListComponent } from './components/cadastro-perguntas/perguntas-list/perguntas-list.component';
 import { RegulamentoComponent } from './components/regulamento/regulamento.component';
 import { ConfigComponent } from './components/config/config.component';
+import { CadastroListComponent } from './components/cadastro-list/cadastro-list.component';
 
 export const routes: Routes = [
-  
   { path: 'home', component: HomeComponent },
   { path: 'cadastro', component: CadastroComponent },
+  { path: 'cadastro-list', component: CadastroListComponent },
   { path: 'selecao-titulos', component: SelecaoTitulosComponent },
   { path: 'titulos-list', component: TitulosListComponent },
   { path: 'perguntas', component: PerguntasComponent },
