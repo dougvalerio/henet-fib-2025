@@ -28,7 +28,7 @@ export class PerguntasCreateUpdateComponent implements OnInit {
     respostaC: '',
     respostaD: '',
     respostaCorreta: null,
-    titulo: {} as Titulo // Inicializa com um objeto vazio do tipo Titulo
+    titulo: null
   };
   respostas: string[] = ['', '', '', ''];
   idTituloSelecionado: string = '';
@@ -56,7 +56,6 @@ export class PerguntasCreateUpdateComponent implements OnInit {
           this.pergunta.respostaD || ''
         ];
         this.idTituloSelecionado = this.pergunta.titulo?.id?.toString() || '';
-        this.perguntaFormulario.titulo = this.pergunta.titulo; // Garante que titulo seja um objeto Titulo
       } else {
         this.reiniciarFormulario();
       }
@@ -64,17 +63,13 @@ export class PerguntasCreateUpdateComponent implements OnInit {
   }
 
   carregarTitulos() {
-    this.mensagemErro = null;
+    this.mensagemErro = null; // Limpar mensagem de erro ao carregar títulos
     this.servicoTitulo.findAll().subscribe({
       next: (titulos) => {
         this.titulos = titulos.filter(titulo => !!titulo.id);
-        console.log('Títulos carregados:', this.titulos);
+        console.log('Títulos carregados:', this.titulos); // Depuração
         if (!this.titulos.length) {
           this.mensagemErro = 'Nenhum título disponível para seleção.';
-        } else if (!this.modoEdicao && !this.idTituloSelecionado) {
-          // Define o primeiro título como padrão, se não estiver em modo de edição
-          this.idTituloSelecionado = this.titulos[0].id?.toString() || '';
-          this.perguntaFormulario.titulo = this.titulos[0];
         }
       },
       error: (err) => {
@@ -90,8 +85,7 @@ export class PerguntasCreateUpdateComponent implements OnInit {
       this.titulos.some(t => t.id?.toString() === this.idTituloSelecionado) &&
       this.perguntaFormulario.pergunta.trim() &&
       this.respostas.every(resposta => resposta.trim() !== '') &&
-      this.perguntaFormulario.respostaCorreta !== null &&
-      this.perguntaFormulario.titulo?.id
+      this.perguntaFormulario.respostaCorreta !== null
     );
     return isValid;
   }
@@ -105,15 +99,15 @@ export class PerguntasCreateUpdateComponent implements OnInit {
   }
 
   salvarPergunta() {
+    // Limpar mensagem de erro anterior
     this.mensagemErro = null;
 
-    // Validar cada campo
+    // Validar cada campo e exibir mensagem específica no <p>
     if (!this.idTituloSelecionado) {
       this.mensagemErro = 'Selecione um título no campo de seleção.';
       return;
     }
-    const tituloSelecionado = this.titulos.find(t => t.id?.toString() === this.idTituloSelecionado);
-    if (!tituloSelecionado) {
+    if (!this.titulos.some(t => t.id?.toString() === this.idTituloSelecionado)) {
       this.mensagemErro = 'O título selecionado é inválido.';
       return;
     }
@@ -149,13 +143,10 @@ export class PerguntasCreateUpdateComponent implements OnInit {
       respostaC: this.respostas[2],
       respostaD: this.respostas[3],
       respostaCorreta: this.perguntaFormulario.respostaCorreta,
-      titulo: tituloSelecionado // Atribui o objeto Titulo selecionado
+      titulo: this.titulos.find(t => t.id?.toString() === this.idTituloSelecionado) || null
     };
 
-    if (this.modoEdicao && this.pergunta?.id) {
-      perguntaParaSalvar.id = this.pergunta.id;
-    }
-
+    // Exibir o objeto no console para depuração
     console.log('Objeto Pergunta enviado:', perguntaParaSalvar);
 
     const operacaoSalvar = this.modoEdicao && this.pergunta?.id
@@ -164,7 +155,7 @@ export class PerguntasCreateUpdateComponent implements OnInit {
 
     operacaoSalvar.subscribe({
       next: () => {
-        this.mensagemErro = null;
+        this.mensagemErro = null; // Limpar mensagem de erro em caso de sucesso
         this.salvar.emit();
         this.reiniciarFormulario();
       },
@@ -176,7 +167,7 @@ export class PerguntasCreateUpdateComponent implements OnInit {
   }
 
   fecharModal() {
-    this.mensagemErro = null;
+    this.mensagemErro = null; // Limpar mensagem de erro ao fechar o modal
     this.fechar.emit();
     this.reiniciarFormulario();
   }
@@ -189,10 +180,10 @@ export class PerguntasCreateUpdateComponent implements OnInit {
       respostaC: '',
       respostaD: '',
       respostaCorreta: null,
-      titulo: {} as Titulo // Inicializa com um objeto vazio do tipo Titulo
+      titulo: null
     };
     this.respostas = ['', '', '', ''];
     this.idTituloSelecionado = '';
-    this.mensagemErro = null;
+    this.mensagemErro = null; // Limpar mensagem de erro ao reiniciar
   }
 }
