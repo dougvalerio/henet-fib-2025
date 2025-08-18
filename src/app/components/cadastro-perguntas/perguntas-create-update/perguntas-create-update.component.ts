@@ -33,6 +33,7 @@ export class PerguntasCreateUpdateComponent implements OnInit {
   respostas: string[] = ['', '', '', ''];
   idTituloSelecionado: string = '';
   rotulosRespostas = ['A', 'B', 'C', 'D'];
+  mensagemErro: string | null = null;
 
   constructor(
     private servicoPergunta: PerguntaService,
@@ -45,6 +46,7 @@ export class PerguntasCreateUpdateComponent implements OnInit {
 
   ngOnChanges() {
     if (this.modalAberto) {
+      this.carregarTitulos();
       if (this.modoEdicao && this.pergunta) {
         this.perguntaFormulario = { ...this.pergunta };
         this.respostas = [
@@ -53,7 +55,7 @@ export class PerguntasCreateUpdateComponent implements OnInit {
           this.pergunta.respostaC || '',
           this.pergunta.respostaD || ''
         ];
-        this.idTituloSelecionado = this.pergunta.titulo?.id || '';
+        this.idTituloSelecionado = this.pergunta.titulo?.id?.toString() || '';
       } else {
         this.reiniciarFormulario();
       }
@@ -61,26 +63,31 @@ export class PerguntasCreateUpdateComponent implements OnInit {
   }
 
   carregarTitulos() {
-    if (!this.titulos.length) {
-      this.servicoTitulo.findAll().subscribe({
-        next: (titulos) => {
-          this.titulos = titulos.filter(titulo => !!titulo.id);
-        },
-        error: (err) => {
-          console.error('Erro ao carregar títulos:', err);
-          alert('Erro ao carregar títulos. Tente novamente.');
+    this.mensagemErro = null; // Limpar mensagem de erro ao carregar títulos
+    this.servicoTitulo.findAll().subscribe({
+      next: (titulos) => {
+        this.titulos = titulos.filter(titulo => !!titulo.id);
+        console.log('Títulos carregados:', this.titulos); // Depuração
+        if (!this.titulos.length) {
+          this.mensagemErro = 'Nenhum título disponível para seleção.';
         }
-      });
-    }
+      },
+      error: (err) => {
+        this.mensagemErro = 'Erro ao carregar títulos. Tente novamente.';
+        console.error('Erro ao carregar títulos:', err);
+      }
+    });
   }
 
   get formularioValido(): boolean {
-    return !!(
+    const isValid = !!(
       this.idTituloSelecionado &&
+      this.titulos.some(t => t.id?.toString() === this.idTituloSelecionado) &&
       this.perguntaFormulario.pergunta.trim() &&
       this.respostas.every(resposta => resposta.trim() !== '') &&
       this.perguntaFormulario.respostaCorreta !== null
     );
+    return isValid;
   }
 
   definirRespostaCorreta(indice: number) {
@@ -92,8 +99,40 @@ export class PerguntasCreateUpdateComponent implements OnInit {
   }
 
   salvarPergunta() {
-    if (!this.formularioValido) {
-      alert('Preencha todos os campos obrigatórios e selecione uma resposta correta.');
+    // Limpar mensagem de erro anterior
+    this.mensagemErro = null;
+
+    // Validar cada campo e exibir mensagem específica no <p>
+    if (!this.idTituloSelecionado) {
+      this.mensagemErro = 'Selecione um título no campo de seleção.';
+      return;
+    }
+    if (!this.titulos.some(t => t.id?.toString() === this.idTituloSelecionado)) {
+      this.mensagemErro = 'O título selecionado é inválido.';
+      return;
+    }
+    if (!this.perguntaFormulario.pergunta.trim()) {
+      this.mensagemErro = 'Digite o texto da pergunta.';
+      return;
+    }
+    if (!this.respostas[0].trim()) {
+      this.mensagemErro = 'Digite a resposta A.';
+      return;
+    }
+    if (!this.respostas[1].trim()) {
+      this.mensagemErro = 'Digite a resposta B.';
+      return;
+    }
+    if (!this.respostas[2].trim()) {
+      this.mensagemErro = 'Digite a resposta C.';
+      return;
+    }
+    if (!this.respostas[3].trim()) {
+      this.mensagemErro = 'Digite a resposta D.';
+      return;
+    }
+    if (this.perguntaFormulario.respostaCorreta === null) {
+      this.mensagemErro = 'Selecione uma resposta correta marcando um checkbox.';
       return;
     }
 
@@ -104,8 +143,11 @@ export class PerguntasCreateUpdateComponent implements OnInit {
       respostaC: this.respostas[2],
       respostaD: this.respostas[3],
       respostaCorreta: this.perguntaFormulario.respostaCorreta,
-      titulo: this.titulos.find(t => t.id === this.idTituloSelecionado) || null
+      titulo: this.titulos.find(t => t.id?.toString() === this.idTituloSelecionado) || null
     };
+
+    // Exibir o objeto no console para depuração
+    console.log('Objeto Pergunta enviado:', perguntaParaSalvar);
 
     const operacaoSalvar = this.modoEdicao && this.pergunta?.id
       ? this.servicoPergunta.update(this.pergunta.id, perguntaParaSalvar)
@@ -113,17 +155,19 @@ export class PerguntasCreateUpdateComponent implements OnInit {
 
     operacaoSalvar.subscribe({
       next: () => {
+        this.mensagemErro = null; // Limpar mensagem de erro em caso de sucesso
         this.salvar.emit();
         this.reiniciarFormulario();
       },
       error: (err) => {
+        this.mensagemErro = `Erro ao salvar pergunta: ${err.message || 'Tente novamente.'}`;
         console.error('Erro ao salvar pergunta:', err);
-        alert(`Erro ao salvar pergunta: ${err.message || 'Tente novamente.'}`);
       }
     });
   }
 
   fecharModal() {
+    this.mensagemErro = null; // Limpar mensagem de erro ao fechar o modal
     this.fechar.emit();
     this.reiniciarFormulario();
   }
@@ -140,5 +184,6 @@ export class PerguntasCreateUpdateComponent implements OnInit {
     };
     this.respostas = ['', '', '', ''];
     this.idTituloSelecionado = '';
+    this.mensagemErro = null; // Limpar mensagem de erro ao reiniciar
   }
 }

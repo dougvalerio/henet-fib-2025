@@ -201,6 +201,14 @@ h2 {
   background: #059669;
 }
 
+.error-message {
+  color: red;
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  margin: 0;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   .modal-content {
     width: 95%;
@@ -226,6 +234,10 @@ h2 {
 
   .select-container::after {
     right: 10px;
+    font-size: 14px;
+  }
+
+  .error-message {
     font-size: 14px;
   }
 }
@@ -269,5 +281,9 @@ h2 {
   .select-container::after {
     right: 8px;
     font-size: 12px;
+  }
+
+  .error-message {
+    font-size: 13px;
   }
 }

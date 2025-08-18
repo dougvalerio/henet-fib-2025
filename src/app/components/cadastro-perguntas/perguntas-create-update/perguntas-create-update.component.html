@@ -51,6 +51,7 @@
           />
         </div>
       </div>
+      <p class="error-message" *ngIf="mensagemErro">{{ mensagemErro }}</p>
       <div class="form-actions">
         <button type="button" class="btn-cancel" (click)="fecharModal()">
           Cancelar
@@ -58,7 +59,6 @@
         <button
           type="button"
           class="btn-save"
-          [disabled]="!formularioValido"
           (click)="salvarPergunta()"
         >
           {{ modoEdicao ? 'Salvar Edição' : 'Salvar' }}
