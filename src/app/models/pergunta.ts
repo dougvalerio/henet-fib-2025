@@ -1,7 +1,7 @@
 import { Titulo } from "./titulo";
 
 export interface Pergunta {
-  id?: string; // Opcional, gerado pelo backend
+  id?: any; // Opcional, gerado pelo backend
   pergunta: string;
   respostaA: string;
   respostaB: string;
