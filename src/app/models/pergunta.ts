@@ -6,5 +6,5 @@ export interface Pergunta {
   respostaC: string;
   respostaD: string;
   respostaCorreta: number | null; // 0, 1, 2 ou 3 para respostas A, B, C, D
-  titulo: any;
+  titulo: string | null;
 }

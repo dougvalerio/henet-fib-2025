@@ -41,41 +41,46 @@ export class PerguntasCreateUpdateComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.carregarTitulos();
+    // Não carregar títulos aqui, será feito em ngOnChanges
   }
 
   ngOnChanges() {
     if (this.modalAberto) {
-      this.carregarTitulos();
-      if (this.modoEdicao && this.pergunta) {
-        this.perguntaFormulario = { ...this.pergunta };
-        this.respostas = [
-          this.pergunta.respostaA || '',
-          this.pergunta.respostaB || '',
-          this.pergunta.respostaC || '',
-          this.pergunta.respostaD || ''
-        ];
-        this.idTituloSelecionado = this.pergunta.titulo?.id?.toString() || '';
-      } else {
-        this.reiniciarFormulario();
-      }
+      this.carregarTitulos().then(() => {
+        if (this.modoEdicao && this.pergunta) {
+          this.perguntaFormulario = { ...this.pergunta };
+          this.respostas = [
+            this.pergunta.respostaA || '',
+            this.pergunta.respostaB || '',
+            this.pergunta.respostaC || '',
+            this.pergunta.respostaD || ''
+          ];
+          this.idTituloSelecionado = this.pergunta.titulo?.toString() || '';
+        } else {
+          this.reiniciarFormulario();
+        }
+      });
     }
   }
 
-  carregarTitulos() {
-    this.mensagemErro = null; // Limpar mensagem de erro ao carregar títulos
-    this.servicoTitulo.findAll().subscribe({
-      next: (titulos) => {
-        this.titulos = titulos.filter(titulo => !!titulo.id);
-        console.log('Títulos carregados:', this.titulos); // Depuração
-        if (!this.titulos.length) {
-          this.mensagemErro = 'Nenhum título disponível para seleção.';
+  carregarTitulos(): Promise<void> {
+    return new Promise((resolve) => {
+      this.mensagemErro = null; // Limpar mensagem de erro ao carregar títulos
+      this.servicoTitulo.findAll().subscribe({
+        next: (titulos) => {
+          this.titulos = titulos.filter(titulo => !!titulo.id);
+          console.log('Títulos carregados:', this.titulos); // Depuração
+          if (!this.titulos.length) {
+            this.mensagemErro = 'Nenhum título disponível para seleção.';
+          }
+          resolve();
+        },
+        error: (err) => {
+          this.mensagemErro = 'Erro ao carregar títulos. Tente novamente.';
+          console.error('Erro ao carregar títulos:', err);
+          resolve(); // Resolver mesmo em caso de erro para evitar travamento
         }
-      },
-      error: (err) => {
-        this.mensagemErro = 'Erro ao carregar títulos. Tente novamente.';
-        console.error('Erro ao carregar títulos:', err);
-      }
+      });
     });
   }
 
@@ -143,7 +148,7 @@ export class PerguntasCreateUpdateComponent implements OnInit {
       respostaC: this.respostas[2],
       respostaD: this.respostas[3],
       respostaCorreta: this.perguntaFormulario.respostaCorreta,
-      titulo: this.titulos.find(t => t.id?.toString() === this.idTituloSelecionado) || null
+      titulo: this.idTituloSelecionado
     };
 
     // Exibir o objeto no console para depuração

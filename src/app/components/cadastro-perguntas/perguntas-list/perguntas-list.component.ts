@@ -53,6 +53,14 @@ export class PerguntasListComponent implements OnInit {
     });
   }
 
+  getTituloNome(tituloId: string | null): string {
+    if (!tituloId) {
+      return 'Sem título';
+    }
+    const titulo = this.titulos.find(t => t.id?.toString() === tituloId.toString());
+    return titulo ? titulo.nome : 'Sem título';
+  }
+
   abrirModalCriar() {
     this.modalAberto = true;
     this.modoEdicao = false;

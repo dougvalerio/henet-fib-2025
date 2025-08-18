@@ -16,7 +16,7 @@
     <tbody>
       <tr *ngFor="let pergunta of perguntas; let i = index">
         <td>{{ i + 1 }}</td>
-        <td>{{ pergunta.titulo?.nome || 'Sem título' }}</td>
+        <td>{{ getTituloNome(pergunta.titulo) }}</td>
         <td>{{ pergunta.pergunta }}</td>
         <td>{{ pergunta.respostaCorreta !== null ? rotulosRespostas[pergunta.respostaCorreta] : '-' }}</td>
         <td>
