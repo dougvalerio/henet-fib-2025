@@ -6,17 +6,6 @@
     <h2>{{ modoEdicao ? 'Editar Título' : 'Novo Título' }}</h2>
     <form class="title-form">
       <div class="form-group">
-        <label for="nomeTitulo">Nome do Título</label>
-        <input
-          type="text"
-          id="nomeTitulo"
-          [(ngModel)]="nomeTitulo"
-          name="nomeTitulo"
-          placeholder="Digite o nome do título"
-          class="title-input"
-        />
-      </div>
-      <div class="form-group">
         <label>Imagem de Capa</label>
         <div class="image-upload-container">
           <div *ngIf="imagemPrevia && !imagemExcluida; else placeholder">
@@ -50,13 +39,24 @@
           </div>
         </div>
       </div>
+      <div class="form-group">
+        <label for="nomeTitulo">Nome do Título</label>
+        <input
+          type="text"
+          id="nomeTitulo"
+          [(ngModel)]="nomeTitulo"
+          name="nomeTitulo"
+          placeholder="Digite o nome do título"
+          class="title-input"
+        />
+      </div>
       <p class="error-message" *ngIf="mensagemErro">{{ mensagemErro }}</p>
       <div class="form-actions">
         <button type="button" class="btn-cancel" (click)="fecharModal()">
           Cancelar
         </button>
         <button type="button" class="btn-save" (click)="salvarTitulo()">
-          {{ modoEdicao ? 'Salvar Edição' : 'Salvar' }}
+          {{ modoEdicao ? 'Salvar' : 'Salvar' }}
         </button>
       </div>
     </form>
