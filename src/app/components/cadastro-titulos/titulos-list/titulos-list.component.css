@@ -94,6 +94,7 @@ h1 {
   cursor: pointer;
   font-size: var(--font-size-base);
   margin: 0 5px; /* Ajuste de margem para centralização */
+  padding: 1rem;
   transition: color 0.3s ease;
 }
 
