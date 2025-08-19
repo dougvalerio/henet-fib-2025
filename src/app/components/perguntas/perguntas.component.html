@@ -3,32 +3,32 @@
   
   <!-- Barra de progresso -->
   <div class="progress-bar">
-    <span class="progress-text">{{ currentQuestionIndex + 1 }}/9</span>
-    <div class="progress-fill" [style.width.%]="((currentQuestionIndex + 1) / 9) * 100"></div>
+    <span class="progress-text">{{ indicePerguntaAtual + 1 }}/9</span>
+    <div class="progress-fill" [style.width.%]="((indicePerguntaAtual + 1) / 9) * 100"></div>
   </div>
 
   <!-- Conteúdo da pergunta -->
-  <div class="question-container" *ngIf="currentQuestion">
+  <div class="question-container" *ngIf="perguntaAtual">
     <!-- Capa do filme/série -->
     <div class="question-image">
-      <img [src]="currentQuestion.imagePath" [alt]="currentQuestion.title" />
+      <img [src]="perguntaAtual.imagePath" [alt]="perguntaAtual.title" />
     </div>
 
     <!-- Texto da pergunta -->
     <div class="question-text">
-      <p>{{ currentQuestion.text }}</p>
+      <p>{{ perguntaAtual.text }}</p>
     </div>
 
     <!-- Opções de resposta -->
     <div class="options-container">
       <div
-        *ngFor="let option of currentQuestion.options; let i = index"
+        *ngFor="let opcao of perguntaAtual.options; let i = index"
         class="option"
-        [class.selected]="selectedOption === i"
-        (click)="selectOption(i)"
+        [class.selected]="opcaoSelecionada === i"
+        (click)="selecionarOpcao(i)"
       >
         <span class="option-letter">{{ 'ABCDE'[i] }}</span>
-        <span>{{ option }}</span>
+        <span>{{ opcao }}</span>
       </div>
     </div>
   </div>
@@ -36,18 +36,18 @@
   <!-- Botão Próximo -->
   <button
     class="next-button"
-    [disabled]="selectedOption === null"
-    (click)="nextQuestion()"
+    [disabled]="opcaoSelecionada === null"
+    (click)="proximaPergunta()"
   >
     <i class="fas fa-arrow-right"></i> PRÓXIMO
   </button>
 
   <!-- Popup -->
   <app-popup-resultado-resposta
-    [showPopup]="showPopup"
-    [isCorrectAnswer]="isCorrectAnswer"
-    [isQuizFinished]="isQuizFinished"
-    [isInitialMessage]="isInitialMessage"
-    (close)="closePopup()"
+    [showPopup]="exibirPopup"
+    [isCorrectAnswer]="respostaCorreta"
+    [isQuizFinished]="quizFinalizado"
+    [isInitialMessage]="mensagemInicial"
+    (close)="fecharPopup()"
   ></app-popup-resultado-resposta>
 </div>
