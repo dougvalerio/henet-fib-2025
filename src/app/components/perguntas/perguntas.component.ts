@@ -43,6 +43,7 @@ export class PerguntasComponent implements OnInit {
   quizFinalizado = false;
   mensagemInicial = true;
   jogoDetalheAtual: JogoDetalhe | null = null;
+  tentativasErradas = 0; // Contador de tentativas erradas acumulativo
 
   constructor(
     private router: Router,
@@ -177,6 +178,10 @@ export class PerguntasComponent implements OnInit {
         this.respostaCorreta = this.opcaoSelecionada === perguntaAtual.correctAnswer;
         this.mensagemInicial = false;
 
+        if (!this.respostaCorreta) {
+          this.tentativasErradas++;
+        }
+
         // Garantir que apenas o ID do jogoCabecalho seja enviado e dataResposta seja null
         this.jogoDetalheAtual.jogoCabecalho = this.jogoCabecalho.id;
         this.jogoDetalheAtual.dataResposta = null;
@@ -224,22 +229,25 @@ export class PerguntasComponent implements OnInit {
         this.router.navigate(['/inicio']);
       }
     } else {
-      if (this.respostaCorreta && !this.quizFinalizado) {
-        this.indicePerguntaAtual++;
-        this.opcaoSelecionada = null;
-        this.jogoDetalheAtual = null;
-        if (
-          this.jogoCabecalho &&
-          Array.isArray(this.jogoCabecalho.jogoDetalheList) &&
-          this.indicePerguntaAtual < this.jogoCabecalho.jogoDetalheList.length &&
-          this.jogoCabecalho.jogoDetalheList[this.indicePerguntaAtual]?.pergunta != null
-        ) {
-          const proximaPerguntaId = this.jogoCabecalho.jogoDetalheList[this.indicePerguntaAtual].pergunta;
-          this.carregarPergunta(proximaPerguntaId);
+      if (this.respostaCorreta || this.tentativasErradas < 3) {
+        if (!this.quizFinalizado) {
+          this.indicePerguntaAtual++;
+          this.opcaoSelecionada = null;
+          this.jogoDetalheAtual = null;
+          if (
+            this.jogoCabecalho &&
+            Array.isArray(this.jogoCabecalho.jogoDetalheList) &&
+            this.indicePerguntaAtual < this.jogoCabecalho.jogoDetalheList.length &&
+            this.jogoCabecalho.jogoDetalheList[this.indicePerguntaAtual]?.pergunta != null
+          ) {
+            const proximaPerguntaId = this.jogoCabecalho.jogoDetalheList[this.indicePerguntaAtual].pergunta;
+            this.carregarPergunta(proximaPerguntaId);
+          } else {
+            this.quizFinalizado = true;
+            this.exibirPopup = true;
+          }
         } else {
-          console.error('Erro: Próxima pergunta não encontrada ou jogoDetalheList inválido.');
-          this.quizFinalizado = true;
-          this.exibirPopup = true;
+          this.router.navigate(['/inicio']);
         }
       } else {
         this.router.navigate(['/inicio']);

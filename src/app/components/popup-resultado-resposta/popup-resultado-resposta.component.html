@@ -13,8 +13,11 @@
     <div *ngIf="!isInitialMessage && !isCorrectAnswer && !isQuizFinished" class="popup-body">
       <img src="https://media.giphy.com/media/26FPJGjAwu8G8rXLa/giphy.gif" alt="Resposta Errada" class="popup-gif" />
       <p class="popup-message">{{ errorMessage }}</p>
+      <p class="chances-text">CHANCES: {{ 3 - tentativasErradas }}</p>
       <button class="popup-button" (click)="closePopup()">
-        <i class="fas fa-home"></i> Início
+        <i class="fas fa-arrow-right" *ngIf="tentativasErradas < 3"></i>
+        <i class="fas fa-home" *ngIf="tentativasErradas >= 3"></i>
+        {{ tentativasErradas < 3 ? 'Continuar' : 'Início' }}
       </button>
     </div>
 

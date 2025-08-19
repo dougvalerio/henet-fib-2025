@@ -7,6 +7,11 @@
     <div class="progress-fill" [style.width.%]="((indicePerguntaAtual + 1) / 9) * 100"></div>
   </div>
 
+  <!-- Contador de chances -->
+  <div class="chances-container">
+    <p class="chances-text">CHANCES: {{ 3 - tentativasErradas }}</p>
+  </div>
+
   <!-- Conteúdo da pergunta -->
   <div class="question-container" *ngIf="perguntaAtual">
     <!-- Capa do filme/série -->
@@ -48,6 +53,7 @@
     [isCorrectAnswer]="respostaCorreta"
     [isQuizFinished]="quizFinalizado"
     [isInitialMessage]="mensagemInicial"
+    [tentativasErradas]="tentativasErradas"
     (close)="fecharPopup()"
   ></app-popup-resultado-resposta>
 </div>

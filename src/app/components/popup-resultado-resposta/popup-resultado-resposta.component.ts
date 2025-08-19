@@ -13,6 +13,7 @@ export class PopupResultadoRespostaComponent implements OnChanges {
   @Input() isCorrectAnswer: boolean = false;
   @Input() isQuizFinished: boolean = false;
   @Input() isInitialMessage: boolean = false;
+  @Input() tentativasErradas: number = 0; // Recebe o número de tentativas erradas
   @Output() close = new EventEmitter<void>();
 
   initialMessages: string[] = [
@@ -113,4 +114,4 @@ export class PopupResultadoRespostaComponent implements OnChanges {
   closePopup() {
     this.close.emit();
   }
-} 
+}
