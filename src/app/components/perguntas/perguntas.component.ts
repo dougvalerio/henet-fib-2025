@@ -4,8 +4,10 @@ import { Router } from '@angular/router';
 import { PopupResultadoRespostaComponent } from '../popup-resultado-resposta/popup-resultado-resposta.component';
 import { PerguntaService } from '../../services/pergunta.service';
 import { TituloService } from '../../services/titulo.service';
+import { JogoDetalheService } from '../../services/jogo-detalhe.service';
 import { Pergunta } from '../../models/pergunta';
 import { JogoCabecalho } from '../../models/jogo-cabecalho';
+import { JogoDetalhe } from '../../models/jogo-detalhe';
 import { Titulo } from '../../models/titulo';
 
 interface Title {
@@ -40,11 +42,13 @@ export class PerguntasComponent implements OnInit {
   isCorrectAnswer = false;
   isQuizFinished = false;
   isInitialMessage = true;
+  currentJogoDetalhe: JogoDetalhe | null = null;
 
   constructor(
     private router: Router,
     private perguntaService: PerguntaService,
-    private tituloService: TituloService
+    private tituloService: TituloService,
+    private jogoDetalheService: JogoDetalheService
   ) {
     const navigation = this.router.getCurrentNavigation();
     this.selectedTitles = navigation?.extras.state?.['selectedTitles'] || [];
@@ -57,7 +61,7 @@ export class PerguntasComponent implements OnInit {
       this.router.navigate(['/inicio']);
       return;
     }
-    this.showPopup = true; // Exibir o popup inicial
+    this.showPopup = true;
     this.isInitialMessage = true;
     this.isCorrectAnswer = false;
     this.isQuizFinished = false;
@@ -73,6 +77,26 @@ export class PerguntasComponent implements OnInit {
   }
 
   loadQuestion(perguntaId: number) {
+    if (
+      this.jogoCabecalho &&
+      Array.isArray(this.jogoCabecalho.jogoDetalheList) &&
+      this.currentQuestionIndex < this.jogoCabecalho.jogoDetalheList.length
+    ) {
+      const currentDetalhe = this.jogoCabecalho.jogoDetalheList[this.currentQuestionIndex];
+      this.currentJogoDetalhe = {
+        id: currentDetalhe.id,
+        jogoCabecalho: this.jogoCabecalho.id,
+        pergunta: currentDetalhe.pergunta,
+        resposta: null,
+        dataResposta: null,
+      };
+      console.log('JogoDetalhe criado:', this.currentJogoDetalhe);
+    } else {
+      console.error('Erro: Item de jogoDetalheList não encontrado para o índice atual.');
+      this.router.navigate(['/inicio']);
+      return;
+    }
+
     this.perguntaService.findById(perguntaId).subscribe({
       next: (pergunta: Pergunta) => {
         const options = [
@@ -84,19 +108,14 @@ export class PerguntasComponent implements OnInit {
 
         const question: Question = {
           title: pergunta.titulo?.toString() || 'Desconhecido',
-          imagePath: 'assets/placeholder.jpg', // Placeholder inicial
+          imagePath: 'assets/placeholder.jpg',
           text: pergunta.pergunta,
           options: options,
           correctAnswer: pergunta.respostaCorreta ?? 0,
         };
 
-        // Armazena a pergunta na lista
         this.questions[this.currentQuestionIndex] = question;
-
-        // Loga o objeto da pergunta no console
         console.log('Pergunta carregada:', question);
-
-        // Carrega a imagem do título associado
         this.loadTitleImage(pergunta, question);
       },
       error: (error) => {
@@ -107,25 +126,21 @@ export class PerguntasComponent implements OnInit {
   }
 
   loadTitleImage(pergunta: Pergunta, question: Question) {
-    // O campo 'titulo' na pergunta é o ID do título (número)
     const tituloId = pergunta.titulo;
     if (!tituloId) {
       console.warn('ID do título não fornecido para a pergunta.');
       question.imagePath = 'assets/placeholder.jpg';
-      this.questions = [...this.questions]; // Força atualização da view
+      this.questions = [...this.questions];
       return;
     }
 
-    // Verifica se a imagem já está carregada em selectedTitles
     const selectedTitle = this.selectedTitles.find((t) => t.id?.toString() === tituloId.toString());
     if (selectedTitle && selectedTitle.imagePath && selectedTitle.imagePath !== 'assets/placeholder.jpg') {
       question.imagePath = selectedTitle.imagePath;
-      this.questions = [...this.questions]; // Força atualização da view
-      console.log(`Imagem reutilizada para o título ID ${tituloId}:`, question.imagePath);
+      this.questions = [...this.questions];
       return;
     }
 
-    // Carrega a imagem usando o TituloService
     this.tituloService.downloadImage(tituloId).subscribe({
       next: (blob: Blob) => {
         const reader = new FileReader();
@@ -133,36 +148,62 @@ export class PerguntasComponent implements OnInit {
         reader.onload = () => {
           const imageDataUrl = reader.result as string;
           question.imagePath = imageDataUrl;
-          // Atualiza o selectedTitle, se existir, para reutilização futura
           if (selectedTitle) {
             selectedTitle.imagePath = imageDataUrl;
           }
-          this.questions = [...this.questions]; // Força atualização da view
+          this.questions = [...this.questions];
         };
       },
       error: (error) => {
         console.error(`Erro ao carregar imagem do título ID ${tituloId}:`, error);
         question.imagePath = 'assets/placeholder.jpg';
-        this.questions = [...this.questions]; // Força atualização da view
+        this.questions = [...this.questions];
       },
     });
   }
 
   selectOption(index: number) {
     this.selectedOption = index;
+    if (this.currentJogoDetalhe) {
+      this.currentJogoDetalhe.resposta = index;
+      console.log('Resposta selecionada:', this.currentJogoDetalhe);
+    }
   }
 
   nextQuestion() {
-    if (this.selectedOption !== null) {
+    if (this.selectedOption !== null && this.currentJogoDetalhe && this.jogoCabecalho) {
       const currentQuestion = this.currentQuestion;
       if (currentQuestion) {
         this.isCorrectAnswer = this.selectedOption === currentQuestion.correctAnswer;
         this.isInitialMessage = false;
-        this.showPopup = true;
 
-        if (this.isCorrectAnswer && this.currentQuestionIndex === this.jogoCabecalho!.jogoDetalheList.length - 1) {
-          this.isQuizFinished = true;
-        }
+        // Garantir que apenas o ID do jogoCabecalho seja enviado e dataResposta seja null
+        this.currentJogoDetalhe.jogoCabecalho = this.jogoCabecalho.id;
+        this.currentJogoDetalhe.dataResposta = null;
+
+        this.jogoDetalheService.create(this.currentJogoDetalhe).subscribe({
+          next: (response: JogoDetalhe) => {
+            this.jogoCabecalho!.jogoDetalheList[this.currentQuestionIndex] = {
+              ...this.jogoCabecalho!.jogoDetalheList[this.currentQuestionIndex],
+              id: response.id,
+              resposta: response.resposta,
+              dataResposta: response.dataResposta,
+            };
+
+            console.log('JogoDetalhe salvo com sucesso:', response);
+            console.log('jogoDetalheList atualizado:', this.jogoCabecalho!.jogoDetalheList);
+
+            this.showPopup = true;
+
+            if (this.isCorrectAnswer && this.currentQuestionIndex === this.jogoCabecalho!.jogoDetalheList.length - 1) {
+              this.isQuizFinished = true;
+            }
+          },
+          error: (error) => {
+            console.error('Erro ao salvar JogoDetalhe:', error);
+            this.showPopup = true;
+          },
+        });
       }
     }
   }
@@ -170,7 +211,6 @@ export class PerguntasComponent implements OnInit {
   closePopup() {
     this.showPopup = false;
     if (this.isInitialMessage) {
-      // Carrega a primeira pergunta após fechar o popup inicial
       if (
         this.jogoCabecalho &&
         Array.isArray(this.jogoCabecalho.jogoDetalheList) &&
@@ -187,6 +227,7 @@ export class PerguntasComponent implements OnInit {
       if (this.isCorrectAnswer && !this.isQuizFinished) {
         this.currentQuestionIndex++;
         this.selectedOption = null;
+        this.currentJogoDetalhe = null;
         if (
           this.jogoCabecalho &&
           Array.isArray(this.jogoCabecalho.jogoDetalheList) &&

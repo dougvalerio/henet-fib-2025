@@ -2,8 +2,8 @@ import { JogoCabecalho } from "./jogo-cabecalho";
 
 export interface JogoDetalhe {
   id?: any; 
-  jogoCabecalho: JogoCabecalho;
+  jogoCabecalho: any;
   pergunta: number;
-  resposta: number;
+  resposta: number | null; // Alterado para permitir null
   dataResposta: any; 
 }
