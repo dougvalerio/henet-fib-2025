@@ -22,7 +22,7 @@ export class CadastroService {
 
   // Retorna todos os cadastros disponíveis
   findAll(): Observable<Cadastro[]> {
-    return this.http.get<Cadastro[]>(`${API_CONFIG.baseUrl}/api/cadastros/all`);
+    return this.http.get<Cadastro[]>(`${API_CONFIG.baseUrl}/api/cadastros`);
   }
 
   // Exclui um cadastro com base no ID

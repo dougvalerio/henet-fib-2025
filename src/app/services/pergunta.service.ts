@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_CONFIG } from '../config/api.config';
 import { Observable } from 'rxjs';
 import { Pergunta } from '../models/pergunta';
+import { PerguntaFilter } from '../models/perguntaFilter';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,17 @@ export class PerguntaService {
   }
 
   // Retorna todas as perguntas disponíveis
-  findAll(): Observable<Pergunta[]> {
-    return this.http.get<Pergunta[]>(`${API_CONFIG.baseUrl}/api/perguntas`);
+  //findAll(): Observable<Pergunta[]> {
+  //  return this.http.get<Pergunta[]>(`${API_CONFIG.baseUrl}/api/perguntas`);
+  //}
+
+  findAll(filter?: PerguntaFilter): Observable<Pergunta[]> {
+    let params = new HttpParams();
+
+    if (filter?.tituloId !== undefined && filter.tituloId !== null) {
+      params = params.set('tituloId', filter.tituloId.toString());
+    }
+
+    return this.http.get<Pergunta[]>(`${API_CONFIG.baseUrl}/api/perguntas`, { params });
   }
 }
