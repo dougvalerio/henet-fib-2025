@@ -112,8 +112,10 @@ export class CadastroComponent {
     if (this.isFormValid) {
       this.cadastroService.create(this.cadastro).subscribe({
         next: (response) => {
-          console.log('Cadastro realizado com sucesso:', response);
-          this.router.navigate(['/selecao-titulos']);
+          console.log('Cadastro realizado com sucesso. Cadastro ID:', response.id, response.nome); // Log do cadastroId
+          this.router.navigate(['/selecao-titulos'], {
+            state: { cadastroId: response.id } // Passa o cadastroId no state
+          });
         },
         error: (error) => {
           console.error('Erro ao realizar cadastro:', error);

@@ -1,5 +1,3 @@
-import { Pergunta } from "./pergunta";
-
 export interface Titulo {
   id?: any; // Opcional, pois é gerado pelo backend
   nome: string;

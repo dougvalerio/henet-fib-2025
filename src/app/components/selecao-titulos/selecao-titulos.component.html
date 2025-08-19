@@ -6,8 +6,8 @@
          [class.selected]="item.selected"
          (click)="toggleSelection(i)"
          [class.disabled]="selectedCount >= 3 && !item.selected">
-      <img [src]="item.imagePath" [alt]="item.title">
-      <p>{{ item.title }}</p>
+      <img [src]="item.imagemPrevia || 'assets/placeholder.jpg'" [alt]="item.nome">
+      <p>{{ item.nome }}</p>
     </div>
   </div>
   <button class="quiz-button" [disabled]="selectedCount < 3" (click)="startQuiz()">

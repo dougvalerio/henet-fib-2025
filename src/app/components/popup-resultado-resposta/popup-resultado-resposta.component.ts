@@ -16,7 +16,7 @@ export class PopupResultadoRespostaComponent implements OnChanges {
   @Output() close = new EventEmitter<void>();
 
   initialMessages: string[] = [
-    '🎬 É diversão que você quer, @? Então bora testar se você lembra mesmo dessas séries e filmes ou se só deu play pra dormir no sofá. 😴',
+    '🎬 É diversão que você quer? Então bora testar se você lembra mesmo dessas séries e filmes ou se só deu play pra dormir no sofá. 😴',
     '🍿 Vamos ver se você é fã raiz... ou só clicou em "assistir trailer" e saiu contando que viu a série toda. 😜',
     '🎥 Se você sabe o nome do figurante que aparece no episódio 3 da segunda temporada... esse quiz é pra você. 😎',
     '📺 Você vive entre spoilers, memes e trends? Então bora provar que é fluente em cultura pop! 🔥',

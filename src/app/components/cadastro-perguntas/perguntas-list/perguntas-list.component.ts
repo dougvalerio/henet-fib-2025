@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { PerguntasCreateUpdateComponent } from '../perguntas-create-update/perguntas-create-update.component';
 import { PerguntaService } from '../../../services/pergunta.service';
 import { TituloService } from '../../../services/titulo.service';
@@ -10,7 +11,7 @@ import { PerguntaFilter } from '../../../models/perguntaFilter';
 @Component({
   selector: 'app-perguntas-list',
   standalone: true,
-  imports: [CommonModule, PerguntasCreateUpdateComponent],
+  imports: [CommonModule, FormsModule, PerguntasCreateUpdateComponent],
   templateUrl: './perguntas-list.component.html',
   styleUrls: ['./perguntas-list.component.css']
 })
@@ -21,8 +22,8 @@ export class PerguntasListComponent implements OnInit {
   modalAberto = false;
   modoEdicao = false;
   perguntaSelecionada: Pergunta | null = null;
-
   filter: PerguntaFilter = {};
+  selectedTituloId: string | null = null;
 
   constructor(
     private servicoPergunta: PerguntaService,
@@ -45,17 +46,6 @@ export class PerguntasListComponent implements OnInit {
     });
   }
 
-  // carregarPerguntas() {
-  //   this.servicoPergunta.findAll().subscribe({
-  //     next: (perguntas) => {
-  //       this.perguntas = perguntas.filter(pergunta => !!pergunta.id);
-  //     },
-  //     error: (err) => {
-  //       console.error('Erro ao carregar perguntas:', err);
-  //     }
-  //   });
-  // }
-
   carregarPerguntas() {
     this.servicoPergunta.findAll(this.filter).subscribe({
       next: (perguntas) => {
@@ -67,14 +57,12 @@ export class PerguntasListComponent implements OnInit {
     });
   }
 
-  filtrarPorTitulo(tituloId: string | number | null) {
+  filtrarPorTitulo(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    const tituloId = target.value;
     const id = tituloId === '' || tituloId === null ? null : +tituloId;
     this.filter.tituloId = id;
-    this.carregarPerguntas();
-  }
-
-  limparFiltro() {
-    this.filter = {};
+    this.selectedTituloId = tituloId;
     this.carregarPerguntas();
   }
 

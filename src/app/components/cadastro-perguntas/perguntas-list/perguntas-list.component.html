@@ -1,8 +1,14 @@
 <div class="container">
   <h1>Lista de Perguntas</h1>
-  <button class="btn-new-title" (click)="abrirModalCriar()">
-    <i class="fas fa-plus"></i> Nova Pergunta
-  </button>
+  <div class="header-controls">
+    <button class="btn-new-title" (click)="abrirModalCriar()">
+      <i class="fas fa-plus"></i> Nova Pergunta
+    </button>
+    <select class="title-filter" [(ngModel)]="selectedTituloId" (change)="filtrarPorTitulo($event)">
+      <option value="">Todos os Títulos</option>
+      <option *ngFor="let titulo of titulos" [value]="titulo.id">{{ titulo.nome }}</option>
+    </select>
+  </div>
   <table class="titles-table">
     <thead>
       <tr>
