@@ -43,7 +43,7 @@ export class PerguntasComponent implements OnInit {
   quizFinalizado = false;
   mensagemInicial = true;
   jogoDetalheAtual: JogoDetalhe | null = null;
-  tentativasErradas = 0; // Contador de tentativas erradas acumulativo
+  tentativasErradas = 0;
 
   constructor(
     private router: Router,
@@ -182,7 +182,6 @@ export class PerguntasComponent implements OnInit {
           this.tentativasErradas++;
         }
 
-        // Garantir que apenas o ID do jogoCabecalho seja enviado e dataResposta seja null
         this.jogoDetalheAtual.jogoCabecalho = this.jogoCabecalho.id;
         this.jogoDetalheAtual.dataResposta = null;
 
@@ -258,5 +257,10 @@ export class PerguntasComponent implements OnInit {
 
   get perguntaAtual(): Question | null {
     return this.perguntas[this.indicePerguntaAtual] || null;
+  }
+
+  // Propriedade para fornecer o título da pergunta de forma segura
+  get perguntaTitulo(): string {
+    return this.perguntaAtual?.title || '';
   }
 }

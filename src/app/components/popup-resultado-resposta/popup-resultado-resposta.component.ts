@@ -13,7 +13,8 @@ export class PopupResultadoRespostaComponent implements OnChanges {
   @Input() isCorrectAnswer: boolean = false;
   @Input() isQuizFinished: boolean = false;
   @Input() isInitialMessage: boolean = false;
-  @Input() tentativasErradas: number = 0; // Recebe o número de tentativas erradas
+  @Input() tentativasErradas: number = 0;
+  @Input() perguntaTitulo: string = '';
   @Output() close = new EventEmitter<void>();
 
   initialMessages: string[] = [
@@ -56,14 +57,38 @@ export class PopupResultadoRespostaComponent implements OnChanges {
     '🔥 Tá com tudo nos hits do streaming, hein? Com a He-Net, você maratona tudo isso, e sem travar! 🚀 Agora corre pro brinde, que trend bom também é ganhar presente. 🎁',
   ];
 
+  // Arrays de GIFs para mensagens iniciais e finais
+  initialGifs: string[] = [
+    'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExZjEzM3F1Z3BsdXM2Y25qenZtcGtsNHNxOTMxanFpeDc1eWh6cHd0MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/IoMkSXKHQIDVm/giphy.gif'
+  ];
+
+  finishedGifs: string[] = [
+    'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHM2Yjlma213eWJ0YzdjODU4MDczZmI3bWhjbXIyMjNscmRiY2t0OSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/11sBLVxNs7v6WA/giphy.gif'
+  ];
+
+  // Mapeamento de GIFs por título (ignorando maiúsculas/minúsculas)
+  private gifMap: { [key: string]: { feliz: string; triste: string } } = {
+    'house of the dragon': { feliz: '../../../assets/gifs/hotd-feliz.gif', triste: '../../../assets/gifs/hotd-triste.gif' },
+    'the last of us': { feliz: '../../../assets/gifs/tlou-feliz.gif', triste: '../../../assets/gifs/tlou-triste.gif' },
+    'friends': { feliz: '../../../assets/gifs/friends-feliz.gif', triste: '../../../assets/gifs/friends-triste.gif' },
+    'harry potter': { feliz: '../../../assets/gifs/hp-feliz.gif', triste: '../../../assets/gifs/hp-triste.gif' },
+    'dexter': { feliz: '../../../assets/gifs/dexter-feliz.gif', triste: '../../../assets/gifs/dexter-triste.gif' },
+    'bob espoja': { feliz: '../../../assets/gifs/bob-feliz.gif', triste: '../../../assets/gifs/bob-triste.gif' },
+    'todo mundo odeia o chris': { feliz: '../../../assets/gifs/tmoc-feliz.gif', triste: '../../../assets/gifs/tmoc-triste.gif' },
+    'meu malvado favorito': { feliz: '../../../assets/gifs/mmf-feliz.gif', triste: '../../../assets/gifs/mmf-triste.gif' },
+  };
+
   private _initialMessage: string | null = null;
   private _errorMessage: string | null = null;
   private _correctMessage: string | null = null;
   private _finishedMessage: string | null = null;
+  private _currentInitialGif: string | null = null;
+  private _currentFinishedGif: string | null = null;
 
   get initialMessage(): string {
     if (!this._initialMessage || !this.isInitialMessage) {
       this._initialMessage = this.initialMessages[Math.floor(Math.random() * this.initialMessages.length)];
+      this._currentInitialGif = this.initialGifs[Math.floor(Math.random() * this.initialGifs.length)];
     }
     return this._initialMessage;
   }
@@ -85,8 +110,22 @@ export class PopupResultadoRespostaComponent implements OnChanges {
   get finishedMessage(): string {
     if (!this._finishedMessage || this.isInitialMessage) {
       this._finishedMessage = this.finishedMessages[Math.floor(Math.random() * this.finishedMessages.length)];
+      this._currentFinishedGif = this.finishedGifs[Math.floor(Math.random() * this.finishedGifs.length)];
     }
     return this._finishedMessage;
+  }
+
+  getGifUrl(): string {
+    if (this.isInitialMessage && this._currentInitialGif) {
+      return this._currentInitialGif;
+    }
+    if (this.isQuizFinished && this._currentFinishedGif) {
+      return this._currentFinishedGif;
+    }
+
+    const tituloNormalizado = this.perguntaTitulo.toLowerCase().trim();
+    const gifs = this.gifMap[tituloNormalizado] || { feliz: 'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHltM2l1YzVmeXA3NHlsNzQ1d2YxZGQ3enh2bzd0czI3anp0Y2p4ciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BPJmthQ3YRwD6QqcVD/giphy.gif', triste: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExa2tiOXhxZmpwdmc4M3EzeTA3eGt0d20wbDhyM2ZnZmxodm1zdXB4NyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tXL4FHPSnVJ0A/giphy.gif' };
+    return this.isCorrectAnswer ? gifs.feliz : gifs.triste;
   }
 
   resetMessages() {
@@ -94,6 +133,8 @@ export class PopupResultadoRespostaComponent implements OnChanges {
     this._errorMessage = null;
     this._correctMessage = null;
     this._finishedMessage = null;
+    this._currentInitialGif = null;
+    this._currentFinishedGif = null;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -101,13 +142,14 @@ export class PopupResultadoRespostaComponent implements OnChanges {
       this.resetMessages();
     }
     if (!this.isInitialMessage && !this.isCorrectAnswer && !this.isQuizFinished) {
-      this._errorMessage = null; // Forçar nova seleção de mensagem de erro
+      this._errorMessage = null;
     }
     if (!this.isInitialMessage && this.isCorrectAnswer && !this.isQuizFinished) {
-      this._correctMessage = null; // Forçar nova seleção de mensagem de acerto
+      this._correctMessage = null;
     }
     if (!this.isInitialMessage && this.isQuizFinished) {
-      this._finishedMessage = null; // Forçar nova seleção de mensagem de finalização
+      this._finishedMessage = null;
+      this._currentFinishedGif = null;
     }
   }
 

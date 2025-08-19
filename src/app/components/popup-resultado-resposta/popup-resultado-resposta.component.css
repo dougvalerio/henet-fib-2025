@@ -38,15 +38,23 @@
   border-radius: 8px;
 }
 
-.popup-message {
-  font-size: var(--font-size-base);
+.popup-title {
+  font-size: 1.5rem;
+  font-weight: 700;
   color: var(--text-color);
-  line-height: 1.5;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.popup-message {
+  font-size: 1.2rem; /* Aumentado para maior legibilidade */
+  color: var(--text-color);
+  line-height: 1.6;
   margin: 0;
 }
 
 .chances-text {
-  font-size: var(--font-size-base);
+  font-size: 1.2rem; /* Aumentado para combinar com popup-message */
   font-weight: 600;
   color: #ff0000; /* Vermelho para o texto de chances */
   margin: 0;
@@ -92,12 +100,16 @@
     height: 120px;
   }
 
+  .popup-title {
+    font-size: 1.3rem;
+  }
+
   .popup-message {
-    font-size: 0.9rem;
+    font-size: 1.1rem;
   }
 
   .chances-text {
-    font-size: 0.9rem;
+    font-size: 1.1rem;
   }
 
   .popup-button {
@@ -118,12 +130,16 @@
     height: 100px;
   }
 
+  .popup-title {
+    font-size: 1.2rem;
+  }
+
   .popup-message {
-    font-size: 0.85rem;
+    font-size: 1rem;
   }
 
   .chances-text {
-    font-size: 0.85rem;
+    font-size: 1rem;
   }
 
   .popup-button {
@@ -144,11 +160,15 @@
     height: 80px;
   }
 
+  .popup-title {
+    font-size: 1.1rem;
+  }
+
   .popup-message {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
 
   .chances-text {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
 }

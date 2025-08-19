@@ -2,7 +2,8 @@
   <div class="popup-content">
     <!-- Mensagem Inicial -->
     <div *ngIf="isInitialMessage" class="popup-body">
-      <img src="https://media.giphy.com/media/3o7TKsY2czRJnctN4A/giphy.gif" alt="Início do Quiz" class="popup-gif" />
+      <img [src]="getGifUrl()" alt="Início do Quiz" class="popup-gif" />
+      <h2 class="popup-title">Está preparado? 🎉</h2>
       <p class="popup-message">{{ initialMessage }}</p>
       <button class="popup-button next" (click)="closePopup()">
         <i class="fas fa-play"></i> Iniciar Quiz
@@ -11,7 +12,8 @@
 
     <!-- Resposta Errada -->
     <div *ngIf="!isInitialMessage && !isCorrectAnswer && !isQuizFinished" class="popup-body">
-      <img src="https://media.giphy.com/media/26FPJGjAwu8G8rXLa/giphy.gif" alt="Resposta Errada" class="popup-gif" />
+      <img [src]="getGifUrl()" alt="Resposta Errada" class="popup-gif" />
+      <h2 class="popup-title">Que Pena! 😢</h2>
       <p class="popup-message">{{ errorMessage }}</p>
       <p class="chances-text">CHANCES: {{ 3 - tentativasErradas }}</p>
       <button class="popup-button" (click)="closePopup()">
@@ -23,7 +25,8 @@
 
     <!-- Resposta Correta (não final) -->
     <div *ngIf="!isInitialMessage && isCorrectAnswer && !isQuizFinished" class="popup-body">
-      <img src="https://media.giphy.com/media/l0Iyl55kTeh71nTWw/giphy.gif" alt="Resposta Correta" class="popup-gif" />
+      <img [src]="getGifUrl()" alt="Resposta Correta" class="popup-gif" />
+      <h2 class="popup-title">Muito bem! 🌟</h2>
       <p class="popup-message">{{ correctMessage }}</p>
       <button class="popup-button next" (click)="closePopup()">
         <i class="fas fa-arrow-right"></i> Próximo
@@ -32,7 +35,8 @@
 
     <!-- Quiz Finalizado -->
     <div *ngIf="!isInitialMessage && isQuizFinished" class="popup-body">
-      <img src="https://media.giphy.com/media/3o7aD2xG2Zy6c6Z4q4/giphy.gif" alt="Confete" class="popup-gif" />
+      <img [src]="getGifUrl()" alt="Confete" class="popup-gif" />
+      <h2 class="popup-title">Parabéns! 🏆</h2>
       <p class="popup-message">{{ finishedMessage }}</p>
       <button class="popup-button" (click)="closePopup()">
         <i class="fas fa-home"></i> Início
