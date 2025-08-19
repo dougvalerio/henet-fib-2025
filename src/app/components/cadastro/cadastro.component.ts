@@ -21,6 +21,7 @@ export class CadastroComponent {
     email: '',
     telefone: '',
     dataRegistro: new Date(),
+    vencedor: false,
     jogoList: []
   };
 

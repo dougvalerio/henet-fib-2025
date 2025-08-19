@@ -7,5 +7,6 @@ export interface Cadastro {
   email: string;
   telefone: string;
   dataRegistro: any;
+  vencedor: boolean;
   jogoList: JogoCabecalho[];
 }
