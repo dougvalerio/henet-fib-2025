@@ -1,5 +1,18 @@
 <div class="container">
   <h1>Lista de Cadastros</h1>
+  <div class="search-container">
+    <input 
+      type="text" 
+      class="search-input" 
+      placeholder="Pesquisar por nome, CPF, e-mail ou telefone..." 
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="onSearchTermChange()"
+      (keyup.enter)="searchCadastros()"
+    />
+    <button class="search-button" (click)="searchCadastros()">
+      <i class="fas fa-search"></i>
+    </button>
+  </div>
   <table class="titles-table">
     <thead>
       <tr>

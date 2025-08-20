@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_CONFIG } from '../config/api.config';
 import { Cadastro } from '../models/cadastro';
+import { CadastroFilter } from '../models/cadastroFilter';
 
 @Injectable({
   providedIn: 'root'
@@ -20,9 +21,15 @@ export class CadastroService {
     return this.http.get<Cadastro>(`${API_CONFIG.baseUrl}/api/cadastros/${id}`);
   }
 
-  // Retorna todos os cadastros disponíveis
-  findAll(): Observable<Cadastro[]> {
-    return this.http.get<Cadastro[]>(`${API_CONFIG.baseUrl}/api/cadastros`);
+  // Retorna todos os cadastros disponíveis com filtro opcional
+  findAll(filter?: CadastroFilter): Observable<Cadastro[]> {
+    let params = new HttpParams();
+
+    if (filter?.pesquisa !== undefined && filter.pesquisa !== null) {
+      params = params.set('pesquisa', filter.pesquisa);
+    }
+
+    return this.http.get<Cadastro[]>(`${API_CONFIG.baseUrl}/api/cadastros`, { params });
   }
 
   // Exclui um cadastro com base no ID
