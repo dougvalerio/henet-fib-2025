@@ -21,6 +21,7 @@
         <th>CPF</th>
         <th>E-mail</th>
         <th>Telefone</th>
+        <th>Vencedor</th>
       </tr>
     </thead>
     <tbody>
@@ -30,6 +31,9 @@
         <td>{{ cadastro.cpf }}</td>
         <td>{{ cadastro.email }}</td>
         <td>{{ cadastro.telefone }}</td>
+        <td class="vencedor-column">
+          <i *ngIf="cadastro.vencedor" class="fas fa-star"></i>
+        </td>
       </tr>
     </tbody>
   </table>

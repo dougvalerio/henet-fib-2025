@@ -16,6 +16,11 @@ export class CadastroService {
     return this.http.post<Cadastro>(`${API_CONFIG.baseUrl}/api/cadastros`, cadastro);
   }
 
+  // Atualiza um cadastro existente com base no ID
+  update(id: any, cadastro: Cadastro): Observable<Cadastro> {
+    return this.http.put<Cadastro>(`${API_CONFIG.baseUrl}/api/cadastros/${id}`, cadastro);
+  }
+
   // Busca um cadastro específico pelo seu ID
   findById(id: any): Observable<Cadastro> {
     return this.http.get<Cadastro>(`${API_CONFIG.baseUrl}/api/cadastros/${id}`);

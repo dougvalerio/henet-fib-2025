@@ -92,6 +92,15 @@ h1 {
   color: var(--text-color);
 }
 
+.vencedor-column {
+  width: 60px;
+}
+
+.vencedor-column i.fas.fa-star {
+  color: #ffd700; /* Amarelo dourado para a estrela */
+  font-size: 16px;
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 0 10px;
@@ -128,6 +137,14 @@ h1 {
   .titles-table td:first-child {
     width: 60px;
   }
+
+  .vencedor-column {
+    width: 50px;
+  }
+
+  .vencedor-column i.fas.fa-star {
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -151,10 +168,19 @@ h1 {
   .titles-table th,
   .titles-table td {
     padding: 6px;
+    font-size: 12px;
   }
 
   .titles-table th:first-child,
   .titles-table td:first-child {
     width: 50px;
+  }
+
+  .vencedor-column {
+    width: 40px;
+  }
+
+  .vencedor-column i.fas.fa-star {
+    font-size: 12px;
   }
 }

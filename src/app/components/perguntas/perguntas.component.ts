@@ -54,6 +54,7 @@ export class PerguntasComponent implements OnInit {
     const navigation = this.router.getCurrentNavigation();
     this.titulosSelecionados = navigation?.extras.state?.['selectedTitles'] || [];
     this.jogoCabecalho = navigation?.extras.state?.['jogoCabecalho'] || null;
+    console.log(this.jogoCabecalho)
   }
 
   ngOnInit() {
