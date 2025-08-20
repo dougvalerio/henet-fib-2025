@@ -5,10 +5,12 @@ import { PopupResultadoRespostaComponent } from '../popup-resultado-resposta/pop
 import { PerguntaService } from '../../services/pergunta.service';
 import { TituloService } from '../../services/titulo.service';
 import { JogoDetalheService } from '../../services/jogo-detalhe.service';
+import { CadastroService } from '../../services/cadastro.service';
 import { Pergunta } from '../../models/pergunta';
 import { JogoCabecalho } from '../../models/jogo-cabecalho';
 import { JogoDetalhe } from '../../models/jogo-detalhe';
 import { Titulo } from '../../models/titulo';
+import { Cadastro } from '../../models/cadastro';
 
 interface Title {
   title: string;
@@ -49,12 +51,13 @@ export class PerguntasComponent implements OnInit {
     private router: Router,
     private perguntaService: PerguntaService,
     private tituloService: TituloService,
-    private jogoDetalheService: JogoDetalheService
+    private jogoDetalheService: JogoDetalheService,
+    private cadastroService: CadastroService
   ) {
     const navigation = this.router.getCurrentNavigation();
     this.titulosSelecionados = navigation?.extras.state?.['selectedTitles'] || [];
     this.jogoCabecalho = navigation?.extras.state?.['jogoCabecalho'] || null;
-    console.log(this.jogoCabecalho)
+    console.log(this.jogoCabecalho);
   }
 
   ngOnInit() {
@@ -202,6 +205,30 @@ export class PerguntasComponent implements OnInit {
 
             if (this.respostaCorreta && this.indicePerguntaAtual === this.jogoCabecalho!.jogoDetalheList.length - 1) {
               this.quizFinalizado = true;
+
+              // Atualizar o campo vencedor do cadastro
+              const cadastroId = this.jogoCabecalho?.cadastro;
+              if (cadastroId) {
+                this.cadastroService.findById(cadastroId).subscribe({
+                  next: (cadastro: Cadastro) => {
+                    console.log('Cadastro encontrado:', cadastro);
+                    cadastro.vencedor = true;
+                    this.cadastroService.update(cadastroId, cadastro).subscribe({
+                      next: (updatedCadastro: Cadastro) => {
+                        console.log('Cadastro atualizado com sucesso:', updatedCadastro);
+                      },
+                      error: (error) => {
+                        console.error('Erro ao atualizar cadastro:', error);
+                      },
+                    });
+                  },
+                  error: (error) => {
+                    console.error('Erro ao buscar cadastro:', error);
+                  },
+                });
+              } else {
+                console.error('Erro: ID do cadastro não encontrado em jogoCabecalho.');
+              }
             }
           },
           error: (error) => {
@@ -260,7 +287,6 @@ export class PerguntasComponent implements OnInit {
     return this.perguntas[this.indicePerguntaAtual] || null;
   }
 
-  // Propriedade para fornecer o título da pergunta de forma segura
   get perguntaTitulo(): string {
     return this.perguntaAtual?.title || '';
   }
