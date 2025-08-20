@@ -49,14 +49,14 @@ h1 {
   background: rgba(255, 0, 0, 0.1); /* Fundo vermelho claro */
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  border: 1px solid #ff0000; /* Borda vermelha */
+  border: 1px solid #EC8900; /* Borda vermelha */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .chances-text {
   font-size: var(--font-size-base, 1.2rem);
   font-weight: 700;
-  color: #ff0000; /* Vermelho escuro para o texto */
+  color: #EC8900; /* Vermelho escuro para o texto */
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 1px;
