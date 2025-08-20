@@ -10,10 +10,23 @@
       <li><a routerLink="/home"><i class="fas fa-home"></i> Home</a><hr></li>
       <li><a routerLink="/regulamento"><i class="fas fa-book"></i> Regulamento</a><hr></li>
       <li class="admin-section"><span>ADMINISTRAÇÃO</span><hr></li>
-      <li><a routerLink="/titulos-list"><i class="fas fa-film"></i> Lista de Títulos</a><hr></li>
-      <li><a routerLink="/perguntas-list"><i class="fas fa-question-circle"></i> Lista de Perguntas</a><hr></li>
-      <li><a routerLink="/cadastro-list"><i class="fas fa-user"></i> Lista de Cadastros</a><hr></li>
-      <li><a routerLink="/config"><i class="fas fa-cog"></i> Configurações</a></li>
+      <li><a class="protected-link" (click)="openPasswordPopup('/titulos-list')"><i class="fas fa-film"></i> Lista de Títulos</a><hr></li>
+      <li><a class="protected-link" (click)="openPasswordPopup('/perguntas-list')"><i class="fas fa-question-circle"></i> Lista de Perguntas</a><hr></li>
+      <li><a class="protected-link" (click)="openPasswordPopup('/cadastro-list')"><i class="fas fa-user"></i> Lista de Cadastros</a><hr></li>
     </ul>
   </nav>
+
+  <!-- Popup de senha -->
+  <div class="popup" *ngIf="isPopupOpen">
+    <div class="popup-content">
+      <button class="close-popup" (click)="closePasswordPopup()">×</button>
+      <div class="popup-header">
+        <i class="fas fa-lock"></i>
+        <h2>Senha</h2>
+      </div>
+      <input type="password" [(ngModel)]="passwordInput" placeholder="Digite a senha" (keyup.enter)="submitPassword()" />
+      <p class="error-message" *ngIf="isPasswordIncorrect">Senha incorreta. Tente novamente.</p>
+      <button class="submit-button" (click)="submitPassword()">Entrar</button>
+    </div>
+  </div>
 </header>
