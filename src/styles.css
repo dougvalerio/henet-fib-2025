@@ -50,7 +50,7 @@ app-header {
   overflow-y: auto; /* Permite scroll interno apenas se necessário */
   padding: 16px;
   box-sizing: border-box;
-  background-image: url('assets/background-henet2.jpg');
+  background-image: url('assets/bg-henet2025.png');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;

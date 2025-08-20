@@ -18,7 +18,7 @@ header {
 }
 
 .logo {
-  height: 48px;
+  height: 100px;
   width: auto;
 }
 
@@ -250,7 +250,7 @@ input[type="password"] {
 /* Responsividade para tablets */
 @media screen and (max-width: 768px) {
   .logo {
-    height: 40px;
+    height: 100px;
   }
 
   .sidebar {
@@ -292,7 +292,7 @@ input[type="password"] {
 /* Responsividade para mobile */
 @media screen and (max-width: 480px) {
   .logo {
-    height: 32px;
+    height: 70px;
   }
 
   .sidebar {

@@ -20,9 +20,8 @@
 }
 
 .logo {
-  max-width: 300px;
+  max-width: 400px;
   width: 80%;
-  margin-bottom: 75px;
 }
 
 /* Rodapé fixo na parte inferior */
@@ -81,8 +80,7 @@
 /* Responsividade para tablets */
 @media (max-width: 768px) {
   .logo {
-    max-width: 250px;
-    margin-bottom: 130px;
+    max-width: 400px;
   }
 
   .play-button {
