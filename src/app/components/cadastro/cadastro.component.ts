@@ -33,6 +33,16 @@ export class CadastroComponent {
     private cadastroService: CadastroService
   ) {}
 
+  restrictToNumbers(event: KeyboardEvent): void {
+    const charCode = event.charCode || event.keyCode;
+    // Permite apenas dígitos (0-9) e teclas de controle (backspace, tab, etc.)
+    if (charCode < 48 || charCode > 57) {
+      if (![8, 9, 13, 37, 39, 46].includes(charCode)) { // Backspace, Tab, Enter, Setas, Delete
+        event.preventDefault();
+      }
+    }
+  }
+
   private isValidNumberInput(value: string, length: number): boolean {
     const cleanValue = value.replace(/\D/g, '');
     return cleanValue.length === length;
@@ -113,9 +123,9 @@ export class CadastroComponent {
     if (this.isFormValid) {
       this.cadastroService.create(this.cadastro).subscribe({
         next: (response) => {
-          console.log('Cadastro realizado com sucesso. Cadastro ID:', response.id, response.nome); // Log do cadastroId
+          console.log('Cadastro realizado com sucesso:', response);
           this.router.navigate(['/selecao-titulos'], {
-            state: { cadastroId: response.id } // Passa o cadastroId no state
+            state: { cadastroId: response.id }
           });
         },
         error: (error) => {

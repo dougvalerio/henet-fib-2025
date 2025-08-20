@@ -1,0 +1,5 @@
+.router-container {
+  min-height: calc(100vh - 80px); /* Garante que o container ocupe a altura restante */
+  box-sizing: border-box;
+  position: relative;
+}

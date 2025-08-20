@@ -6,9 +6,13 @@
   max-width: 800px;
   margin: 0 auto;
   background: transparent;
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - 80px); /* Altura da viewport menos a altura do header */
+  box-sizing: border-box;
+  padding-bottom: 120px; /* Espaço para o footer fixo */
+  position: relative;
 }
 
+/* Resto do CSS permanece igual */
 h1 {
   font-size: var(--font-size-large, 2rem);
   font-weight: 700;
@@ -150,10 +154,40 @@ h1 {
   cursor: not-allowed;
 }
 
+/* Rodapé fixo na parte inferior */
+/* Ajuste no footer para garantir que ele fique visível e não sobreponha o conteúdo */
+.footer {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: auto;
+  max-width: 80%;
+  z-index: 1; /* Garante que o footer fique acima do conteúdo, se necessário */
+}
+
+.footer p {
+  margin: 0 0 8px 0;
+  font-size: var(--font-size-small);
+  color: #FFF;
+  font-weight: 500;
+}
+
+.footer-logo {
+  max-width: 120px;
+  width: 100%;
+  height: auto;
+  opacity: 0.9;
+}
+
 /* Responsividade para tablets */
 @media (max-width: 768px) {
   .quiz-container {
     padding: 1.5rem;
+    padding-bottom: 100px; /* Ajuste para o footer em telas menores */
   }
 
   h1 {
@@ -182,12 +216,25 @@ h1 {
   .chances-text {
     font-size: 1rem;
   }
+
+  .footer {
+    bottom: 16px;
+  }
+
+  .footer p {
+    font-size: 14px;
+  }
+
+  .footer-logo {
+    max-width: 100px;
+  }
 }
 
 /* Responsividade para smartphones */
 @media (max-width: 480px) {
   .quiz-container {
     padding: 1rem;
+    padding-bottom: 70px; /* Ajuste para o footer em telas muito pequenas */
   }
 
   h1 {
@@ -215,6 +262,18 @@ h1 {
 
   .chances-text {
     font-size: 0.9rem;
+  }
+
+  .footer {
+    bottom: 12px;
+  }
+
+  .footer p {
+    font-size: 12px;
+  }
+
+  .footer-logo {
+    max-width: 80px;
   }
 }
 
