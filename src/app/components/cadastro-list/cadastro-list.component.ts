@@ -26,6 +26,7 @@ export class CadastroListComponent implements OnInit {
     this.cadastroService.findAll(filter).subscribe({
       next: (cadastros) => {
         this.cadastros = cadastros.filter(cadastro => !!cadastro.id);
+        console.log("Exibindo cadastros: ", this.cadastros)
       },
       error: (err) => {
         console.error('Erro ao carregar cadastros:', err);

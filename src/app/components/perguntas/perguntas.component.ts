@@ -66,6 +66,18 @@ export class PerguntasComponent implements OnInit {
       this.router.navigate(['/inicio']);
       return;
     }
+
+    // Lógica para buscar o cadastroId e exibir no console
+    const cadastroId = this.jogoCabecalho?.cadastro;
+     this.cadastroService.findById(cadastroId).subscribe({
+        next: (cadastro: Cadastro) => {
+          console.log('Cadastro encontrado ao iniciar o jogo:', cadastro);
+        },
+        error: (error) => {
+          console.error('Erro ao buscar cadastro no ngOnInit:', error);
+        },
+      });
+
     this.exibirPopup = true;
     this.mensagemInicial = true;
     this.respostaCorreta = false;
