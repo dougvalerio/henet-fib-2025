@@ -123,13 +123,13 @@ export class CadastroComponent {
     if (this.isFormValid) {
       this.cadastroService.create(this.cadastro).subscribe({
         next: (response) => {
-          console.log('Cadastro realizado com sucesso:', response);
+          console.log('Cadastro realizado com sucesso:', JSON.stringify(response, null, 2));
           this.router.navigate(['/selecao-titulos'], {
             state: { cadastroId: response.id }
           });
         },
         error: (error) => {
-          console.error('Erro ao realizar cadastro:', error);
+          console.error('Erro ao realizar cadastro:', JSON.stringify(error, null, 2));
           this.cpfError = 'Erro ao realizar cadastro. Tente novamente.';
         }
       });
