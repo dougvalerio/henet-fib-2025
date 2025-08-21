@@ -97,6 +97,82 @@
   opacity: 0.5;
 }
 
+/* Estilização do popup */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.popup-icon {
+  font-size: 3.5rem;
+  color: #ff0000;
+  margin-bottom: 1rem;
+}
+
+.popup-message {
+  font-size: var(--font-size-base);
+  color: var(--text-color);
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+.popup-message .highlight {
+  color: #ff0000;
+  font-weight: 700;
+}
+
+.home-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: #ffffff;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin: 0 auto;
+}
+
+.home-button:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-2px);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 /* Rodapé fixo na parte inferior */
 .footer {
   position: absolute;
@@ -154,6 +230,24 @@
     font-size: 0.9rem;
   }
 
+  .popup {
+    padding: 1.5rem;
+    max-width: 80%;
+  }
+
+  .popup-icon {
+    font-size: 3rem;
+  }
+
+  .popup-message {
+    font-size: 0.9rem;
+  }
+
+  .home-button {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
   .footer {
     bottom: 16px;
   }
@@ -194,7 +288,25 @@
     font-size: 0.8rem;
   }
 
-    .footer {
+  .popup {
+    padding: 1rem;
+    max-width: 85%;
+  }
+
+  .popup-icon {
+    font-size: 2.5rem;
+  }
+
+  .popup-message {
+    font-size: 0.8rem;
+  }
+
+  .home-button {
+    padding: 0.6rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .footer {
     bottom: 12px;
   }
 

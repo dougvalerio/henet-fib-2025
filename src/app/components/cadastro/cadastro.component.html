@@ -66,13 +66,25 @@
     </div>
 
     <button 
-  class="submit-button" 
-  [disabled]="!isFormValid || loading" 
-  (click)="cadastrar()">
-  <i class="fas fa-play"></i> 
-  {{ loading ? 'CADASTRANDO...' : 'CADASTRAR' }}
-</button>
+      class="submit-button" 
+      [disabled]="!isFormValid || loading" 
+      (click)="cadastrar()">
+      <i class="fas fa-play"></i> 
+      {{ loading ? 'CADASTRANDO...' : 'CADASTRAR' }}
+    </button>
   </form>
+
+  <!-- Popup de erro -->
+  <div class="popup-overlay" *ngIf="showErrorPopup">
+    <div class="popup">
+      <i class="fas fa-exclamation-circle popup-icon"></i>
+      <p class="popup-message">CPF ou E-mail já cadastrado no sistema!</p>
+      <p class="popup-message">Volte <span class="highlight">amanhã</span> para jogar novamente!</p>
+      <button class="home-button" (click)="home()">
+        <i class="fas fa-home"></i> HOME
+      </button>
+    </div>
+  </div>
 
   <footer class="footer">
     <p>Desenvolvido por:</p>

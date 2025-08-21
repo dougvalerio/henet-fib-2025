@@ -27,6 +27,8 @@ export class CadastroComponent {
 
   cpfError: string | null = null;
   cpfTouched: boolean = false;
+  showErrorPopup: boolean = false;
+  loading = false;
 
   constructor(
     private router: Router,
@@ -35,9 +37,8 @@ export class CadastroComponent {
 
   restrictToNumbers(event: KeyboardEvent): void {
     const charCode = event.charCode || event.keyCode;
-    // Permite apenas dígitos (0-9) e teclas de controle (backspace, tab, etc.)
     if (charCode < 48 || charCode > 57) {
-      if (![8, 9, 13, 37, 39, 46].includes(charCode)) { // Backspace, Tab, Enter, Setas, Delete
+      if (![8, 9, 13, 37, 39, 46].includes(charCode)) {
         event.preventDefault();
       }
     }
@@ -119,84 +120,40 @@ export class CadastroComponent {
     );
   }
 
-  // cadastrar() {
-  //   if (this.isFormValid) {
-  //     this.cadastroService.create(this.cadastro).subscribe({
-  //       next: (response) => {
-  //         console.log('Cadastro realizado com sucesso:', JSON.stringify(response, null, 2));
-  //         this.router.navigate(['/selecao-titulos'], {
-  //           state: { cadastroId: response.id }
-  //         });
-  //       },
-  //       error: (error) => {
-  //         console.error('Erro ao realizar cadastro:', JSON.stringify(error, null, 2));
-  //         this.cpfError = 'Erro ao realizar cadastro. Tente novamente.';
-  //       }
-  //     });
-  //   }
-  // }
-
-  loading = false;
-
   cadastrar() {
-    // Verifica se o formulário é válido e se não está carregando
     if (this.isFormValid && !this.loading) {
-      this.loading = true; // Ativa o estado de carregamento
-  
+      this.loading = true;
+
       this.cadastroService.create(this.cadastro).subscribe({
         next: (response: Cadastro) => {
-          // Cadastro realizado com sucesso
           console.log('Cadastro realizado com sucesso:', JSON.stringify(response, null, 2));
-  
-          // Navega para a próxima página com o ID do cadastro
           this.router.navigate(['/selecao-titulos'], {
             state: { cadastroId: response.id }
           });
+          this.loading = false;
         },
         error: (error: any) => {
-          // Desativa o loading em caso de erro
           this.loading = false;
-  
-          // Log detalhado do erro (útil para depuração)
           console.error('Erro ao realizar cadastro:', JSON.stringify(error, null, 2));
-  
-          // Limpa mensagens antigas
-          this.cpfError = '';
-  
-          // === Tratamento específico para cadastro já existente nos últimos 9h ===
+          this.cpfError = null;
+
           if (error.status === 409 && error.error && error.error.cadastroExistente) {
-            const cadastroExistente = error.error.cadastroExistente;
-            const dataRegistro = new Date(cadastroExistente.dataRegistro);
-  
-            // Verifica se a data é válida
-            if (isNaN(dataRegistro.getTime())) {
-              this.cpfError = 'Erro: data do cadastro inválida.';
-              return;
-            }
-  
-            // Formata apenas a hora: HH:mm
-            const hora = dataRegistro.toLocaleTimeString('pt-BR', {
-              hour: '2-digit',
-              minute: '2-digit'
-            });
-  
-            // Mensagem clara para o usuário
-            this.cpfError = `Você já realizou um cadastro hoje às ${hora}. 
-                             Só é permitido um cadastro a cada 9 horas.`;
-  
+            this.showErrorPopup = true; // Exibe o popup
           } else if (error.status === 400) {
-            // Erro de validação (ex: CPF inválido, e-mail mal formatado)
             this.cpfError = 'Verifique os dados informados e tente novamente.';
           } else {
-            // Outros erros: rede, servidor (500), timeout, etc.
             this.cpfError = 'Erro ao realizar cadastro. Tente novamente mais tarde.';
           }
         },
         complete: () => {
-          // Garante que o loading será desativado ao final (opcional, mas seguro)
           this.loading = false;
         }
       });
     }
+  }
+
+  home() {
+    this.showErrorPopup = false;
+    this.router.navigate(['/home']);
   }
 }
